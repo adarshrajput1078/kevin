@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevin Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-main: #050505; --card-bg: #111111; --text-main: #ffffff; --border-line: #333333; --accent: #ffffff; }
+        body { margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        
+        .sidebar { width: 250px; background: #0a0a0a; border-right: 1px solid var(--border-line); padding: 20px; display: flex; flex-direction: column; }
+        .sidebar h2 { margin: 0 0 30px 0; font-size: 20px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 15px;}
+        .menu-item { padding: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid transparent; transition: 0.3s; font-weight: bold; text-transform: uppercase; }
+        .menu-item:hover, .menu-item.active { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+        
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; background-image: radial-gradient(circle at 50% 0%, #111 0%, transparent 70%); }
+        .top-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-line); padding: 20px; }
+        .stat-card h4 { margin: 0 0 10px 0; color: #888; font-size: 12px; text-transform: uppercase; }
+        .stat-card .val { font-size: 32px; font-weight: bold; }
+
+        .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 900px) { .panel-grid { grid-template-columns: 1fr; } .sidebar { width: 200px; } }
+        @media(max-width: 600px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; padding: 10px; border-right: none; border-bottom: 1px solid #333; flex-direction: row; justify-content: space-between; align-items: center;} .sidebar h2 {margin:0; border:none; padding:0; font-size: 16px;} .menu-item {display:none;} }
+
+        .card { background: var(--card-bg); border: 1px solid var(--border-line); padding: 25px; margin-bottom: 20px;}
+        .card h3 { margin: 0 0 20px 0; border-bottom: 1px dashed #444; padding-bottom: 10px; text-transform: uppercase; }
+        
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border-line); margin-bottom: 15px; background: #000; color: #fff; font-family: 'Share Tech Mono'; box-sizing: border-box; outline: none;}
+        input:focus { border-color: var(--accent); }
+        .flex-row { display: flex; gap: 15px; }
+        
+        .btn { padding: 15px; background: var(--accent); color: #000; border: none; cursor: pointer; font-family: 'Share Tech Mono'; font-weight: bold; text-transform: uppercase; transition: 0.2s; width: 100%;}
+        .btn:hover { background: #ccc; }
+        .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: #000; }
+        
+        .btn-grp { display: flex; gap: 10px; margin-bottom: 15px;}
+        .btn-grp .btn { flex: 1; }
+
+        .toast { position: fixed; top: 20px; right: 20px; background: #fff; color: #000; padding: 15px 20px; font-weight: bold; z-index: 1000; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); border-left: 5px solid #000;}
+        textarea { width: 100%; height: 100px; background: #000; color: #fff; border: 1px solid #333; padding: 10px; font-family: monospace; resize: none; box-sizing: border-box;}
+    </style>
+</head>
+<body>
+    
+    <div class="toast" id="toastMsg">Action Successful</div>
+
+    <aside class="sidebar">
+        <h2>KEVIN_ROOT</h2>
+        <div class="menu-item active">Dashboard</div>
+        <div style="margin-top: auto; font-size: 10px; color: #555;">v5.0 Kevin Enterprise</div>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-stats">
+            <div class="stat-card"><h4>ACTIVE USERS</h4><div class="val" id="usr-cnt">0</div></div>
+            <div class="stat-card"><h4>TOTAL KEYS ISSUED</h4><div class="val" id="key-cnt">0</div></div>
+            <div class="stat-card" style="border-color: #ff3366;"><h4>RISK REPORTS</h4><div class="val" id="bad-market-count" style="color:#ff3366">0</div></div>
+        </div>
+
+        <div class="panel-grid">
+            <div class="card">
+                <h3>SERVER PROTOCOLS</h3>
+                <div style="font-size: 14px; margin-bottom: 15px;">STATUS: <span id="stat" style="font-weight: bold; color: #ff3366;">OFFLINE</span></div>
+                <div class="btn-grp">
+                    <button class="btn" id="b-on">INJECT (ON)</button>
+                    <button class="btn btn-outline" id="b-off">KILL (OFF)</button>
+                </div>
+                
+                <h3 style="margin-top: 30px;">MARKET EMERGENCY</h3>
+                <div class="btn-grp">
+                    <button class="btn" id="w-on" style="background: #ff3366; color: #fff; border: none;">PAUSE TRADING</button>
+                    <button class="btn btn-outline" id="w-off">RESUME TRADING</button>
+                </div>
+                
+                <h3 style="margin-top: 30px;">GOD MODE OVERRIDE</h3>
+                <div style="font-size: 12px; margin-bottom: 10px;">CURRENT: <span id="gm">AUTO</span></div>
+                <div class="btn-grp">
+                    <button class="btn btn-outline" id="f-big">FORCE BIG</button>
+                    <button class="btn btn-outline" id="f-sml">FORCE SMALL</button>
+                    <button class="btn" id="f-aut">AUTO ALGO</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>LICENSE MANAGER</h3>
+                
+                <div class="flex-row">
+                    <div style="flex: 2;">
+                        <span style="font-size: 11px; color: #888;">Custom Prefix/Password</span>
+                        <input type="text" id="k-custom" placeholder="e.g. VIPKEVIN">
+                    </div>
+                    <div style="flex: 1;">
+                        <span style="font-size: 11px; color: #888;">Quantity</span>
+                        <input type="number" id="k-qty" value="1" min="1" max="100">
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div style="flex: 1;">
+                        <span style="font-size: 11px; color: #888;">Duration Value</span>
+                        <input type="number" id="k-dur-val" value="1" min="1">
+                    </div>
+                    <div style="flex: 1;">
+                        <span style="font-size: 11px; color: #888;">Format</span>
+                        <select id="k-dur-type">
+                            <option value="hours">Hours</option>
+                            <option value="days">Days</option>
+                            <option value="permanent">Permanent</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="btn-grp">
+                    <button class="btn" id="g-key" style="flex: 2;">GENERATE KEYS</button>
+                    <button class="btn btn-outline" id="btn-export" style="flex: 1;">EXPORT CSV</button>
+                </div>
+                
+                <textarea id="r-key" readonly placeholder="[ NEW KEYS WILL APPEAR HERE ]"></textarea>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDazknErTl2PtJAe2JGlRQMJSOR5n2elBc",
+            authDomain: "kevin-24998.firebaseapp.com",
+            databaseURL: "https://kevin-24998-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "kevin-24998",
+            storageBucket: "kevin-24998.firebasestorage.app",
+            messagingSenderId: "447846956732",
+            appId: "1:447846956732:web:85810883cb614cac1c9ab9"
+        };
+        const db = getDatabase(initializeApp(firebaseConfig));
+        
+        function showToast(msg) {
+            const t = document.getElementById('toastMsg');
+            t.innerText = msg; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        const sR = ref(db, 'admin/toolStatus'), gR = ref(db, 'admin/godMode'), wR = ref(db, 'admin/marketWarning');
+
+        onValue(sR, (s) => { let v = s.val() || 'OFF'; let el = document.getElementById('stat'); el.innerText = v === 'ON' ? 'ONLINE' : 'OFFLINE'; el.style.color = v === 'ON' ? '#00ff41' : '#ff3366'; });
+        onValue(gR, (s) => { document.getElementById('gm').innerText = s.val() || 'AUTO'; });
+        onValue(ref(db, 'metrics/badMarketReports'), (s) => { document.getElementById('bad-market-count').innerText = s.val() || 0; });
+        onValue(ref(db, 'metrics/activeUsers'), (s) => { let d = s.val(); document.getElementById('usr-cnt').innerText = d ? Object.keys(d).length : 0; });
+        onValue(ref(db, 'keys'), (s) => { let d = s.val(); document.getElementById('key-cnt').innerText = d ? Object.keys(d).length : 0; });
+
+        document.getElementById('b-on').onclick = () => { set(sR, 'ON'); showToast('Server Online'); };
+        document.getElementById('b-off').onclick = () => { set(sR, 'OFF'); showToast('Server Offline'); };
+        
+        document.getElementById('w-on').onclick = () => { set(wR, 'ON'); showToast('Trading Paused'); };
+        document.getElementById('w-off').onclick = () => { set(wR, 'OFF'); set(ref(db, 'metrics/badMarketReports'), 0); showToast('Trading Resumed'); };
+
+        document.getElementById('f-big').onclick = () => { set(gR, 'BIG'); showToast('God Mode: BIG'); };
+        document.getElementById('f-sml').onclick = () => { set(gR, 'SMALL'); showToast('God Mode: SMALL'); };
+        document.getElementById('f-aut').onclick = () => { set(gR, 'AUTO'); showToast('God Mode: AUTO'); };
+
+        document.getElementById('k-dur-type').addEventListener('change', (e) => {
+            const durVal = document.getElementById('k-dur-val');
+            if(e.target.value === 'permanent') { durVal.disabled = true; durVal.value = '∞'; } else { durVal.disabled = false; durVal.value = '1'; }
+        });
+
+        let currentBatch = [];
+
+        document.getElementById('g-key').onclick = () => {
+            let customPass = document.getElementById('k-custom').value.trim().toUpperCase();
+            let qty = parseInt(document.getElementById('k-qty').value) || 1;
+            let durType = document.getElementById('k-dur-type').value;
+            let durVal = parseInt(document.getElementById('k-dur-val').value) || 1;
+            
+            if(qty > 100) qty = 100; 
+
+            let expiresAt;
+            if (durType === 'permanent') expiresAt = 9999999999999; 
+            else if (durType === 'hours') expiresAt = Date.now() + (durVal * 60 * 60 * 1000);
+            else expiresAt = Date.now() + (durVal * 24 * 60 * 60 * 1000); 
+
+            let generatedKeys = [];
+            let dbUpdates = {};
+
+            if(customPass && qty === 1) {
+                generatedKeys.push(customPass);
+                dbUpdates[`keys/${customPass}`] = { expiresAt: expiresAt, deviceId: null, createdAt: Date.now() };
+            } else {
+                let prefix = customPass ? customPass + "-" : "KEVIN-";
+                for(let i=0; i < qty; i++) {
+                    let k = prefix + Math.random().toString(36).substr(2, 6).toUpperCase();
+                    generatedKeys.push(k);
+                    dbUpdates[`keys/${k}`] = { expiresAt: expiresAt, deviceId: null, createdAt: Date.now() };
+                }
+            }
+
+            update(ref(db), dbUpdates).then(() => {
+                currentBatch = generatedKeys;
+                document.getElementById('r-key').value = generatedKeys.join('\n');
+                showToast(`Generated ${qty} Keys Successfully`);
+                document.getElementById('k-custom').value = '';
+            }).catch(e => showToast("Error connecting to DB"));
+        };
+
+        document.getElementById('btn-export').onclick = () => {
+            if(currentBatch.length === 0) { showToast("Generate keys first!"); return; }
+            let csvContent = "data:text/csv;charset=utf-8,License_Key\n" + currentBatch.join("\n");
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Kevin_Keys_${new Date().getTime()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("CSV Downloaded");
+        };
+    </script>
+</body>
+</html>

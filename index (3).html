@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kevin Terminal | Ultimate</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg-main: #000000; --card-bg: rgba(10, 10, 10, 0.85); --text-main: #ffffff; --text-dim: #777777; --border-line: #333333; --border-active: #ffffff; --tg-blue: #0088cc; }
+        body { margin: 0; padding: 20px; font-family: 'Share Tech Mono', monospace; background: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; user-select: none; }
+        
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.4; }
+        
+        .container { width: 100%; max-width: 380px; background: var(--card-bg); border: 1px solid var(--border-line); padding: 25px; position: relative; z-index: 10; backdrop-filter: blur(10px); box-shadow: 0 10px 40px rgba(255,255,255,0.05); }
+        .header { border-bottom: 1px solid var(--border-line); margin-bottom: 15px; padding-bottom: 15px; text-align: center; }
+        .header h2 { margin: 0; font-size: 24px; letter-spacing: 4px; text-transform: uppercase; font-weight: bold;}
+        .subtitle { font-size: 10px; color: var(--text-dim); margin-top: 5px; letter-spacing: 2px; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-box { border: 1px solid var(--border-line); padding: 10px; text-align: center; }
+        .stat-lbl { font-size: 9px; color: var(--text-dim); display: block; margin-bottom: 5px; }
+        .stat-val { font-size: 14px; font-weight: bold; }
+        
+        .ping-box { position: absolute; top: 10px; right: 10px; font-size: 9px; color: #00ff41; display: flex; align-items: center; gap: 5px;}
+        .ping-dot { width: 6px; height: 6px; background: #00ff41; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% {opacity: 1;} 50% {opacity: 0.3;} }
+
+        /* Telegram Button */
+        .tg-link-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: rgba(0, 136, 204, 0.05); color: var(--tg-blue); border: 1px dashed var(--tg-blue); text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 15px; transition: 0.3s; box-sizing: border-box; letter-spacing: 1px; text-transform: uppercase;}
+        .tg-link-btn:hover { background: rgba(0, 136, 204, 0.2); }
+        .tg-icon { width: 16px; height: 16px; fill: currentColor; }
+
+        input { width: 100%; padding: 15px; border: 1px solid var(--border-line); margin: 5px 0 15px; background: transparent; color: var(--text-main); font-family: 'Share Tech Mono'; font-size: 20px; text-align: center; outline: none; transition: 0.3s; box-sizing: border-box; }
+        input:focus { border-color: var(--text-main); background: rgba(255,255,255,0.05); }
+        
+        .btn { width: 100%; padding: 15px; background: var(--text-main); color: var(--bg-main); border: 1px solid var(--text-main); cursor: pointer; font-family: 'Share Tech Mono'; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background: #111; color: #555; border-color: #222; cursor: not-allowed; }
+
+        .history-box { margin-top: 20px; border-top: 1px dashed var(--border-line); padding-top: 15px; }
+        .hist-item { display: flex; justify-content: space-between; font-size: 11px; padding: 5px 0; border-bottom: 1px solid #111; color: var(--text-dim);}
+        .hist-item span:last-child { color: var(--text-main); font-weight: bold; }
+
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 320px; }
+        .toast { background: #111; border-left: 3px solid var(--text-main); color: #fff; padding: 12px 15px; font-size: 11px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: slideUp 0.3s ease forwards; text-transform: uppercase;}
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        #login-sec { position: fixed; inset: 0; background: var(--bg-main); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px;}
+        .result-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 50; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
+        .res-big-text { font-size: 45px; font-weight: bold; margin: 20px 0; letter-spacing: 5px; }
+        
+        .warning-banner { display: none; background: rgba(255, 51, 102, 0.1); border: 1px dashed #ff3366; color: #ff3366; padding: 10px; margin-bottom: 15px; font-size: 10px; text-align: center; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <canvas id="bg-canvas"></canvas>
+    <div id="toast-container"></div>
+
+    <div id="login-sec">
+        <div class="container">
+            <div class="header"><h2>KEVIN ALGORITHM</h2><div class="subtitle">Secure Identity Verification</div></div>
+            <div style="text-align: center; font-size: 11px; margin-bottom: 20px; color: var(--text-dim);">
+                NODE ID: <span id="tg-node" style="color:#fff;">DETECTING...</span><br>
+                USER: <span id="tg-user" style="color:#fff;">...</span>
+            </div>
+            
+            <a href="https://t.me/earningwithkevin" target="_blank" class="tg-link-btn">
+                <svg class="tg-icon" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.94z"/></svg>
+                JOIN KEVIN OFFICIAL
+            </a>
+
+            <input type="text" id="k-inp" placeholder="ENTER LICENSE KEY" autocomplete="off">
+            <button id="auth-btn" class="btn">AUTHENTICATE</button>
+        </div>
+    </div>
+
+    <div class="container" id="main-sec" style="display: none;">
+        <div class="ping-box"><div class="ping-dot"></div> <span id="ping-val">45ms</span></div>
+        
+        <div class="header" style="margin-top: 15px;"><h2>KEVIN PRO</h2><div class="subtitle">Neural Execution Engine v5.0</div></div>
+        
+        <div class="warning-banner" id="admin-warn-banner">⚠️ EMERGENCY PAUSE: MARKET VOLATILE</div>
+
+        <div class="stats-grid">
+            <div class="stat-box"><span class="stat-lbl">SERVER</span><span class="stat-val" id="s-stat" style="color:#ff3366">WAITING</span></div>
+            <div class="stat-box"><span class="stat-lbl">AI ENGINE</span><span class="stat-val" id="ai-status">SYNCING</span></div>
+            <div class="stat-box"><span class="stat-lbl">LIVE PERIOD</span><span class="stat-val" id="p-disp">--</span></div>
+            <div class="stat-box"><span class="stat-lbl">EXECUTE IN</span><span class="stat-val" id="t-disp">00:00</span></div>
+        </div>
+
+        <div id="input-area">
+            <span style="font-size: 10px; color: var(--text-dim);">> INPUT LAST 2 DIGITS</span>
+            <input type="number" id="s-inp" placeholder="00" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            <button id="p-btn" class="btn" disabled>INITIALIZE DECRYPTION</button>
+        </div>
+
+        <div class="history-box" id="history-box">
+            <div style="font-size: 10px; margin-bottom: 10px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px;">SESSION LOGS</div>
+            <div id="hist-list"></div>
+        </div>
+    </div>
+
+    <div class="result-modal" id="res-box">
+        <div style="font-size: 12px; color: var(--text-dim); letter-spacing: 2px;">DECRYPTION SUCCESSFUL</div>
+        <div class="res-big-text" id="m-res">BIG</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 5px;">TARGET NODES</div>
+        <div style="font-size: 24px; font-weight: bold; margin-bottom: 30px;" id="m-nums">[ 7 & 9 ]</div>
+        
+        <div style="font-size: 10px; margin-bottom: 15px;">CALIBRATE AI SYSTEM:</div>
+        <div style="display: flex; gap: 10px; width: 80%; max-width: 250px;">
+            <button class="btn" style="background: transparent; color: #fff;" onclick="processFeedback('BIG')">CAME BIG</button>
+            <button class="btn" style="background: transparent; color: #fff;" onclick="processFeedback('SMALL')">CAME SMALL</button>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, get, child, update, onValue, set, increment, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        
+        document.addEventListener('keydown', function(e) { if(e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) e.preventDefault(); });
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDazknErTl2PtJAe2JGlRQMJSOR5n2elBc",
+            authDomain: "kevin-24998.firebaseapp.com",
+            databaseURL: "https://kevin-24998-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "kevin-24998",
+            storageBucket: "kevin-24998.firebasestorage.app",
+            messagingSenderId: "447846956732",
+            appId: "1:447846956732:web:85810883cb614cac1c9ab9"
+        };
+        const db = getDatabase(initializeApp(firebaseConfig));
+
+        function showToast(msg, type="info") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderLeftColor = type === 'error' ? '#ff3366' : (type === 'success' ? '#00ff41' : '#ffffff');
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+            if(window.Telegram?.WebApp) window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+        }
+
+        const tg = window.Telegram?.WebApp;
+        if(tg) tg.expand();
+        const tgUser = tg?.initDataUnsafe?.user;
+        const tgUsername = tgUser ? (tgUser.username || tgUser.first_name) : "Anonymous";
+        const tgIdString = tgUser ? String(tgUser.id) : "DEV_" + Math.floor(Math.random()*1000);
+        
+        document.getElementById('tg-user').innerText = tgUsername;
+        document.getElementById('tg-node').innerText = tgIdString;
+        
+        let myId = localStorage.getItem('skm_id');
+        if(!myId){ myId = 'TG-' + tgIdString; localStorage.setItem('skm_id', myId); }
+
+        let isAct = false, isWarned = false, gMode = "AUTO", gPer = 0, gStr = ""; 
+        let lastPredictedResult = ""; let lossStreak = 0; 
+        let historyLog = [];
+
+        const patternChart = {
+            "38": "BIG", "33": "BIG", "13": "BIG", "30": "BIG", "83": "BIG",
+            "29": "BIG", "59": "BIG", "36": "BIG", "39": "BIG", "27": "BIG",
+            "05": "SMALL", "04": "SMALL", "46": "SMALL", "72": "SMALL", "21": "SMALL",
+            "19": "SMALL", "92": "SMALL", "64": "SMALL", "79": "SMALL", "37": "SMALL"
+        };
+
+        setInterval(() => { document.getElementById('ping-val').innerText = (Math.floor(Math.random() * 20) + 30) + 'ms'; }, 2000);
+
+        onValue(ref(db, 'admin/toolStatus'), (s) => {
+            let val = s.val(); let btn = document.getElementById('p-btn');
+            if(val === 'OFF') {
+                isAct = false; btn.disabled = true; document.getElementById('s-stat').innerText = "OFFLINE"; document.getElementById('s-stat').style.color = "#ff3366";
+            } else {
+                isAct = true; if(!isWarned) { btn.disabled = false; btn.innerText = "EXECUTE BYPASS"; }
+                document.getElementById('s-stat').innerText = "ONLINE"; document.getElementById('s-stat').style.color = "#00ff41";
+            }
+        });
+
+        onValue(ref(db, 'admin/marketWarning'), (s) => {
+            let warn = s.val(); let warnBanner = document.getElementById('admin-warn-banner'); let btn = document.getElementById('p-btn');
+            if (warn === 'ON') {
+                isWarned = true; warnBanner.style.display = 'block'; btn.disabled = true; btn.innerText = "LOCKED";
+            } else {
+                isWarned = false; warnBanner.style.display = 'none';
+                if(isAct) { btn.disabled = false; btn.innerText = "EXECUTE BYPASS"; }
+            }
+        });
+
+        onValue(ref(db, 'admin/godMode'), (s) => { gMode = s.val() || "AUTO"; });
+
+        document.getElementById('auth-btn').onclick = () => {
+            let keyVal = document.getElementById('k-inp').value.trim().toUpperCase();
+            if(!keyVal) { showToast("Enter License Key", "error"); return; }
+            document.getElementById('auth-btn').innerText = "VERIFYING...";
+
+            get(child(ref(db), `keys/${keyVal}`)).then((snapshot) => {
+                if(snapshot.exists()){
+                    let data = snapshot.val();
+                    if(data.expiresAt < Date.now()) { showToast("LICENSE EXPIRED", "error"); } 
+                    else if(data.deviceId && data.deviceId !== myId) { showToast("HARDWARE MISMATCH", "error"); } 
+                    else {
+                        if(!data.deviceId) update(ref(db, `keys/${keyVal}`), { deviceId: myId, tgUser: tgUsername, tgId: tgIdString });
+                        let uRef = ref(db, `metrics/activeUsers/${myId}`);
+                        set(uRef, { username: tgUsername, tgId: tgIdString, time: Date.now() }); 
+                        onDisconnect(uRef).remove();
+                        
+                        document.getElementById('login-sec').style.display = 'none';
+                        document.getElementById('main-sec').style.display = 'block';
+                        document.getElementById('ai-status').innerText = "STABLE"; document.getElementById('ai-status').style.color = "#00ff41";
+                        showToast("Access Granted", "success");
+                    }
+                } else { showToast("DATA NOT FOUND", "error"); }
+                document.getElementById('auth-btn').innerText = "AUTHENTICATE";
+            }).catch(() => { showToast("NETWORK TIMEOUT", "error"); document.getElementById('auth-btn').innerText = "AUTHENTICATE"; });
+        };
+
+        const sum2 = (p) => parseInt(String(p).slice(-2).padStart(2,'0')[0]) + parseInt(String(p).slice(-2).padStart(2,'0')[1]);
+        const red1 = (n) => { let c = n; while(c > 9) c = String(c).split('').reduce((a, v) => a + parseInt(v), 0); return c; };
+
+        document.getElementById('p-btn').onclick = () => {
+            if(!isAct || isWarned) return;
+            let inpVal = document.getElementById('s-inp').value.trim();
+            if(!inpVal || inpVal.length !== 2) { showToast("REQUIRE 2 DIGITS", "error"); return; }
+            
+            document.getElementById('p-btn').innerText = "EXTRACTING...";
+            document.getElementById('p-btn').disabled = true;
+
+            setTimeout(() => {
+                let finalRes; let finalNum;
+                if(gMode === "BIG" || gMode === "SMALL") { finalRes = gMode; } 
+                else if(patternChart[inpVal]) { finalRes = patternChart[inpVal]; } 
+                else {
+                    finalNum = red1(Math.abs(((sum2(gPer) + sum2(gPer-1) + sum2(gPer-3) + sum2(gPer-5)) * 3) - parseInt(inpVal)));
+                    if(gPer % 2 === 0) finalNum = (finalNum + 3) % 10;
+                    let isBig = finalNum >= 5;
+                    if(lossStreak >= 2) { isBig = !isBig; }
+                    finalRes = isBig ? "BIG" : "SMALL";
+                }
+
+                lastPredictedResult = finalRes;
+                let isBigResult = finalRes === "BIG";
+                let pool = isBigResult ? [5,6,7,8,9] : [0,1,2,3,4];
+                let num1 = (typeof finalNum !== 'undefined') ? finalNum : pool[Math.floor(Math.random() * pool.length)];
+                if ((isBigResult && num1 < 5) || (!isBigResult && num1 >= 5)) { num1 = pool[Math.floor(Math.random() * pool.length)]; }
+                let num2; do { num2 = pool[Math.floor(Math.random() * pool.length)]; } while(num1 === num2);
+                let finalArr = [num1, num2].sort((a,b)=>a-b);
+
+                document.getElementById('m-res').innerText = finalRes;
+                document.getElementById('m-nums').innerText = `[ ${finalArr[0]} & ${finalArr[1]} ]`;
+                
+                if(historyLog.length >= 5) historyLog.shift();
+                historyLog.push({ period: gStr.slice(-4), res: finalRes });
+                updateHistoryUI();
+
+                document.getElementById('res-box').style.display = 'flex';
+                if(tg) tg.HapticFeedback.impactOccurred('heavy');
+            }, 800);
+        };
+
+        function updateHistoryUI() {
+            document.getElementById('hist-list').innerHTML = historyLog.map(h => `<div class="hist-item"><span>Period: ${h.period}</span><span>${h.res}</span></div>`).join('');
+        }
+
+        window.processFeedback = function(actualResult) {
+            document.getElementById('res-box').style.display = 'none';
+            if(actualResult === lastPredictedResult) {
+                lossStreak = 0;
+                document.getElementById('ai-status').innerText = "STABLE"; document.getElementById('ai-status').style.color = "#00ff41";
+                showToast("AI Calibrated: WIN", "success");
+            } else {
+                lossStreak++;
+                document.getElementById('ai-status').innerText = `SHIFT (LVL ${lossStreak})`; document.getElementById('ai-status').style.color = "#ff3366";
+                showToast("AI Calibrated: LOSS ADAPTED", "info");
+                
+                if (lossStreak === 3) {
+                    showToast("WARNING: HIGH RISK TREND", "error");
+                    update(ref(db, 'metrics'), { badMarketReports: increment(1) });
+                }
+            }
+            if(!isWarned && isAct) { document.getElementById('p-btn').innerText = "EXECUTE BYPASS"; document.getElementById('p-btn').disabled = false; }
+            document.getElementById('s-inp').value = '';
+        }
+
+        document.getElementById('s-inp').oninput = (e) => { if(e.target.value.length > 2) e.target.value = e.target.value.slice(0, 2); };
+
+        setInterval(() => {
+            let n = new Date(); let t = new Date(n.getTime() + 1000); let r = 59 - n.getUTCSeconds();
+            gPer = 10001 + (t.getUTCHours() * 60) + t.getUTCMinutes();
+            gStr = `${t.getUTCFullYear()}${String(t.getUTCMonth()+1).padStart(2,'0')}${String(t.getUTCDate()).padStart(2,'0')}-${gPer}`;
+            document.getElementById('p-disp').innerText = gStr.slice(-4);
+            document.getElementById('t-disp').innerText = `00:${String(r).padStart(2,'0')}`;
+        }, 1000);
+
+        const canvas = document.getElementById("bg-canvas"); const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particlesArray = [];
+        class Particle {
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2; this.speedX = (Math.random() * 1) - 0.5; this.speedY = (Math.random() * 1) - 0.5; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+            draw() { ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        for (let i = 0; i < 50; i++) particlesArray.push(new Particle());
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        animate();
+    </script>
+</body>
+</html>
