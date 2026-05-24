@@ -3,228 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kevin Algorithm | Elite Scanner</title>
+    <title>Kevin Algorithm | God-Tier AI</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg-main: #020202; --accent: #ffffff; --text-dim: #888888; --green: #00ffcc; --red: #ff3366;}
+        :root { --bg-main: #000000; --accent: #00FFCC; --gold: #FFD700; --text-dim: #888888; --red: #ff3366; --green: #00ffcc;}
         
         body { 
-            background: var(--bg-main); color: var(--accent); 
+            background: var(--bg-main); color: #ffffff; 
             font-family: 'Space Grotesk', sans-serif; margin: 0; 
             display: flex; justify-content: center; align-items: center; 
             min-height: 100vh; overflow: hidden; user-select: none;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 30px 30px;
+            background-image: 
+                linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 50% 0%, rgba(0, 255, 204, 0.05) 0%, transparent 60%);
+            background-size: 30px 30px, 30px 30px, 100% 100%;
+            animation: gridMove 15s linear infinite;
         }
+        @keyframes gridMove { 0% { background-position: 0 0, 0 0, center; } 100% { background-position: 30px 30px, 30px 30px, center; } }
 
-        .main-panel, .login-panel { width: 100%; max-width: 380px; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; box-sizing: border-box;}
+        .main-panel, .setup-panel { width: 100%; max-width: 380px; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; box-sizing: border-box; height: 100vh; justify-content: center;}
 
-        /* --- MODERN UPDATED LOGIN BOX --- */
-        #login-sec { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; }
+        /* BOOT SEQUENCE */
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; padding: 30px; font-family: 'Share Tech Mono'; color: var(--green); font-size: 14px; }
+        .boot-text { margin-bottom: 5px; opacity: 0; animation: typeIn 0.1s forwards; }
+        @keyframes typeIn { to { opacity: 1; } }
+
+        /* SCREENS & MODALS */
+        #ban-screen, #target-screen { position: fixed; inset: 0; background: #050000; z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; font-family: 'Share Tech Mono'; text-align: center; padding: 20px;}
+        .ban-icon { font-size: 80px; margin-bottom: 20px; text-shadow: 0 0 20px var(--red); color: var(--red);}
+        .target-icon { font-size: 80px; margin-bottom: 20px; text-shadow: 0 0 30px var(--gold); }
         
-        .login-box { 
-            background: rgba(15,15,15,0.85); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            border-radius: 28px; 
-            padding: 35px 25px; 
-            width: 100%; 
-            text-align: center; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
-        }
+        #admin-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; }
+        .admin-msg-box { background: #111; border: 1px solid var(--green); border-radius: 20px; padding: 25px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 0 40px rgba(0,255,204,0.2); }
+        .admin-msg-box img { max-width: 100%; border-radius: 10px; margin-top: 15px; display: none;}
 
-        /* PREMIUM KEY INPUT BOX */
-        .l-input { 
-            width: 100%; 
-            padding: 18px; 
-            background: rgba(0, 0, 0, 0.6); 
-            border: 2px solid rgba(255, 255, 255, 0.1); 
-            color: #fff; 
-            font-family: 'Share Tech Mono', monospace; 
-            text-align: center; 
-            border-radius: 16px; 
-            margin: 20px 0; 
-            outline: none; 
-            font-size: 20px; 
-            font-weight: bold;
-            letter-spacing: 3px; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-sizing: border-box;
-        }
-        .l-input:focus { 
-            border-color: #fff; 
-            box-shadow: 0 0 25px rgba(255,255,255,0.15), inset 0 0 10px rgba(255,255,255,0.05);
-            background: #000;
-        }
-        .l-input::placeholder { color: #444; letter-spacing: 1px; font-size: 16px; font-family: 'Space Grotesk'; }
-
-        /* CIRCULAR BRAND LOGO */
-        .logo-container { 
-            width: 90px; height: 90px; 
-            border-radius: 50%; border: 2px solid #fff; 
-            overflow: hidden; display: flex; justify-content: center; align-items: center; 
-            margin-bottom: 18px; box-shadow: 0 0 30px rgba(255,255,255,0.2); 
-            background: #111; position: relative; 
-        }
-        .app-logo { width: 100%; height: 100%; object-fit: cover; z-index: 2; }
-        .logo-container::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 20px #fff; opacity: 0; animation: pulseLogo 2s infinite; }
-        @keyframes pulseLogo { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.4); opacity: 0; } }
-
-        .header h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 15px rgba(255,255,255,0.5); text-align: center;}
+        #login-sec, #capital-sec { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: center; }
+        .login-box { background: rgba(15,15,15,0.85); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 28px; padding: 35px 25px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); box-sizing: border-box;}
         
-        .period-box { background: rgba(20,20,20,0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 20px; margin-top: 15px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; font-family: 'Share Tech Mono', monospace; box-shadow: inset 0 0 10px rgba(255,255,255,0.02);}
-        .period-num { font-size: 14px; color: #fff; letter-spacing: 1px; }
-        .timer { font-size: 16px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #fff;}
+        .l-input { width: 100%; padding: 16px; background: rgba(5, 5, 5, 0.85); border: 1px solid rgba(0, 255, 204, 0.2); color: #ffffff; font-family: 'Share Tech Mono', monospace; text-align: center; border-radius: 16px; margin: 15px 0; outline: none; font-size: 18px; font-weight: bold; letter-spacing: 2px; box-sizing: border-box; transition: all 0.4s ease; box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.02); }
+        .l-input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 255, 204, 0.2), inset 0 0 15px rgba(0, 255, 204, 0.05); background: #000000; }
+        .l-input::placeholder { color: rgba(255, 255, 255, 0.4); font-size: 14px; letter-spacing: 1px; }
 
-        /* --- HIGH-TECH SCANNER UI --- */
-        .tech-wrapper { position: relative; width: 230px; height: 230px; margin: 30px 0; display: flex; justify-content: center; align-items: center; }
+        .logo-container { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); background: #0a0a0a; position: relative;}
+        .app-logo { width: 100%; height: 100%; object-fit: cover; z-index: 2;}
+        .logo-container::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 15px var(--gold); opacity: 0; animation: pulseGoldLogo 2s infinite; }
+        @keyframes pulseGoldLogo { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
         
-        .spinner-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); transition: all 0.3s; }
-        .radar-sweep { position: absolute; inset: -5px; border-radius: 50%; background: conic-gradient(from 0deg, transparent 70%, rgba(255,255,255,0.9) 100%); animation: spinFast 0.5s linear infinite; display: none; filter: blur(3px); }
-        .spinner-ring.fast-spin { border: 2px solid transparent; border-top: 3px solid #fff; border-bottom: 3px solid #fff; animation: spinFast 0.5s linear infinite; box-shadow: 0 0 20px rgba(255,255,255,0.2);}
-        @keyframes spinFast { 100% { transform: rotate(360deg); } }
+        .header { width: 100%; text-align: center; margin-top: 10px;}
+        .header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);}
+        .warning-banner { display: none; background: rgba(255,51,102,0.1); border: 1px dashed var(--red); color: var(--red); padding: 8px; border-radius: 8px; margin: 10px 0; font-size: 11px; text-align: center; font-weight: bold;}
 
-        /* Laser Line */
-        .laser-scanner {
-            position: absolute; left: 10px; right: 10px; height: 2px;
-            background: #fff; box-shadow: 0 0 15px #fff, 0 0 30px #fff;
-            top: 0; animation: scanLine 0.8s ease-in-out infinite alternate;
-            display: none; z-index: 10; border-radius: 50%;
-        }
-        @keyframes scanLine { 
-            0% { top: 15%; opacity: 0;} 
-            20% { opacity: 1;} 
-            80% { opacity: 1;} 
-            100% { top: 85%; opacity: 0;} 
-        }
-
-        .inner-content { position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; background: #000; border-radius: 50%; width: 190px; height: 190px; justify-content: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 40px rgba(255,255,255,0.05); overflow: hidden;}
+        /* FUND MANAGER & HISTORY */
+        .fund-stats { display: flex; justify-content: space-between; width: 100%; background: rgba(0,255,204,0.05); border: 1px solid rgba(0,255,204,0.2); border-radius: 10px; padding: 10px; margin-top: 15px; font-family: 'Share Tech Mono'; box-sizing: border-box;}
+        .stat-item { display: flex; flex-direction: column; align-items: center; width: 33%; position: relative;}
+        .stat-lbl { color: var(--text-dim); font-size: 9px; margin-bottom: 3px;}
+        .stat-val { font-weight: bold; font-size: 13px; }
+        .reset-txt { position: absolute; top: -8px; right: 5px; font-size: 8px; color: var(--red); cursor: pointer; text-decoration: underline;}
         
-        .circle-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; z-index: 2;}
-        .circle-input { width: 80px; background: transparent; border: none; color: #fff; font-size: 55px; font-family: 'Share Tech Mono', monospace; text-align: center; outline: none; margin: 5px 0 15px; font-weight: bold; text-shadow: 0 0 20px rgba(255,255,255,0.5); z-index: 2; }
-        .scan-text { font-size: 50px; font-family: 'Share Tech Mono', monospace; font-weight: bold; color: #fff; display: none; margin: 10px 0 15px; text-shadow: 0 0 25px #fff; letter-spacing: 4px; z-index: 2; }
+        .history-bar { margin-top: 10px; display: flex; justify-content: center; gap: 6px; height: 12px; align-items: center;}
+        .dot { width: 10px; height: 10px; border-radius: 50%; opacity: 0.8; }
+        .dot.w { background: var(--green); box-shadow: 0 0 8px var(--green); }
+        .dot.l { background: var(--red); box-shadow: 0 0 8px var(--red); }
 
-        .btn-execute { background: #fff; color: #000; border: none; border-radius: 24px; padding: 14px 25px; font-weight: 700; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; width: 100%; box-sizing: border-box; box-shadow: 0 5px 15px rgba(255,255,255,0.2);}
+        .period-box { background: rgba(15,15,15,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 15px; margin-top: 15px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; font-family: 'Share Tech Mono'; position: relative; overflow: hidden;}
+        .period-box::before { content: ''; position: absolute; top: -50%; left: -50%; width: 20%; height: 200%; background: rgba(255,255,255,0.05); transform: rotate(45deg); animation: shineBox 4s infinite linear;}
+        .period-num { font-size: 13px; color: #fff; letter-spacing: 1px; }
+        .timer { font-size: 15px; font-weight: bold; color: var(--accent); text-shadow: 0 0 10px rgba(0,255,204,0.5);}
+
+        .test-banner { display: none; background: rgba(255, 215, 0, 0.15); border: 1px dashed var(--gold); color: var(--gold); padding: 10px; border-radius: 8px; margin-top: 10px; width: 100%; box-sizing: border-box; font-size: 10px; text-align: center; font-weight: bold; letter-spacing: 1px; animation: pulseGold 2s infinite; }
+
+        /* ULTRA ENGINE UI */
+        .tech-wrapper { position: relative; width: 200px; height: 200px; margin: 20px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .sonar-wave { position: absolute; inset: -20px; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; display: none; }
+        .sonar-wave.active { animation: sonarPulse 1.5s infinite ease-out; display: block; }
+        .sonar-wave.active:nth-child(2) { animation-delay: 0.5s; }
+        @keyframes sonarPulse { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
+
+        .spinner-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.15); transition: all 0.3s; }
+        .spinner-ring.fast-spin { border: 2px solid transparent; border-top: 3px solid var(--accent); border-bottom: 3px solid var(--accent); animation: spinFast 0.5s linear infinite; box-shadow: 0 0 20px rgba(0,255,204,0.3);}
+        
+        .inner-content { position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; background: #050505; border-radius: 50%; width: 160px; height: 160px; justify-content: center; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 30px rgba(0,0,0,1); overflow: hidden; }
+        .scanner-laser { position: absolute; width: 100%; height: 3px; background: var(--accent); box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); left: 0; top: 0; display: none; z-index: 10;}
+        .scanner-laser.active { display: block; animation: laserSweep 0.8s infinite ease-in-out alternate; }
+        
+        .circle-lbl { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; z-index: 5;}
+        .circle-input { width: 70px; background: transparent; border: none; color: #fff; font-size: 45px; font-family: 'Share Tech Mono'; text-align: center; outline: none; margin: 0 0 10px; font-weight: bold; text-shadow: 0 0 15px rgba(255,255,255,0.3); z-index: 5;}
+        
+        .btn-execute { position: relative; background: var(--accent); color: #000; border: none; border-radius: 20px; padding: 12px 20px; font-weight: 700; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; width: 90%; box-sizing: border-box; box-shadow: 0 5px 20px rgba(0,255,204,0.3); overflow: hidden; z-index: 5;}
         .btn-execute:active { transform: scale(0.95); }
         .btn-execute:disabled { background: #222; color: #555; box-shadow: none;}
 
-        /* --- RESULT BLAST & GLITCH --- */
-        .inline-result { width: 100%; text-align: center; margin-top: 15px; display: none; background: rgba(15,15,15,0.95); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 25px 20px; box-sizing: border-box; box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative; overflow: hidden;}
-        .blast-effect { animation: blastAnim 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards; }
-        @keyframes blastAnim { 0% { transform: scale(0.8); opacity: 0; filter: brightness(4) blur(10px); } 40% { transform: scale(1.05); filter: brightness(2) blur(0px); } 100% { transform: scale(1); opacity: 1; filter: brightness(1); } }
+        .undo-btn { font-size: 10px; color: var(--accent); text-decoration: underline; margin-top: 15px; cursor: pointer; display: none; font-family: 'Share Tech Mono'; z-index: 20;}
 
-        .glitch-text { animation: textGlitch 0.4s steps(3, start) forwards; }
-        @keyframes textGlitch { 0% { transform: translate(-3px, 3px); opacity: 0.8; } 20% { transform: translate(3px, -3px); opacity: 1; } 40% { transform: translate(-3px, -3px); opacity: 0.9; } 60% { transform: translate(3px, 3px); opacity: 1; } 100% { transform: translate(0, 0); } }
+        /* RESULT AREA */
+        .inline-result { width: 100%; text-align: center; margin-top: 10px; display: none; background: rgba(10,10,10,0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px 15px; box-sizing: border-box; box-shadow: 0 10px 40px rgba(0,0,0,0.5);}
+        .res-big { font-size: 42px; font-weight: 700; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 4px; color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.3); min-height: 50px;}
+        .bet-instruction { font-size: 16px; font-weight: bold; color: #fff; background: rgba(255,51,102,0.2); border: 1px solid var(--red); padding: 8px; border-radius: 8px; margin-bottom: 12px; animation: blink 1s infinite alternate;}
+        @keyframes blink { from { box-shadow: 0 0 0px var(--red); } to { box-shadow: 0 0 15px var(--red); } }
+        
+        .feed-row { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
+        .feed-btn { flex: 1; background: #111; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px; border-radius: 10px; font-size: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .feed-btn:active { background: #fff; color: #000; border-color: #fff;}
 
-        .res-big { font-size: 52px; font-weight: 700; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 4px; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.4); position: relative;}
-        .res-nodes { font-size: 24px; font-family: 'Share Tech Mono', monospace; font-weight: bold; color: #fff; margin-bottom: 20px; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,255,255,0.3);}
+        /* HACKER TERMINAL LOGS */
+        .terminal-box { width: 100%; height: 50px; background: rgba(0, 10, 0, 0.5); border: 1px solid rgba(0, 255, 204, 0.1); border-radius: 8px; margin-top: auto; margin-bottom: 10px; font-family: 'Share Tech Mono'; font-size: 9px; color: var(--accent); padding: 8px; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; text-align: left; opacity: 0.8;}
+        .log-line { margin: 2px 0; animation: fadeUp 0.3s ease-out; text-shadow: 0 0 5px var(--accent);}
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .feed-row { display: flex; gap: 10px; width: 100%; margin-top: 15px; position: relative; z-index: 2;}
-        .feed-btn { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 14px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s; backdrop-filter: blur(5px);}
-        .feed-btn:active { background: #fff; color: #000; transform: scale(0.96);}
-
-        .system-status { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-top: 25px; font-family: 'Share Tech Mono'; text-align: center;}
-        .warning-banner { display: none; background: rgba(255,51,102,0.1); border: 1px dashed var(--red); color: var(--red); padding: 10px; border-radius: 8px; margin: 15px 0; font-size: 11px; text-align: center; font-weight: bold;}
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #111; border-bottom: 2px solid #fff; color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 12px; font-weight: 600; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); white-space: nowrap;}
-
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #111; border-bottom: 2px solid var(--accent); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 12px; font-weight: 600; display: none; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); white-space: nowrap;}
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
+    <div id="boot-screen">
+        <div class="boot-text" style="animation-delay: 0.1s">> INITIALIZING NEURAL LINK...</div>
+        <div class="boot-text" style="animation-delay: 0.5s">> BYPASSING FIREWALLS [OK]</div>
+        <div class="boot-text" style="animation-delay: 1.0s">> CONNECTING TO MAINFRAME...</div>
+        <div class="boot-text" style="animation-delay: 1.5s">> VERIFYING IDENTITY...</div>
+    </div>
+
+    <div id="target-screen">
+        <div class="target-icon">🏆</div>
+        <h1 style="margin: 0; font-size: 26px; letter-spacing: 3px; color: var(--gold);">TARGET ACHIEVED</h1>
+        <p style="color: #ccc; font-size: 12px; margin-top: 15px; width: 80%;">Congratulations! You have successfully reached your profit goal for today.</p>
+        <p style="color: var(--accent); font-weight: bold; font-size: 16px; margin-top: 10px;" id="final-profit-disp">PROFIT: ₹1000</p>
+        <div style="margin-top: 20px; font-size: 10px; color: #555;">SESSION CLOSED SAFELY TO PREVENT LOSS</div>
+        <button class="btn-execute" onclick="resetSession()" style="margin-top: 30px; font-size: 12px;">START NEW SESSION</button>
+    </div>
+
+    <div id="ban-screen">
+        <div class="ban-icon">⚠️</div>
+        <h1 style="margin: 0; font-size: 30px; letter-spacing: 5px;">ACCESS DENIED</h1>
+        <p style="color: #aaa; font-size: 12px; margin-top: 15px;">Your License Key has been permanently banned.</p>
+    </div>
+
+    <div id="admin-modal">
+        <div class="admin-msg-box">
+            <h3 style="margin: 0 0 10px; color: var(--green);">🔔 Admin Message</h3>
+            <div id="admin-msg-text" style="font-size: 14px; color: #fff; line-height: 1.5;"></div>
+            <img id="admin-msg-img" src="" alt="Admin Photo">
+            <button class="btn-execute" onclick="closeAdminModal()" style="margin-top: 20px;">ACKNOWLEDGE</button>
+        </div>
+    </div>
+
     <div class="toast" id="toastMsg">MESSAGE</div>
 
     <div id="login-sec">
         <div class="login-panel">
-            <div class="logo-container">
-                <img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'">
-            </div>
+            <div class="logo-container"><img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'"></div>
             <div class="login-box">
-                <h2 style="margin: 0 0 5px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">KEVIN AUTH</h2>
-                <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 20px; letter-spacing: 1px;">SECURE PROTOCOL</div>
-                
-                <div style="font-size: 11px; color: #888; margin-bottom: 15px; font-family: 'Share Tech Mono'; border: 1px dashed #333; padding: 10px; border-radius: 8px;">
-                    NODE ID: <span id="tg-node" style="color:#fff;">DETECTING...</span><br>
+                <h2 style="margin: 0 0 5px; font-weight: bold; letter-spacing: 2px; color:var(--accent);">KEVIN AUTH</h2>
+                <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 20px;">SECURE PROTOCOL</div>
+                <div style="font-size: 11px; color: #888; margin-bottom: 10px; font-family: 'Share Tech Mono'; border: 1px dashed #333; padding: 10px; border-radius: 8px;">
                     USER: <span id="tg-user" style="color:#fff;">...</span>
                 </div>
+                <input type="text" id="k-inp" class="l-input" placeholder="LICENSE KEY" autocomplete="off">
+                <button id="auth-btn" class="btn-execute">VERIFY ACCESS</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="capital-sec">
+        <div class="setup-panel">
+            <div class="logo-container"><img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'"></div>
+            <div class="login-box">
+                <h2 style="margin: 0 0 5px; font-weight: bold; letter-spacing: 1px; color:var(--gold);">FUND MANAGER</h2>
+                <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 15px;">RISK CONTROL ACTIVE</div>
                 
-                <input type="text" id="k-inp" class="l-input" placeholder="ENTER LICENSE KEY" autocomplete="off">
-                <button id="auth-btn" class="btn-execute" style="margin-top: 10px;">VERIFY ACCESS</button>
+                <input type="number" id="cap-inp" class="l-input" placeholder="TOTAL WALLET (MIN 142)" autocomplete="off">
+                <input type="number" id="target-inp" class="l-input" placeholder="TARGET PROFIT (e.g. 500)" autocomplete="off" style="color:var(--gold); border-color: rgba(255,215,0,0.3);">
+                
+                <button id="cap-btn" class="btn-execute" onclick="setupCapital()">START ENGINE</button>
             </div>
         </div>
     </div>
 
     <div class="main-panel" id="main-sec" style="display: none;">
         
-        <div class="logo-container">
-            <img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'">
-        </div>
-
         <div class="header">
+            <div class="logo-container"><img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'"></div>
             <h1>KEVIN ALGORITHM</h1>
             
             <div class="warning-banner" id="admin-warn-banner">⚠️ EMERGENCY: MARKET PAUSED</div>
 
+            <div class="fund-stats">
+                <div class="stat-item">
+                    <span class="reset-txt" onclick="resetSession()">[RESET]</span>
+                    <span class="stat-lbl">BALANCE</span><span class="stat-val" id="ui-bal">₹0</span>
+                </div>
+                <div class="stat-item" style="border-left: 1px solid #333; border-right: 1px solid #333;">
+                    <span class="stat-lbl">PROFIT/LOSS</span><span class="stat-val" id="ui-pl" style="color:var(--text-dim);">₹0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-lbl">LEVEL</span><span class="stat-val" id="ui-lvl" style="color:var(--gold);">1/7</span>
+                </div>
+            </div>
+            
+            <div class="history-bar" id="hist-bar"></div>
+
             <div class="period-box">
                 <div>
-                    <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 1px;">Pride Period</div>
+                    <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 3px;">Pride Period</div>
                     <div class="period-num" id="p-disp">Loading...</div>
                 </div>
                 <div class="timer" id="t-disp">00:00</div>
             </div>
+            
+            <div class="test-banner" id="test-banner">⚠️ CALIBRATION PHASE - TEST ROUNDS LEFT: <span id="test-left">3</span></div>
         </div>
 
         <div class="tech-wrapper" id="tech-ui">
-            <div class="radar-sweep" id="radar-sweep"></div>
-            <div class="spinner-ring" id="spin-ring"></div>
+            <div class="sonar-wave" id="sonar1"></div>
+            <div class="sonar-wave" id="sonar2"></div>
             
+            <div class="spinner-ring" id="spin-ring"></div>
             <div class="inner-content">
-                <div class="laser-scanner" id="laser-line"></div>
+                <div class="scanner-laser" id="s-laser"></div>
                 <div class="circle-lbl" id="center-lbl">Base Digit</div>
                 <input type="number" class="circle-input" id="s-inp" placeholder="-" autocomplete="off">
-                <div class="scan-text" id="scan-disp">00</div>
-                <button class="btn-execute" id="p-btn" onclick="executeAlgorithm()" style="width: 80%; padding: 10px;">PREDICT</button>
+                <button class="btn-execute" id="p-btn" onclick="executeAlgorithm()">PREDICT</button>
             </div>
+            <div class="undo-btn" id="u-btn" onclick="undoLastAction()">↺ UNDO LAST RESULT</div>
         </div>
 
         <div class="inline-result" id="res-area">
-            <div style="font-size: 11px; color: var(--text-dim); letter-spacing: 3px; margin-bottom: 10px; font-weight:bold;">DECRYPTED MATRIX</div>
-            <div class="res-big" id="m-res">BIG</div>
-            <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 5px; font-weight:bold; letter-spacing:2px; margin-top: 10px;">TARGET NODES</div>
-            <div class="res-nodes" id="m-nums">[ 7 & 9 ]</div>
+            <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 5px;">DECRYPTED MATRIX</div>
+            <div class="res-big" id="m-res">---</div>
             
-            <div style="font-size: 10px; color: #666; margin-top: 20px; letter-spacing: 1px; border-top: 1px solid #333; padding-top: 15px;">CALIBRATE NEURAL NETWORK:</div>
+            <div class="bet-instruction" id="bet-inst">BET ₹10 ON BIG</div>
+            
+            <div style="font-size: 10px; color: #666; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px;">SELECT WHAT CAME IN RESULT:</div>
             <div class="feed-row">
                 <button class="feed-btn" onclick="processFeedback('BIG')">CAME BIG</button>
                 <button class="feed-btn" onclick="processFeedback('SMALL')">CAME SMALL</button>
             </div>
         </div>
 
-        <div class="system-status" id="sys-stat">SERVER: <span id="s-stat" style="color: var(--green);">ONLINE</span></div>
+        <div class="terminal-box" id="term-box">
+            <div class="log-line">> SYSTEM INITIATED...</div>
+        </div>
+
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, get, child, update, onValue, set, increment, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getDatabase, ref, get, child, update, set, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDazknErTl2PtJAe2JGlRQMJSOR5n2elBc",
             authDomain: "kevin-24998.firebaseapp.com",
             databaseURL: "https://kevin-24998-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "kevin-24998",
-            storageBucket: "kevin-24998.firebasestorage.app",
-            messagingSenderId: "447846956732",
-            appId: "1:447846956732:web:85810883cb614cac1c9ab9"
+            projectId: "kevin-24998"
         };
         const db = getDatabase(initializeApp(firebaseConfig));
         const tg = window.Telegram?.WebApp; if(tg) tg.expand();
 
         function showToast(msg, isError=false) {
             const t = document.getElementById('toastMsg');
-            t.innerText = msg; t.style.borderBottomColor = isError ? 'var(--red)' : '#fff';
-            t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2500);
+            t.innerText = msg; t.style.borderBottomColor = isError ? 'var(--red)' : 'var(--accent)';
+            t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000);
             if(tg) tg.HapticFeedback.notificationOccurred(isError ? 'error' : 'success');
         }
 
@@ -232,148 +273,292 @@
         const tgUsername = tgUser ? (tgUser.username || tgUser.first_name) : "Anonymous";
         const tgIdString = tgUser ? String(tgUser.id) : "DEV_" + Math.floor(Math.random()*1000);
         document.getElementById('tg-user').innerText = tgUsername;
-        document.getElementById('tg-node').innerText = tgIdString;
-        
-        let myId = localStorage.getItem('skm_id');
-        if(!myId){ myId = 'TG-' + tgIdString; localStorage.setItem('skm_id', myId); }
+        let myId = localStorage.getItem('skm_id') || ('TG-' + tgIdString);
+        localStorage.setItem('skm_id', myId);
 
-        let isAct = false, isWarned = false, gMode = "AUTO", gPer = 0, gStr = ""; 
-        let lastPredictedResult = ""; let lossStreak = 0; let scanInterval;
+        let activeKey = null; let lastNotifId = null;
+        let isAct = false, isWarned = false, gMode = "AUTO";
+
+        // --- DATA & STATE VARIABLES ---
+        let currentBalance = 0; let totalProfitLoss = 0; let currentLevel = 1;
+        let baseBet = 0; let activeBetAmount = 0; let targetProfit = 0;
+        const levelMultipliers = [1, 2, 4, 8, 17, 35, 75]; 
+        let historyArr = []; 
+        
+        let gPer = 0; let lastPredictedResult = ""; 
+        let isTestingPhase = false; let testRoundsCompleted = 0; let testWins = 0; let testLosses = 0; let trendInverted = false; let testedForPeriodZero = -1; 
+        let lossStreak = 0; 
+        
+        // UNDO STATE
+        let previousState = null;
+
+        // TERMINAL LOGIC
+        const termLines = [
+            "[SYS] Fetching node patterns...", "[NET] Shield active. Ping: 12ms.", "[AI] Calibrating neural weights...",
+            "[SEC] Bypassing anti-bot checks...", "[DB] Blockchain sync successful.", "[DATA] Analyzing last 100 periods..."
+        ];
+        setInterval(() => {
+            if(document.getElementById('main-sec').style.display === 'flex') {
+                const box = document.getElementById('term-box');
+                const p = document.createElement('div');
+                p.className = 'log-line'; p.innerText = termLines[Math.floor(Math.random() * termLines.length)];
+                box.appendChild(p);
+                if(box.children.length > 3) box.removeChild(box.firstChild);
+            }
+        }, 2500);
 
         const inputField = document.getElementById('s-inp');
         inputField.addEventListener('input', function() { if(this.value.length >= 1) { this.value = this.value.slice(0, 1); this.blur(); } });
 
-        onValue(ref(db, 'admin/toolStatus'), (s) => {
-            let val = s.val(); let statEl = document.getElementById('s-stat'); let btn = document.getElementById('p-btn');
-            if(val === 'OFF') { isAct = false; btn.disabled = true; statEl.innerText = "OFFLINE"; statEl.style.color = "var(--red)"; } 
-            else { isAct = true; if(!isWarned && document.getElementById('tech-ui').style.display !== 'none') { btn.disabled = false; } statEl.innerText = "SYNCED"; statEl.style.color = "var(--green)"; }
-        });
-
-        onValue(ref(db, 'admin/marketWarning'), (s) => {
-            let warn = s.val(); let warnBanner = document.getElementById('admin-warn-banner'); let btn = document.getElementById('p-btn');
-            if (warn === 'ON') { isWarned = true; warnBanner.style.display = 'block'; btn.disabled = true; } 
-            else { isWarned = false; warnBanner.style.display = 'none'; if(isAct && document.getElementById('tech-ui').style.display !== 'none') { btn.disabled = false; } }
-        });
-
+        onValue(ref(db, 'admin/toolStatus'), (s) => { isAct = s.val() !== 'OFF'; if(!isAct) { document.getElementById('p-btn').disabled = true; } else if(!isWarned) { document.getElementById('p-btn').disabled = false; } });
+        onValue(ref(db, 'admin/marketWarning'), (s) => { isWarned = s.val() === 'ON'; const warnBanner = document.getElementById('admin-warn-banner'); if (isWarned) { warnBanner.style.display = 'block'; document.getElementById('p-btn').disabled = true; } else { warnBanner.style.display = 'none'; if(isAct) document.getElementById('p-btn').disabled = false; } });
         onValue(ref(db, 'admin/godMode'), (s) => { gMode = s.val() || "AUTO"; });
+
+        // BOOT & LOAD SAVED DATA
+        setTimeout(() => {
+            document.getElementById('boot-screen').style.display = 'none';
+            document.getElementById('login-sec').style.display = 'flex';
+        }, 2200);
 
         document.getElementById('auth-btn').onclick = () => {
             let keyVal = document.getElementById('k-inp').value.trim().toUpperCase();
-            if(!keyVal) { showToast("ENTER LICENSE KEY", true); return; }
+            if(!keyVal) return showToast("ENTER LICENSE KEY", true);
             document.getElementById('auth-btn').innerText = "VERIFYING...";
 
             get(child(ref(db), `keys/${keyVal}`)).then((snapshot) => {
-                if(snapshot.exists()){
-                    let data = snapshot.val();
-                    if(data.expiresAt < Date.now()) { showToast("LICENSE EXPIRED", true); } 
-                    else if(data.deviceId && data.deviceId !== myId) { showToast("DEVICE BIND MISMATCH", true); } 
-                    else {
-                        if(!data.deviceId) update(ref(db, `keys/${keyVal}`), { deviceId: myId, tgUser: tgUsername, tgId: tgIdString });
-                        let uRef = ref(db, `metrics/activeUsers/${myId}`);
-                        set(uRef, { username: tgUsername, tgId: tgIdString, time: Date.now() }); 
-                        onDisconnect(uRef).remove();
+                if(snapshot.exists() && snapshot.val().status !== "banned" && snapshot.val().expiresAt > Date.now()){
+                    let uRef = ref(db, `metrics/activeUsers/${myId}`);
+                    set(uRef, { username: tgUsername, time: Date.now() }); 
+                    onDisconnect(uRef).remove();
+                    activeKey = keyVal; setupKeyListeners(keyVal);
+                    
+                    document.getElementById('login-sec').style.display = 'none';
+                    
+                    // CHECK LOCAL STORAGE FOR SAVED SESSION
+                    if(localStorage.getItem('k_cap')) {
+                        currentBalance = parseFloat(localStorage.getItem('k_cap'));
+                        totalProfitLoss = parseFloat(localStorage.getItem('k_pl'));
+                        currentLevel = parseInt(localStorage.getItem('k_lvl'));
+                        targetProfit = parseFloat(localStorage.getItem('k_target'));
+                        lossStreak = parseInt(localStorage.getItem('k_streak'));
+                        historyArr = JSON.parse(localStorage.getItem('k_hist'));
+                        baseBet = parseFloat(localStorage.getItem('k_base'));
                         
-                        document.getElementById('login-sec').style.display = 'none';
                         document.getElementById('main-sec').style.display = 'flex';
-                        showToast("SECURE CONNECTION ESTABLISHED");
+                        updateStatsUI();
+                        showToast("SESSION RESTORED");
+                    } else {
+                        document.getElementById('capital-sec').style.display = 'flex';
                     }
-                } else { showToast("INVALID LICENSE", true); }
-                document.getElementById('auth-btn').innerText = "VERIFY ACCESS";
+                } else { 
+                    showToast("INVALID OR EXPIRED KEY", true); 
+                    document.getElementById('auth-btn').innerText = "VERIFY ACCESS";
+                }
             }).catch(() => { showToast("NETWORK TIMEOUT", true); document.getElementById('auth-btn').innerText = "VERIFY ACCESS"; });
         };
+
+        function setupKeyListeners(key) {
+            onValue(ref(db, `keys/${key}`), (snapshot) => {
+                const data = snapshot.val(); if(!data) return;
+                if (data.status === "banned") {
+                    document.getElementById('main-sec').style.display = 'none'; document.getElementById('capital-sec').style.display = 'none'; document.getElementById('ban-screen').style.display = 'flex';
+                }
+                if (data.notification && data.notification.id !== lastNotifId) {
+                    lastNotifId = data.notification.id; showAdminModal(data.notification.text, data.notification.img);
+                }
+            });
+        }
+        window.closeAdminModal = function() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        // LOCAL STORAGE SAVER
+        function saveLocalData() {
+            localStorage.setItem('k_cap', currentBalance);
+            localStorage.setItem('k_pl', totalProfitLoss);
+            localStorage.setItem('k_lvl', currentLevel);
+            localStorage.setItem('k_target', targetProfit);
+            localStorage.setItem('k_streak', lossStreak);
+            localStorage.setItem('k_hist', JSON.stringify(historyArr));
+            localStorage.setItem('k_base', baseBet);
+        }
+
+        // SETUP CAPITAL
+        window.setupCapital = function() {
+            let cap = parseInt(document.getElementById('cap-inp').value);
+            let targ = parseInt(document.getElementById('target-inp').value);
+            
+            if(isNaN(cap) || cap < 142) return showToast("MINIMUM BALANCE SHOULD BE ₹142", true);
+            if(isNaN(targ) || targ < 50) return showToast("PLEASE SET A VALID TARGET PROFIT", true);
+            
+            currentBalance = cap; targetProfit = targ; baseBet = Math.floor(cap / 142); 
+            totalProfitLoss = 0; currentLevel = 1; lossStreak = 0; historyArr = []; previousState = null;
+            
+            saveLocalData();
+            updateStatsUI();
+            
+            document.getElementById('capital-sec').style.display = 'none';
+            document.getElementById('main-sec').style.display = 'flex';
+            document.getElementById('u-btn').style.display = 'none';
+            showToast("ENGINE & RISK MANAGER ACTIVE");
+        }
+
+        // RESET SESSION
+        window.resetSession = function() {
+            localStorage.removeItem('k_cap'); localStorage.removeItem('k_pl'); localStorage.removeItem('k_lvl');
+            localStorage.removeItem('k_target'); localStorage.removeItem('k_streak'); localStorage.removeItem('k_hist'); localStorage.removeItem('k_base');
+            document.getElementById('target-screen').style.display = 'none';
+            document.getElementById('main-sec').style.display = 'none';
+            document.getElementById('capital-sec').style.display = 'flex';
+            document.getElementById('cap-inp').value = ''; document.getElementById('target-inp').value = '';
+        }
+
+        function updateStatsUI() {
+            document.getElementById('ui-bal').innerText = `₹${currentBalance}`;
+            document.getElementById('ui-lvl').innerText = `${currentLevel}/7`;
+            const plEl = document.getElementById('ui-pl');
+            if (totalProfitLoss > 0) { plEl.innerText = `+₹${totalProfitLoss}`; plEl.style.color = 'var(--green)'; } 
+            else if (totalProfitLoss < 0) { plEl.innerText = `-₹${Math.abs(totalProfitLoss)}`; plEl.style.color = 'var(--red)'; } 
+            else { plEl.innerText = `₹0`; plEl.style.color = 'var(--text-dim)'; }
+
+            if(totalProfitLoss >= targetProfit && targetProfit > 0) {
+                document.getElementById('main-sec').style.display = 'none';
+                document.getElementById('target-screen').style.display = 'flex';
+                document.getElementById('final-profit-disp').innerText = `PROFIT BOOKED: +₹${totalProfitLoss}`;
+                if(tg) tg.HapticFeedback.notificationOccurred('success');
+            }
+
+            const hb = document.getElementById('hist-bar'); hb.innerHTML = '';
+            historyArr.slice(-6).forEach(res => {
+                const d = document.createElement('div'); d.className = `dot ${res === 'W' ? 'w' : 'l'}`; hb.appendChild(d);
+            });
+        }
 
         const sum2 = (p) => parseInt(String(p).slice(-2).padStart(2,'0')[0]) + parseInt(String(p).slice(-2).padStart(2,'0')[1]);
         const red1 = (n) => { let c = n; while(c > 9) c = String(c).split('').reduce((a, v) => a + parseInt(v), 0); return c; };
 
+        function cipherReveal(element, finalWord) {
+            const chars = "0101!@#$%&*+?"; let iterations = 0;
+            const interval = setInterval(() => {
+                element.innerText = finalWord.split('').map((c, i) => { if (i < iterations / 2) return finalWord[i]; return chars[Math.floor(Math.random() * chars.length)]; }).join('');
+                iterations++; if (iterations >= 15) { clearInterval(interval); element.innerText = finalWord; }
+            }, 30);
+        }
+
         window.executeAlgorithm = function() {
             if(!isAct || isWarned) return;
             let inpVal = inputField.value.trim();
-            if(inpVal === "") { if(tg) tg.HapticFeedback.notificationOccurred('error'); return showToast("ENTER BASE DIGIT", true); }
-            
+            if(inpVal === "") return showToast("ENTER BASE DIGIT", true);
             inputField.blur(); 
-            const btn = document.getElementById('p-btn'); const ring = document.getElementById('spin-ring');
-            const radar = document.getElementById('radar-sweep'); const scanDisp = document.getElementById('scan-disp');
-            const centerLbl = document.getElementById('center-lbl');
-            const laserLine = document.getElementById('laser-line'); 
             
-            btn.disabled = true; btn.innerText = "SCANNING...";
-            ring.classList.add('fast-spin'); radar.style.display = 'block'; 
-            laserLine.style.display = 'block'; 
-            inputField.style.display = 'none'; scanDisp.style.display = 'block';
-            centerLbl.innerText = "DECRYPTING";
+            const btn = document.getElementById('p-btn');
+            btn.disabled = true; btn.innerText = "DECRYPTING...";
+            document.getElementById('u-btn').style.display = 'none'; // Hide undo while scanning
             
+            document.getElementById('spin-ring').classList.add('fast-spin');
+            document.getElementById('sonar1').classList.add('active');
+            document.getElementById('sonar2').classList.add('active');
+            document.getElementById('s-laser').classList.add('active');
+
             if(tg) tg.HapticFeedback.impactOccurred('medium');
 
-            scanInterval = setInterval(() => { scanDisp.innerText = Math.floor(Math.random() * 90 + 10); }, 50);
-
             setTimeout(() => {
-                clearInterval(scanInterval); 
-                
-                let finalRes; let finalNum;
+                let finalRes; 
                 if(gMode === "BIG" || gMode === "SMALL") { finalRes = gMode; } 
                 else {
                     let baseSum = (sum2(gPer) + sum2(gPer-1) + sum2(gPer-3)) * 3;
-                    finalNum = red1(Math.abs(baseSum - parseInt(inpVal)));
+                    let finalNum = red1(Math.abs(baseSum - parseInt(inpVal)));
                     if(gPer % 2 === 0) finalNum = (finalNum + 3) % 10;
+                    
                     let isBig = finalNum >= 5;
+                    if(trendInverted) { isBig = !isBig; }
                     if(lossStreak >= 2) { isBig = !isBig; }
                     finalRes = isBig ? "BIG" : "SMALL";
                 }
                 lastPredictedResult = finalRes;
 
-                let pool = finalRes === "BIG" ? [5,6,7,8,9] : [0,1,2,3,4];
-                let num1 = (typeof finalNum !== 'undefined') ? finalNum : pool[Math.floor(Math.random() * pool.length)];
-                if ((finalRes==="BIG" && num1 < 5) || (finalRes==="SMALL" && num1 >= 5)) { num1 = pool[Math.floor(Math.random() * pool.length)]; }
-                let num2; do { num2 = pool[Math.floor(Math.random() * pool.length)]; } while(num1 === num2);
-                let finalArr = [num1, num2].sort((a,b)=>a-b);
+                if (isTestingPhase) {
+                    activeBetAmount = 0;
+                    document.getElementById('bet-inst').innerText = "TESTING PHASE: DO NOT BET";
+                    document.getElementById('bet-inst').style.color = "var(--gold)"; document.getElementById('bet-inst').style.borderColor = "var(--gold)";
+                } else {
+                    activeBetAmount = baseBet * levelMultipliers[currentLevel - 1];
+                    document.getElementById('bet-inst').innerText = `BET ₹${activeBetAmount} ON ${finalRes}`;
+                    document.getElementById('bet-inst').style.color = "#fff"; document.getElementById('bet-inst').style.borderColor = "var(--red)";
+                }
 
-                const mRes = document.getElementById('m-res');
-                mRes.innerText = finalRes;
-                document.getElementById('m-nums').innerText = `[ ${finalArr[0]} & ${finalArr[1]} ]`;
-                
                 document.getElementById('tech-ui').style.display = 'none';
-                const resArea = document.getElementById('res-area');
-                resArea.style.display = 'block';
-                resArea.classList.remove('blast-effect');
-                void resArea.offsetWidth; 
-                resArea.classList.add('blast-effect');
-
-                mRes.classList.remove('glitch-text');
-                void mRes.offsetWidth;
-                mRes.classList.add('glitch-text');
-
-                if(tg) tg.HapticFeedback.impactOccurred('heavy');
-            }, 3000); 
+                document.getElementById('res-area').style.display = 'block';
+                
+                const mRes = document.getElementById('m-res');
+                mRes.style.color = isTestingPhase ? 'var(--gold)' : (finalRes === 'BIG' ? 'var(--gold)' : 'var(--accent)');
+                cipherReveal(mRes, finalRes);
+            }, 2000); 
         };
 
         window.processFeedback = function(actualResult) {
-            if(actualResult === lastPredictedResult) { lossStreak = 0; } else { lossStreak++; }
-            if (lossStreak >= 3) { try { update(ref(db, 'metrics'), { badMarketReports: increment(1) }); } catch(e){} }
+            // Save state before modifying for UNDO logic
+            previousState = {
+                balance: currentBalance, pl: totalProfitLoss, level: currentLevel,
+                streak: lossStreak, history: [...historyArr]
+            };
+
+            if (isTestingPhase) {
+                if(actualResult === lastPredictedResult) { testWins++; } else { testLosses++; }
+                testRoundsCompleted++;
+                if (testRoundsCompleted >= 3) {
+                    isTestingPhase = false;
+                    if (testLosses > testWins) { trendInverted = true; showToast("MARKET NEGATIVE. LOGIC INVERTED.", true); } else { trendInverted = false; showToast("MARKET POSITIVE. NORMAL LOGIC."); }
+                    document.getElementById('test-banner').style.display = 'none';
+                    lossStreak = 0; currentLevel = 1; 
+                } else { document.getElementById('test-left').innerText = (3 - testRoundsCompleted); showToast(`TEST ROUND ${testRoundsCompleted} COMPLETED`); }
+            } else {
+                if(actualResult === lastPredictedResult) { 
+                    lossStreak = 0; totalProfitLoss += activeBetAmount; currentBalance += activeBetAmount; currentLevel = 1; historyArr.push('W');
+                    showToast(`WON ₹${activeBetAmount}!`);
+                } else { 
+                    lossStreak++; totalProfitLoss -= activeBetAmount; currentBalance -= activeBetAmount; historyArr.push('L');
+                    if (currentLevel < 7) { currentLevel++; showToast(`LOST. Level ${currentLevel} Activated.`, true); } 
+                    else { currentLevel = 1; showToast(`7 LEVELS FAILED. Resetting to L1.`, true); }
+                }
+                saveLocalData();
+                updateStatsUI();
+            }
 
             document.getElementById('res-area').style.display = 'none';
             document.getElementById('tech-ui').style.display = 'flex';
+            document.getElementById('u-btn').style.display = 'block'; // Show Undo button
             
             document.getElementById('spin-ring').classList.remove('fast-spin');
-            document.getElementById('radar-sweep').style.display = 'none';
-            document.getElementById('laser-line').style.display = 'none'; 
-            document.getElementById('scan-disp').style.display = 'none';
-            document.getElementById('center-lbl').innerText = "BASE DIGIT";
+            document.getElementById('sonar1').classList.remove('active'); document.getElementById('sonar2').classList.remove('active');
+            document.getElementById('s-laser').classList.remove('active');
             
-            inputField.style.display = 'block'; inputField.value = '';
+            inputField.value = '';
             const btn = document.getElementById('p-btn');
+            if(isAct && !isWarned) { btn.disabled = false; btn.innerText = "PREDICT"; } else if (isWarned) { btn.disabled = true; btn.innerText = "PAUSED"; }
+        }
+
+        // UNDO LOGIC
+        window.undoLastAction = function() {
+            if(!previousState) return;
+            currentBalance = previousState.balance; totalProfitLoss = previousState.pl; currentLevel = previousState.level;
+            lossStreak = previousState.streak; historyArr = [...previousState.history];
             
-            if(isAct && !isWarned) { btn.disabled = false; btn.innerText = "PREDICT"; }
-            else if (isWarned) { btn.disabled = true; btn.innerText = "PAUSED"; }
-            
-            if(tg) tg.HapticFeedback.notificationOccurred('success');
+            previousState = null; // Can only undo once
+            saveLocalData(); updateStatsUI();
+            document.getElementById('u-btn').style.display = 'none';
+            showToast("LAST RESULT REVERTED", true);
         }
 
         setInterval(() => {
             let n = new Date(); let t = new Date(n.getTime() + 1000); let r = 59 - n.getUTCSeconds();
             gPer = 10001 + (t.getUTCHours() * 60) + t.getUTCMinutes();
-            gStr = `${t.getUTCFullYear()}${String(t.getUTCMonth()+1).padStart(2,'0')}${String(t.getUTCDate()).padStart(2,'0')}-${gPer}`;
-            document.getElementById('p-disp').innerText = gStr;
+            document.getElementById('p-disp').innerText = `${t.getUTCFullYear()}${String(t.getUTCMonth()+1).padStart(2,'0')}${String(t.getUTCDate()).padStart(2,'0')}-${gPer}`;
             document.getElementById('t-disp').innerText = `00:${String(r).padStart(2,'0')}`;
+
+            if (gPer % 10 === 0 && testedForPeriodZero !== gPer) {
+                isTestingPhase = true; testRoundsCompleted = 0; testWins = 0; testLosses = 0; testedForPeriodZero = gPer; 
+                document.getElementById('test-banner').style.display = 'block'; document.getElementById('test-left').innerText = "3";
+                showToast("⚠️ CALIBRATION PHASE STARTED", true);
+            }
         }, 1000);
     </script>
 </body>
