@@ -3,248 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kevin Algorithm | God-Tier AI</title>
+    <title>Kevin AI | Algorithmic Engine</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg-main: #000000; --accent: #00FFCC; --gold: #FFD700; --text-dim: #888888; --red: #ff3366; --green: #00ffcc;}
+        /* PRO AI COLOR PALETTE */
+        :root { 
+            --bg-deep: #0B0E14; 
+            --panel-bg: rgba(18, 22, 31, 0.7); 
+            --accent-cyan: #00E5FF; 
+            --accent-purple: #7B1FA2; 
+            --gold: #FFC107; 
+            --text-main: #FFFFFF; 
+            --text-muted: #8A93A6; 
+            --red: #FF3B30; 
+            --green: #34C759; 
+            --border-light: rgba(255, 255, 255, 0.08); 
+        }
         
         body { 
-            background: var(--bg-main); color: #ffffff; 
-            font-family: 'Space Grotesk', sans-serif; margin: 0; 
+            background: var(--bg-deep); color: var(--text-main); 
+            font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; 
             display: flex; justify-content: center; align-items: center; 
             min-height: 100vh; overflow: hidden; user-select: none;
-            background-image: 
-                linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px),
-                radial-gradient(circle at 50% 0%, rgba(0, 255, 204, 0.05) 0%, transparent 60%);
-            background-size: 30px 30px, 30px 30px, 100% 100%;
-            animation: gridMove 15s linear infinite;
+            /* Static premium glow instead of laggy moving grids */
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 50%), radial-gradient(circle at 50% 100%, rgba(123, 31, 162, 0.08) 0%, transparent 50%);
         }
-        @keyframes gridMove { 0% { background-position: 0 0, 0 0, center; } 100% { background-position: 30px 30px, 30px 30px, center; } }
 
-        .main-panel, .setup-panel { width: 100%; max-width: 380px; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; box-sizing: border-box; height: 100vh; justify-content: center;}
+        /* HARDWARE ACCELERATION CLASSES */
+        .gpu-accel { transform: translateZ(0); will-change: transform, opacity; }
 
-        /* BOOT SEQUENCE */
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; padding: 30px; font-family: 'Share Tech Mono'; color: var(--green); font-size: 14px; }
-        .boot-text { margin-bottom: 5px; opacity: 0; animation: typeIn 0.1s forwards; }
-        @keyframes typeIn { to { opacity: 1; } }
+        .app-container { width: 100%; max-width: 400px; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; box-sizing: border-box; height: 100vh; justify-content: center;}
 
-        /* SCREENS & MODALS */
-        #ban-screen, #target-screen { position: fixed; inset: 0; background: #050000; z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; font-family: 'Share Tech Mono'; text-align: center; padding: 20px;}
-        .ban-icon { font-size: 80px; margin-bottom: 20px; text-shadow: 0 0 20px var(--red); color: var(--red);}
-        .target-icon { font-size: 80px; margin-bottom: 20px; text-shadow: 0 0 30px var(--gold); }
+        /* PREMIUM FROSTED PANELS */
+        .pro-panel { background: var(--panel-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-light); border-radius: 24px; padding: 32px 24px; width: 100%; box-sizing: border-box; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
+
+        .logo-wrap { width: 64px; height: 64px; border-radius: 16px; overflow: hidden; margin: 0 auto 16px; background: #000; padding: 2px; border: 1px solid var(--border-light); box-shadow: 0 8px 16px rgba(0,0,0,0.4);}
+        .logo-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px;}
+
+        .title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 2px; color: var(--text-main); }
+        .subtitle { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; margin-top: 6px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace;}
+
+        /* CLEAN INPUTS */
+        .pro-input { width: 100%; padding: 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-light); color: #fff; font-family: 'JetBrains Mono', monospace; text-align: center; border-radius: 16px; margin: 16px 0; outline: none; font-size: 16px; font-weight: 600; letter-spacing: 1px; box-sizing: border-box; transition: 0.3s ease; }
+        .pro-input:focus { border-color: var(--accent-cyan); background: rgba(0, 0, 0, 0.6); }
+        .pro-input::placeholder { color: rgba(255, 255, 255, 0.2); font-weight: 400; font-family: 'Plus Jakarta Sans', sans-serif;}
+
+        /* CLEAN BUTTON */
+        .pro-btn { background: var(--text-main); color: #000; border: none; border-radius: 16px; padding: 16px 20px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease; text-transform: uppercase; letter-spacing: 1px; width: 100%; box-sizing: border-box; font-size: 14px; font-family: 'Plus Jakarta Sans';}
+        .pro-btn:active { transform: scale(0.96); }
+        .pro-btn:disabled { background: #1A1F2B; color: #4A5162; cursor: not-allowed;}
+        .btn-cyan { background: var(--accent-cyan); color: #000; }
+        .btn-cyan:hover { background: #00B3CC; }
+
+        /* OVERLAYS (Boot, Target, Ban) */
+        .overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 10000; display: none; justify-content: center; align-items: center; flex-direction: column; padding: 20px; text-align: center;}
+        .boot-text { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin: 6px; opacity: 0; animation: fadeUp 0.5s forwards ease-out; }
+        .boot-text.active { color: var(--accent-cyan); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* DATA PILL (Stats) */
+        .data-strip { display: flex; justify-content: space-between; background: rgba(0,0,0,0.4); border: 1px solid var(--border-light); border-radius: 16px; padding: 16px; margin-top: 20px; width: 100%; box-sizing: border-box;}
+        .data-blk { display: flex; flex-direction: column; align-items: center; width: 33%;}
+        .d-lbl { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;}
+        .d-val { font-size: 16px; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace;}
         
-        #admin-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; }
-        .admin-msg-box { background: #111; border: 1px solid var(--green); border-radius: 20px; padding: 25px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 0 40px rgba(0,255,204,0.2); }
-        .admin-msg-box img { max-width: 100%; border-radius: 10px; margin-top: 15px; display: none;}
+        .period-info { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 0 8px; width: 100%; box-sizing: border-box;}
+        .p-txt { font-size: 12px; color: var(--text-muted); }
+        .p-val { font-size: 14px; font-weight: 700; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;}
 
-        #login-sec, #capital-sec { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: center; }
-        .login-box { background: rgba(15,15,15,0.85); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 28px; padding: 35px 25px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); box-sizing: border-box;}
+        /* =========================================
+           🚀 THE AI ORBITAL ENGINE (ZERO LAG)
+           ========================================= */
+        .ai-engine { position: relative; width: 220px; height: 220px; margin: 30px 0; display: flex; justify-content: center; align-items: center; }
         
-        .l-input { width: 100%; padding: 16px; background: rgba(5, 5, 5, 0.85); border: 1px solid rgba(0, 255, 204, 0.2); color: #ffffff; font-family: 'Share Tech Mono', monospace; text-align: center; border-radius: 16px; margin: 15px 0; outline: none; font-size: 18px; font-weight: bold; letter-spacing: 2px; box-sizing: border-box; transition: all 0.4s ease; box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.02); }
-        .l-input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 255, 204, 0.2), inset 0 0 15px rgba(0, 255, 204, 0.05); background: #000000; }
-        .l-input::placeholder { color: rgba(255, 255, 255, 0.4); font-size: 14px; letter-spacing: 1px; }
-
-        .logo-container { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); background: #0a0a0a; position: relative;}
-        .app-logo { width: 100%; height: 100%; object-fit: cover; z-index: 2;}
-        .logo-container::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 15px var(--gold); opacity: 0; animation: pulseGoldLogo 2s infinite; }
-        @keyframes pulseGoldLogo { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
+        /* The Breathing Core */
+        .ai-core { position: relative; z-index: 10; background: radial-gradient(circle at 30% 30%, #1E2536, #0A0D14); border-radius: 50%; width: 140px; height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 -10px 20px rgba(0,0,0,0.5); transition: transform 0.3s ease;}
         
-        .header { width: 100%; text-align: center; margin-top: 10px;}
-        .header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);}
-        .warning-banner { display: none; background: rgba(255,51,102,0.1); border: 1px dashed var(--red); color: var(--red); padding: 8px; border-radius: 8px; margin: 10px 0; font-size: 11px; text-align: center; font-weight: bold;}
-
-        /* FUND MANAGER & HISTORY */
-        .fund-stats { display: flex; justify-content: space-between; width: 100%; background: rgba(0,255,204,0.05); border: 1px solid rgba(0,255,204,0.2); border-radius: 10px; padding: 10px; margin-top: 15px; font-family: 'Share Tech Mono'; box-sizing: border-box;}
-        .stat-item { display: flex; flex-direction: column; align-items: center; width: 33%; position: relative;}
-        .stat-lbl { color: var(--text-dim); font-size: 9px; margin-bottom: 3px;}
-        .stat-val { font-weight: bold; font-size: 13px; }
-        .reset-txt { position: absolute; top: -8px; right: 5px; font-size: 8px; color: var(--red); cursor: pointer; text-decoration: underline;}
+        .core-input { width: 80px; background: transparent; border: none; color: #fff; font-size: 42px; text-align: center; outline: none; font-weight: 700; font-family: 'JetBrains Mono', monospace; padding: 0;}
         
-        .history-bar { margin-top: 10px; display: flex; justify-content: center; gap: 6px; height: 12px; align-items: center;}
-        .dot { width: 10px; height: 10px; border-radius: 50%; opacity: 0.8; }
-        .dot.w { background: var(--green); box-shadow: 0 0 8px var(--green); }
-        .dot.l { background: var(--red); box-shadow: 0 0 8px var(--red); }
-
-        .period-box { background: rgba(15,15,15,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 15px; margin-top: 15px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; font-family: 'Share Tech Mono'; position: relative; overflow: hidden;}
-        .period-box::before { content: ''; position: absolute; top: -50%; left: -50%; width: 20%; height: 200%; background: rgba(255,255,255,0.05); transform: rotate(45deg); animation: shineBox 4s infinite linear;}
-        .period-num { font-size: 13px; color: #fff; letter-spacing: 1px; }
-        .timer { font-size: 15px; font-weight: bold; color: var(--accent); text-shadow: 0 0 10px rgba(0,255,204,0.5);}
-
-        .test-banner { display: none; background: rgba(255, 215, 0, 0.15); border: 1px dashed var(--gold); color: var(--gold); padding: 10px; border-radius: 8px; margin-top: 10px; width: 100%; box-sizing: border-box; font-size: 10px; text-align: center; font-weight: bold; letter-spacing: 1px; animation: pulseGold 2s infinite; }
-
-        /* ULTRA ENGINE UI */
-        .tech-wrapper { position: relative; width: 200px; height: 200px; margin: 20px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .sonar-wave { position: absolute; inset: -20px; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; display: none; }
-        .sonar-wave.active { animation: sonarPulse 1.5s infinite ease-out; display: block; }
-        .sonar-wave.active:nth-child(2) { animation-delay: 0.5s; }
-        @keyframes sonarPulse { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
-
-        .spinner-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.15); transition: all 0.3s; }
-        .spinner-ring.fast-spin { border: 2px solid transparent; border-top: 3px solid var(--accent); border-bottom: 3px solid var(--accent); animation: spinFast 0.5s linear infinite; box-shadow: 0 0 20px rgba(0,255,204,0.3);}
+        /* The Orbital Rings (GPU Accelerated, No Box-Shadows) */
+        .orbit { position: absolute; border-radius: 50%; border: 1px solid transparent; opacity: 0; transition: opacity 0.5s ease; pointer-events: none;}
         
-        .inner-content { position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; background: #050505; border-radius: 50%; width: 160px; height: 160px; justify-content: center; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 30px rgba(0,0,0,1); overflow: hidden; }
-        .scanner-laser { position: absolute; width: 100%; height: 3px; background: var(--accent); box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); left: 0; top: 0; display: none; z-index: 10;}
-        .scanner-laser.active { display: block; animation: laserSweep 0.8s infinite ease-in-out alternate; }
+        .orbit-1 { inset: 20px; border-top: 2px solid var(--accent-cyan); border-left: 2px solid rgba(0, 229, 255, 0.2); }
+        .orbit-2 { inset: 10px; border-bottom: 2px solid var(--accent-purple); border-right: 2px solid rgba(123, 31, 162, 0.2); }
+        .orbit-3 { inset: 0px; border-top: 1px solid var(--text-muted); border-bottom: 1px solid var(--text-muted); }
+
+        /* Animation Classes */
+        @keyframes spinFwd { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spinBwd { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+
+        .ai-engine.analyzing .orbit { opacity: 1; }
+        .ai-engine.analyzing .orbit-1 { animation: spinFwd 1.5s linear infinite; }
+        .ai-engine.analyzing .orbit-2 { animation: spinBwd 2s linear infinite; }
+        .ai-engine.analyzing .orbit-3 { animation: spinFwd 4s linear infinite; }
+        .ai-engine.analyzing .ai-core { transform: scale(0.95); } /* Gentle pulse */
+
+        /* CLEAN RESULT BOX */
+        .result-panel { display: none; width: 100%; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        .circle-lbl { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; z-index: 5;}
-        .circle-input { width: 70px; background: transparent; border: none; color: #fff; font-size: 45px; font-family: 'Share Tech Mono'; text-align: center; outline: none; margin: 0 0 10px; font-weight: bold; text-shadow: 0 0 15px rgba(255,255,255,0.3); z-index: 5;}
+        .res-text { font-size: 40px; font-weight: 700; letter-spacing: 2px; margin: 8px 0 16px; color: #fff; font-family: 'Plus Jakarta Sans';}
+        .bet-badge { background: rgba(0, 229, 255, 0.1); color: var(--accent-cyan); padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; display: inline-block; margin-bottom: 16px;}
         
-        .btn-execute { position: relative; background: var(--accent); color: #000; border: none; border-radius: 20px; padding: 12px 20px; font-weight: 700; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; width: 90%; box-sizing: border-box; box-shadow: 0 5px 20px rgba(0,255,204,0.3); overflow: hidden; z-index: 5;}
-        .btn-execute:active { transform: scale(0.95); }
-        .btn-execute:disabled { background: #222; color: #555; box-shadow: none;}
+        .feed-btn-grp { display: flex; gap: 12px; width: 100%; margin-top: 8px; }
+        .f-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); color: var(--text-muted); padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .f-btn:active { background: #fff; color: #000; }
 
-        .undo-btn { font-size: 10px; color: var(--accent); text-decoration: underline; margin-top: 15px; cursor: pointer; display: none; font-family: 'Share Tech Mono'; z-index: 20;}
+        .toast { position: fixed; top: 24px; background: #1A1F2B; border: 1px solid var(--border-light); color: #fff; padding: 14px 24px; border-radius: 12px; font-size: 13px; font-weight: 600; display: none; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: dropDown 0.3s ease-out;}
+        @keyframes dropDown { from { transform: translateY(-20px); opacity: 0;} to { transform: translateY(0); opacity: 1;} }
 
-        /* RESULT AREA */
-        .inline-result { width: 100%; text-align: center; margin-top: 10px; display: none; background: rgba(10,10,10,0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px 15px; box-sizing: border-box; box-shadow: 0 10px 40px rgba(0,0,0,0.5);}
-        .res-big { font-size: 42px; font-weight: 700; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 4px; color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.3); min-height: 50px;}
-        .bet-instruction { font-size: 16px; font-weight: bold; color: #fff; background: rgba(255,51,102,0.2); border: 1px solid var(--red); padding: 8px; border-radius: 8px; margin-bottom: 12px; animation: blink 1s infinite alternate;}
-        @keyframes blink { from { box-shadow: 0 0 0px var(--red); } to { box-shadow: 0 0 15px var(--red); } }
+        .undo-txt { font-size: 12px; color: var(--text-muted); margin-top: 20px; cursor: pointer; display: none; padding: 5px;}
+        .test-badge { display: none; background: rgba(255, 193, 7, 0.1); color: var(--gold); padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; margin-top: 12px;}
         
-        .feed-row { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
-        .feed-btn { flex: 1; background: #111; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px; border-radius: 10px; font-size: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .feed-btn:active { background: #fff; color: #000; border-color: #fff;}
-
-        /* HACKER TERMINAL LOGS */
-        .terminal-box { width: 100%; height: 50px; background: rgba(0, 10, 0, 0.5); border: 1px solid rgba(0, 255, 204, 0.1); border-radius: 8px; margin-top: auto; margin-bottom: 10px; font-family: 'Share Tech Mono'; font-size: 9px; color: var(--accent); padding: 8px; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; text-align: left; opacity: 0.8;}
-        .log-line { margin: 2px 0; animation: fadeUp 0.3s ease-out; text-shadow: 0 0 5px var(--accent);}
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #111; border-bottom: 2px solid var(--accent); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 12px; font-weight: 600; display: none; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); white-space: nowrap;}
+        /* Audio Toggle */
+        .audio-btn { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; z-index: 100; opacity: 0.5;}
+        
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="boot-screen">
-        <div class="boot-text" style="animation-delay: 0.1s">> INITIALIZING NEURAL LINK...</div>
-        <div class="boot-text" style="animation-delay: 0.5s">> BYPASSING FIREWALLS [OK]</div>
-        <div class="boot-text" style="animation-delay: 1.0s">> CONNECTING TO MAINFRAME...</div>
-        <div class="boot-text" style="animation-delay: 1.5s">> VERIFYING IDENTITY...</div>
-    </div>
-
-    <div id="target-screen">
-        <div class="target-icon">🏆</div>
-        <h1 style="margin: 0; font-size: 26px; letter-spacing: 3px; color: var(--gold);">TARGET ACHIEVED</h1>
-        <p style="color: #ccc; font-size: 12px; margin-top: 15px; width: 80%;">Congratulations! You have successfully reached your profit goal for today.</p>
-        <p style="color: var(--accent); font-weight: bold; font-size: 16px; margin-top: 10px;" id="final-profit-disp">PROFIT: ₹1000</p>
-        <div style="margin-top: 20px; font-size: 10px; color: #555;">SESSION CLOSED SAFELY TO PREVENT LOSS</div>
-        <button class="btn-execute" onclick="resetSession()" style="margin-top: 30px; font-size: 12px;">START NEW SESSION</button>
-    </div>
-
-    <div id="ban-screen">
-        <div class="ban-icon">⚠️</div>
-        <h1 style="margin: 0; font-size: 30px; letter-spacing: 5px;">ACCESS DENIED</h1>
-        <p style="color: #aaa; font-size: 12px; margin-top: 15px;">Your License Key has been permanently banned.</p>
-    </div>
-
-    <div id="admin-modal">
-        <div class="admin-msg-box">
-            <h3 style="margin: 0 0 10px; color: var(--green);">🔔 Admin Message</h3>
-            <div id="admin-msg-text" style="font-size: 14px; color: #fff; line-height: 1.5;"></div>
-            <img id="admin-msg-img" src="" alt="Admin Photo">
-            <button class="btn-execute" onclick="closeAdminModal()" style="margin-top: 20px;">ACKNOWLEDGE</button>
-        </div>
-    </div>
-
+    <div class="audio-btn" id="sound-btn" onclick="initAudio()">🔇</div>
     <div class="toast" id="toastMsg">MESSAGE</div>
 
-    <div id="login-sec">
-        <div class="login-panel">
-            <div class="logo-container"><img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'"></div>
-            <div class="login-box">
-                <h2 style="margin: 0 0 5px; font-weight: bold; letter-spacing: 2px; color:var(--accent);">KEVIN AUTH</h2>
-                <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 20px;">SECURE PROTOCOL</div>
-                <div style="font-size: 11px; color: #888; margin-bottom: 10px; font-family: 'Share Tech Mono'; border: 1px dashed #333; padding: 10px; border-radius: 8px;">
-                    USER: <span id="tg-user" style="color:#fff;">...</span>
-                </div>
-                <input type="text" id="k-inp" class="l-input" placeholder="LICENSE KEY" autocomplete="off">
-                <button id="auth-btn" class="btn-execute">VERIFY ACCESS</button>
-            </div>
+    <div class="overlay" id="boot-screen" style="display: flex;">
+        <div class="logo-wrap" style="width: 48px; height: 48px; margin-bottom: 24px;"><img src="Logo.png" onerror="this.style.display='none'"></div>
+        <div class="boot-text" style="animation-delay: 0.1s">Connecting to API Servers...</div>
+        <div class="boot-text" style="animation-delay: 0.5s">Loading Neural Models...</div>
+        <div class="boot-text" style="animation-delay: 0.9s">Initializing 5-Level Strategy...</div>
+        <div class="boot-text active" style="animation-delay: 1.3s">System Ready</div>
+    </div>
+
+    <div class="overlay" id="target-screen">
+        <div style="font-size: 50px; margin-bottom: 16px;">🎯</div>
+        <h2 class="title">TARGET ACHIEVED</h2>
+        <div class="subtitle" style="margin: 10px 0 24px; font-size: 12px;">Trading session concluded successfully.</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--green); margin-bottom: 32px; font-family: 'JetBrains Mono';" id="final-profit-disp">+₹0</div>
+        <button class="pro-btn btn-cyan" style="max-width: 200px;" onclick="resetSession()">START NEW SESSION</button>
+    </div>
+
+    <div class="overlay" id="ban-screen">
+        <div style="font-size: 50px; margin-bottom: 16px;">🛑</div>
+        <h2 class="title" style="color: var(--red);">ACCESS REVOKED</h2>
+        <div class="subtitle" style="margin-top: 10px;">License Key has been terminated by administrator.</div>
+    </div>
+
+    <div class="overlay" id="login-sec">
+        <div class="pro-panel">
+            <div class="logo-wrap"><img src="Logo.png" alt="Logo" onerror="this.style.display='none'"></div>
+            <div class="title">KEVIN AI</div>
+            <div class="subtitle">ENTERPRISE ENGINE</div>
+            <input type="text" id="k-inp" class="pro-input" placeholder="Enter License Key" autocomplete="off">
+            <button id="auth-btn" class="pro-btn btn-cyan">AUTHORIZE</button>
         </div>
     </div>
 
-    <div id="capital-sec">
-        <div class="setup-panel">
-            <div class="logo-container"><img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'"></div>
-            <div class="login-box">
-                <h2 style="margin: 0 0 5px; font-weight: bold; letter-spacing: 1px; color:var(--gold);">FUND MANAGER</h2>
-                <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 15px;">RISK CONTROL ACTIVE</div>
-                
-                <input type="number" id="cap-inp" class="l-input" placeholder="TOTAL WALLET (MIN 142)" autocomplete="off">
-                <input type="number" id="target-inp" class="l-input" placeholder="TARGET PROFIT (e.g. 500)" autocomplete="off" style="color:var(--gold); border-color: rgba(255,215,0,0.3);">
-                
-                <button id="cap-btn" class="btn-execute" onclick="setupCapital()">START ENGINE</button>
-            </div>
+    <div class="overlay" id="capital-sec">
+        <div class="pro-panel">
+            <div class="title" style="color: var(--accent-cyan);">FUND MANAGER</div>
+            <div class="subtitle" style="margin-bottom: 24px; line-height: 1.5;">5-Level Martingale Setup.<br>Minimum Required Capital: ₹32</div>
+            <input type="number" id="cap-inp" class="pro-input" placeholder="Total Capital (₹)" autocomplete="off">
+            <input type="number" id="target-inp" class="pro-input" placeholder="Target Profit (₹)" autocomplete="off">
+            <button class="pro-btn btn-cyan" onclick="setupCapital()">INITIALIZE ENGINE</button>
         </div>
     </div>
 
-    <div class="main-panel" id="main-sec" style="display: none;">
+    <div class="app-container" id="main-sec" style="display: none;">
         
-        <div class="header">
-            <div class="logo-container"><img src="Logo.png" alt="Logo" class="app-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQwIiBmaWxsPSIjZmZmIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PC9zdmc+'"></div>
-            <h1>KEVIN ALGORITHM</h1>
-            
-            <div class="warning-banner" id="admin-warn-banner">⚠️ EMERGENCY: MARKET PAUSED</div>
-
-            <div class="fund-stats">
-                <div class="stat-item">
-                    <span class="reset-txt" onclick="resetSession()">[RESET]</span>
-                    <span class="stat-lbl">BALANCE</span><span class="stat-val" id="ui-bal">₹0</span>
-                </div>
-                <div class="stat-item" style="border-left: 1px solid #333; border-right: 1px solid #333;">
-                    <span class="stat-lbl">PROFIT/LOSS</span><span class="stat-val" id="ui-pl" style="color:var(--text-dim);">₹0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-lbl">LEVEL</span><span class="stat-val" id="ui-lvl" style="color:var(--gold);">1/7</span>
-                </div>
+        <div class="title" style="font-size: 18px;">KEVIN AI</div>
+        <div class="subtitle" style="margin-top: 2px;">ALGORITHMIC TRADING BOT</div>
+        
+        <div class="data-strip">
+            <div class="data-blk">
+                <span class="d-lbl">BALANCE</span>
+                <span class="d-val" id="ui-bal">₹0</span>
             </div>
-            
-            <div class="history-bar" id="hist-bar"></div>
-
-            <div class="period-box">
-                <div>
-                    <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 3px;">Pride Period</div>
-                    <div class="period-num" id="p-disp">Loading...</div>
-                </div>
-                <div class="timer" id="t-disp">00:00</div>
+            <div class="data-blk" style="border-left: 1px solid var(--border-light); border-right: 1px solid var(--border-light);">
+                <span class="d-lbl">PROFIT</span>
+                <span class="d-val" id="ui-pl" style="color: var(--text-muted);">₹0</span>
             </div>
-            
-            <div class="test-banner" id="test-banner">⚠️ CALIBRATION PHASE - TEST ROUNDS LEFT: <span id="test-left">3</span></div>
-        </div>
-
-        <div class="tech-wrapper" id="tech-ui">
-            <div class="sonar-wave" id="sonar1"></div>
-            <div class="sonar-wave" id="sonar2"></div>
-            
-            <div class="spinner-ring" id="spin-ring"></div>
-            <div class="inner-content">
-                <div class="scanner-laser" id="s-laser"></div>
-                <div class="circle-lbl" id="center-lbl">Base Digit</div>
-                <input type="number" class="circle-input" id="s-inp" placeholder="-" autocomplete="off">
-                <button class="btn-execute" id="p-btn" onclick="executeAlgorithm()">PREDICT</button>
-            </div>
-            <div class="undo-btn" id="u-btn" onclick="undoLastAction()">↺ UNDO LAST RESULT</div>
-        </div>
-
-        <div class="inline-result" id="res-area">
-            <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 5px;">DECRYPTED MATRIX</div>
-            <div class="res-big" id="m-res">---</div>
-            
-            <div class="bet-instruction" id="bet-inst">BET ₹10 ON BIG</div>
-            
-            <div style="font-size: 10px; color: #666; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px;">SELECT WHAT CAME IN RESULT:</div>
-            <div class="feed-row">
-                <button class="feed-btn" onclick="processFeedback('BIG')">CAME BIG</button>
-                <button class="feed-btn" onclick="processFeedback('SMALL')">CAME SMALL</button>
+            <div class="data-blk">
+                <span class="d-lbl">LEVEL</span>
+                <span class="d-val" id="ui-lvl" style="color: var(--accent-cyan);">1/5</span>
             </div>
         </div>
 
-        <div class="terminal-box" id="term-box">
-            <div class="log-line">> SYSTEM INITIATED...</div>
+        <div class="period-info">
+            <div class="p-txt" id="p-disp">Period: Loading...</div>
+            <div class="p-val" id="t-disp">00:00</div>
+        </div>
+        
+        <div class="test-badge" id="test-banner">SYSTEM CALIBRATING - DO NOT BET (ROUND <span id="test-left">3</span>)</div>
+
+        <div class="ai-engine gpu-accel" id="tech-ui">
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+            
+            <div class="ai-core">
+                <div class="d-lbl" style="margin-bottom: 0;">BASE DIGIT</div>
+                <input type="number" class="core-input" id="s-inp" placeholder="-" autocomplete="off">
+            </div>
+        </div>
+
+        <div style="width: 100%; z-index: 20;" id="btn-container">
+            <button class="pro-btn btn-cyan" id="p-btn" onclick="executeAlgorithm()">ANALYZE DATA</button>
+            <div style="text-align: center;"><span class="undo-txt" id="u-btn" onclick="undoLastAction()">Undo Last Entry</span></div>
+        </div>
+
+        <div class="pro-panel result-panel" id="res-area" style="padding: 24px; margin-top: -10px;">
+            <div class="d-lbl">ALGORITHM PREDICTION</div>
+            <div class="res-text" id="m-res">---</div>
+            <div class="bet-badge" id="bet-inst">BET ₹0</div>
+            
+            <div class="d-lbl" style="margin-top: 10px;">ACTUAL MARKET OUTCOME</div>
+            <div class="feed-btn-grp">
+                <button class="f-btn" onclick="processFeedback('BIG')">CAME BIG</button>
+                <button class="f-btn" onclick="processFeedback('SMALL')">CAME SMALL</button>
+            </div>
         </div>
 
     </div>
@@ -253,311 +231,231 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, get, child, update, set, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDazknErTl2PtJAe2JGlRQMJSOR5n2elBc",
-            authDomain: "kevin-24998.firebaseapp.com",
-            databaseURL: "https://kevin-24998-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "kevin-24998"
-        };
+        // FIREBASE SETUP
+        const firebaseConfig = { apiKey: "AIzaSyDazknErTl2PtJAe2JGlRQMJSOR5n2elBc", authDomain: "kevin-24998.firebaseapp.com", databaseURL: "https://kevin-24998-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "kevin-24998" };
         const db = getDatabase(initializeApp(firebaseConfig));
         const tg = window.Telegram?.WebApp; if(tg) tg.expand();
 
+        /* --- PROFESSIONAL AUDIO (Soft UI Sounds) --- */
+        let audioCtx; let soundEnabled = false;
+        window.initAudio = function() {
+            if(!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+            if(audioCtx.state === 'suspended') { audioCtx.resume(); }
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-btn').innerText = soundEnabled ? "🔊" : "🔇";
+            if(soundEnabled) playTone(1000, 'sine', 0.05); // Soft tap
+        }
+        function playTone(freq, type, duration) {
+            if(!soundEnabled || !audioCtx) return;
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.value = freq;
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
         function showToast(msg, isError=false) {
             const t = document.getElementById('toastMsg');
-            t.innerText = msg; t.style.borderBottomColor = isError ? 'var(--red)' : 'var(--accent)';
-            t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000);
+            t.innerText = msg; t.style.borderColor = isError ? 'var(--red)' : 'var(--border-light)';
+            t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2500);
             if(tg) tg.HapticFeedback.notificationOccurred(isError ? 'error' : 'success');
         }
 
-        const tgUser = tg?.initDataUnsafe?.user;
-        const tgUsername = tgUser ? (tgUser.username || tgUser.first_name) : "Anonymous";
-        const tgIdString = tgUser ? String(tgUser.id) : "DEV_" + Math.floor(Math.random()*1000);
-        document.getElementById('tg-user').innerText = tgUsername;
-        let myId = localStorage.getItem('skm_id') || ('TG-' + tgIdString);
+        const myId = localStorage.getItem('skm_id') || ('TG-' + Math.floor(Math.random()*1000));
         localStorage.setItem('skm_id', myId);
 
-        let activeKey = null; let lastNotifId = null;
-        let isAct = false, isWarned = false, gMode = "AUTO";
+        let isAct = false, gMode = "AUTO";
 
-        // --- DATA & STATE VARIABLES ---
+        // --- 5-LEVEL FUND MANAGER ---
+        const levelMultipliers = [1, 2, 4, 8, 17]; // 32 Parts total
         let currentBalance = 0; let totalProfitLoss = 0; let currentLevel = 1;
         let baseBet = 0; let activeBetAmount = 0; let targetProfit = 0;
-        const levelMultipliers = [1, 2, 4, 8, 17, 35, 75]; 
-        let historyArr = []; 
+        let previousState = null;
         
         let gPer = 0; let lastPredictedResult = ""; 
         let isTestingPhase = false; let testRoundsCompleted = 0; let testWins = 0; let testLosses = 0; let trendInverted = false; let testedForPeriodZero = -1; 
-        let lossStreak = 0; 
-        
-        // UNDO STATE
-        let previousState = null;
-
-        // TERMINAL LOGIC
-        const termLines = [
-            "[SYS] Fetching node patterns...", "[NET] Shield active. Ping: 12ms.", "[AI] Calibrating neural weights...",
-            "[SEC] Bypassing anti-bot checks...", "[DB] Blockchain sync successful.", "[DATA] Analyzing last 100 periods..."
-        ];
-        setInterval(() => {
-            if(document.getElementById('main-sec').style.display === 'flex') {
-                const box = document.getElementById('term-box');
-                const p = document.createElement('div');
-                p.className = 'log-line'; p.innerText = termLines[Math.floor(Math.random() * termLines.length)];
-                box.appendChild(p);
-                if(box.children.length > 3) box.removeChild(box.firstChild);
-            }
-        }, 2500);
 
         const inputField = document.getElementById('s-inp');
-        inputField.addEventListener('input', function() { if(this.value.length >= 1) { this.value = this.value.slice(0, 1); this.blur(); } });
+        inputField.addEventListener('input', function() { if(this.value.length >= 1) { this.value = this.value.slice(0, 1); this.blur(); playTone(800, 'sine', 0.03); } });
 
-        onValue(ref(db, 'admin/toolStatus'), (s) => { isAct = s.val() !== 'OFF'; if(!isAct) { document.getElementById('p-btn').disabled = true; } else if(!isWarned) { document.getElementById('p-btn').disabled = false; } });
-        onValue(ref(db, 'admin/marketWarning'), (s) => { isWarned = s.val() === 'ON'; const warnBanner = document.getElementById('admin-warn-banner'); if (isWarned) { warnBanner.style.display = 'block'; document.getElementById('p-btn').disabled = true; } else { warnBanner.style.display = 'none'; if(isAct) document.getElementById('p-btn').disabled = false; } });
+        onValue(ref(db, 'admin/toolStatus'), (s) => { isAct = s.val() !== 'OFF'; });
         onValue(ref(db, 'admin/godMode'), (s) => { gMode = s.val() || "AUTO"; });
 
-        // BOOT & LOAD SAVED DATA
-        setTimeout(() => {
-            document.getElementById('boot-screen').style.display = 'none';
-            document.getElementById('login-sec').style.display = 'flex';
-        }, 2200);
+        setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; document.getElementById('login-sec').style.display = 'flex'; }, 2000);
 
+        // LOGIN
         document.getElementById('auth-btn').onclick = () => {
             let keyVal = document.getElementById('k-inp').value.trim().toUpperCase();
-            if(!keyVal) return showToast("ENTER LICENSE KEY", true);
-            document.getElementById('auth-btn').innerText = "VERIFYING...";
+            if(!keyVal) return showToast("Enter License Key", true);
+            document.getElementById('auth-btn').innerText = "AUTHORIZING..."; playTone(600, 'sine', 0.1);
 
             get(child(ref(db), `keys/${keyVal}`)).then((snapshot) => {
                 if(snapshot.exists() && snapshot.val().status !== "banned" && snapshot.val().expiresAt > Date.now()){
-                    let uRef = ref(db, `metrics/activeUsers/${myId}`);
-                    set(uRef, { username: tgUsername, time: Date.now() }); 
-                    onDisconnect(uRef).remove();
-                    activeKey = keyVal; setupKeyListeners(keyVal);
-                    
                     document.getElementById('login-sec').style.display = 'none';
                     
-                    // CHECK LOCAL STORAGE FOR SAVED SESSION
-                    if(localStorage.getItem('k_cap')) {
-                        currentBalance = parseFloat(localStorage.getItem('k_cap'));
-                        totalProfitLoss = parseFloat(localStorage.getItem('k_pl'));
-                        currentLevel = parseInt(localStorage.getItem('k_lvl'));
-                        targetProfit = parseFloat(localStorage.getItem('k_target'));
-                        lossStreak = parseInt(localStorage.getItem('k_streak'));
-                        historyArr = JSON.parse(localStorage.getItem('k_hist'));
-                        baseBet = parseFloat(localStorage.getItem('k_base'));
-                        
-                        document.getElementById('main-sec').style.display = 'flex';
-                        updateStatsUI();
-                        showToast("SESSION RESTORED");
-                    } else {
-                        document.getElementById('capital-sec').style.display = 'flex';
-                    }
-                } else { 
-                    showToast("INVALID OR EXPIRED KEY", true); 
-                    document.getElementById('auth-btn').innerText = "VERIFY ACCESS";
-                }
-            }).catch(() => { showToast("NETWORK TIMEOUT", true); document.getElementById('auth-btn').innerText = "VERIFY ACCESS"; });
+                    if(localStorage.getItem('k_cap_pro')) {
+                        currentBalance = parseFloat(localStorage.getItem('k_cap_pro')); totalProfitLoss = parseFloat(localStorage.getItem('k_pl_pro'));
+                        currentLevel = parseInt(localStorage.getItem('k_lvl_pro')); targetProfit = parseFloat(localStorage.getItem('k_targ_pro'));
+                        baseBet = parseFloat(localStorage.getItem('k_base_pro'));
+                        document.getElementById('main-sec').style.display = 'flex'; updateStatsUI(); showToast("Session Restored");
+                    } else { document.getElementById('capital-sec').style.display = 'flex'; }
+                } else { showToast("Invalid License", true); document.getElementById('auth-btn').innerText = "AUTHORIZE"; }
+            }).catch(() => { showToast("Network Error", true); document.getElementById('auth-btn').innerText = "AUTHORIZE"; });
         };
 
-        function setupKeyListeners(key) {
-            onValue(ref(db, `keys/${key}`), (snapshot) => {
-                const data = snapshot.val(); if(!data) return;
-                if (data.status === "banned") {
-                    document.getElementById('main-sec').style.display = 'none'; document.getElementById('capital-sec').style.display = 'none'; document.getElementById('ban-screen').style.display = 'flex';
-                }
-                if (data.notification && data.notification.id !== lastNotifId) {
-                    lastNotifId = data.notification.id; showAdminModal(data.notification.text, data.notification.img);
-                }
-            });
-        }
-        window.closeAdminModal = function() { document.getElementById('admin-modal').style.display = 'none'; }
-
-        // LOCAL STORAGE SAVER
         function saveLocalData() {
-            localStorage.setItem('k_cap', currentBalance);
-            localStorage.setItem('k_pl', totalProfitLoss);
-            localStorage.setItem('k_lvl', currentLevel);
-            localStorage.setItem('k_target', targetProfit);
-            localStorage.setItem('k_streak', lossStreak);
-            localStorage.setItem('k_hist', JSON.stringify(historyArr));
-            localStorage.setItem('k_base', baseBet);
+            localStorage.setItem('k_cap_pro', currentBalance); localStorage.setItem('k_pl_pro', totalProfitLoss); 
+            localStorage.setItem('k_lvl_pro', currentLevel); localStorage.setItem('k_targ_pro', targetProfit); 
+            localStorage.setItem('k_base_pro', baseBet);
         }
 
-        // SETUP CAPITAL
+        // 5-LEVEL SETUP
         window.setupCapital = function() {
-            let cap = parseInt(document.getElementById('cap-inp').value);
-            let targ = parseInt(document.getElementById('target-inp').value);
+            let cap = parseInt(document.getElementById('cap-inp').value); let targ = parseInt(document.getElementById('target-inp').value);
+            if(isNaN(cap) || cap < 32) return showToast("Min. Capital ₹32 Required", true);
+            if(isNaN(targ) || targ < 10) return showToast("Set Target Profit", true);
             
-            if(isNaN(cap) || cap < 142) return showToast("MINIMUM BALANCE SHOULD BE ₹142", true);
-            if(isNaN(targ) || targ < 50) return showToast("PLEASE SET A VALID TARGET PROFIT", true);
+            playTone(1000, 'sine', 0.2);
+            currentBalance = cap; targetProfit = targ; baseBet = Math.floor(cap / 32); 
+            totalProfitLoss = 0; currentLevel = 1; previousState = null;
             
-            currentBalance = cap; targetProfit = targ; baseBet = Math.floor(cap / 142); 
-            totalProfitLoss = 0; currentLevel = 1; lossStreak = 0; historyArr = []; previousState = null;
-            
-            saveLocalData();
-            updateStatsUI();
-            
-            document.getElementById('capital-sec').style.display = 'none';
-            document.getElementById('main-sec').style.display = 'flex';
-            document.getElementById('u-btn').style.display = 'none';
-            showToast("ENGINE & RISK MANAGER ACTIVE");
+            saveLocalData(); updateStatsUI();
+            document.getElementById('capital-sec').style.display = 'none'; document.getElementById('main-sec').style.display = 'flex'; 
+            showToast("Engine Initialized"); 
         }
 
-        // RESET SESSION
         window.resetSession = function() {
-            localStorage.removeItem('k_cap'); localStorage.removeItem('k_pl'); localStorage.removeItem('k_lvl');
-            localStorage.removeItem('k_target'); localStorage.removeItem('k_streak'); localStorage.removeItem('k_hist'); localStorage.removeItem('k_base');
-            document.getElementById('target-screen').style.display = 'none';
-            document.getElementById('main-sec').style.display = 'none';
-            document.getElementById('capital-sec').style.display = 'flex';
+            localStorage.removeItem('k_cap_pro'); localStorage.removeItem('k_pl_pro'); localStorage.removeItem('k_lvl_pro'); localStorage.removeItem('k_targ_pro'); localStorage.removeItem('k_base_pro');
+            document.getElementById('target-screen').style.display = 'none'; document.getElementById('main-sec').style.display = 'none'; document.getElementById('capital-sec').style.display = 'flex';
             document.getElementById('cap-inp').value = ''; document.getElementById('target-inp').value = '';
         }
 
         function updateStatsUI() {
-            document.getElementById('ui-bal').innerText = `₹${currentBalance}`;
-            document.getElementById('ui-lvl').innerText = `${currentLevel}/7`;
+            document.getElementById('ui-bal').innerText = `₹${currentBalance}`; document.getElementById('ui-lvl').innerText = `${currentLevel}/5`;
             const plEl = document.getElementById('ui-pl');
             if (totalProfitLoss > 0) { plEl.innerText = `+₹${totalProfitLoss}`; plEl.style.color = 'var(--green)'; } 
             else if (totalProfitLoss < 0) { plEl.innerText = `-₹${Math.abs(totalProfitLoss)}`; plEl.style.color = 'var(--red)'; } 
-            else { plEl.innerText = `₹0`; plEl.style.color = 'var(--text-dim)'; }
+            else { plEl.innerText = `₹0`; plEl.style.color = 'var(--text-muted)'; }
 
             if(totalProfitLoss >= targetProfit && targetProfit > 0) {
-                document.getElementById('main-sec').style.display = 'none';
-                document.getElementById('target-screen').style.display = 'flex';
-                document.getElementById('final-profit-disp').innerText = `PROFIT BOOKED: +₹${totalProfitLoss}`;
+                document.getElementById('main-sec').style.display = 'none'; document.getElementById('target-screen').style.display = 'flex';
+                document.getElementById('final-profit-disp').innerText = `+₹${totalProfitLoss}`;
                 if(tg) tg.HapticFeedback.notificationOccurred('success');
+                playTone(800, 'sine', 0.1); setTimeout(()=>playTone(1200, 'sine', 0.3), 150);
             }
-
-            const hb = document.getElementById('hist-bar'); hb.innerHTML = '';
-            historyArr.slice(-6).forEach(res => {
-                const d = document.createElement('div'); d.className = `dot ${res === 'W' ? 'w' : 'l'}`; hb.appendChild(d);
-            });
         }
 
         const sum2 = (p) => parseInt(String(p).slice(-2).padStart(2,'0')[0]) + parseInt(String(p).slice(-2).padStart(2,'0')[1]);
         const red1 = (n) => { let c = n; while(c > 9) c = String(c).split('').reduce((a, v) => a + parseInt(v), 0); return c; };
 
-        function cipherReveal(element, finalWord) {
-            const chars = "0101!@#$%&*+?"; let iterations = 0;
+        // Clean Algorithmic Decryption Animation
+        function decryptReveal(element, finalWord) {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; let iterations = 0;
             const interval = setInterval(() => {
-                element.innerText = finalWord.split('').map((c, i) => { if (i < iterations / 2) return finalWord[i]; return chars[Math.floor(Math.random() * chars.length)]; }).join('');
-                iterations++; if (iterations >= 15) { clearInterval(interval); element.innerText = finalWord; }
-            }, 30);
+                element.innerText = finalWord.split('').map((c, i) => {
+                    if (i < iterations / 2) return finalWord[i];
+                    return chars[Math.floor(Math.random() * chars.length)];
+                }).join('');
+                iterations++;
+                if (iterations >= 12) { clearInterval(interval); element.innerText = finalWord; }
+            }, 40);
         }
 
         window.executeAlgorithm = function() {
-            if(!isAct || isWarned) return;
+            if(!isAct) return showToast("Server Offline", true);
             let inpVal = inputField.value.trim();
-            if(inpVal === "") return showToast("ENTER BASE DIGIT", true);
+            if(inpVal === "") return showToast("Enter Base Digit", true);
             inputField.blur(); 
             
-            const btn = document.getElementById('p-btn');
-            btn.disabled = true; btn.innerText = "DECRYPTING...";
-            document.getElementById('u-btn').style.display = 'none'; // Hide undo while scanning
+            const btn = document.getElementById('p-btn'); btn.disabled = true; btn.innerText = "PROCESSING...";
+            document.getElementById('u-btn').style.display = 'none'; 
             
-            document.getElementById('spin-ring').classList.add('fast-spin');
-            document.getElementById('sonar1').classList.add('active');
-            document.getElementById('sonar2').classList.add('active');
-            document.getElementById('s-laser').classList.add('active');
-
+            // Start Orbital Animation
+            document.getElementById('tech-ui').classList.add('analyzing');
             if(tg) tg.HapticFeedback.impactOccurred('medium');
+            
+            let tickAudio = setInterval(() => { playTone(1200, 'sine', 0.02); }, 150);
 
             setTimeout(() => {
+                clearInterval(tickAudio); playTone(800, 'sine', 0.2); 
+                
                 let finalRes; 
                 if(gMode === "BIG" || gMode === "SMALL") { finalRes = gMode; } 
                 else {
-                    let baseSum = (sum2(gPer) + sum2(gPer-1) + sum2(gPer-3)) * 3;
-                    let finalNum = red1(Math.abs(baseSum - parseInt(inpVal)));
+                    let baseSum = (sum2(gPer) + sum2(gPer-1) + sum2(gPer-3)) * 3; let finalNum = red1(Math.abs(baseSum - parseInt(inpVal)));
                     if(gPer % 2 === 0) finalNum = (finalNum + 3) % 10;
-                    
-                    let isBig = finalNum >= 5;
-                    if(trendInverted) { isBig = !isBig; }
-                    if(lossStreak >= 2) { isBig = !isBig; }
-                    finalRes = isBig ? "BIG" : "SMALL";
+                    let isBig = finalNum >= 5; if(trendInverted) { isBig = !isBig; } finalRes = isBig ? "BIG" : "SMALL";
                 }
                 lastPredictedResult = finalRes;
 
                 if (isTestingPhase) {
-                    activeBetAmount = 0;
-                    document.getElementById('bet-inst').innerText = "TESTING PHASE: DO NOT BET";
-                    document.getElementById('bet-inst').style.color = "var(--gold)"; document.getElementById('bet-inst').style.borderColor = "var(--gold)";
+                    activeBetAmount = 0; document.getElementById('bet-inst').innerText = "OBSERVE ONLY";
+                    document.getElementById('bet-inst').style.color = "var(--gold)"; document.getElementById('bet-inst').style.background = "rgba(255, 193, 7, 0.1)";
                 } else {
                     activeBetAmount = baseBet * levelMultipliers[currentLevel - 1];
-                    document.getElementById('bet-inst').innerText = `BET ₹${activeBetAmount} ON ${finalRes}`;
-                    document.getElementById('bet-inst').style.color = "#fff"; document.getElementById('bet-inst').style.borderColor = "var(--red)";
+                    document.getElementById('bet-inst').innerText = `BET AMOUNT: ₹${activeBetAmount}`;
+                    document.getElementById('bet-inst').style.color = "var(--accent-cyan)"; document.getElementById('bet-inst').style.background = "rgba(0, 229, 255, 0.1)";
                 }
 
-                document.getElementById('tech-ui').style.display = 'none';
+                document.getElementById('btn-container').style.display = 'none';
                 document.getElementById('res-area').style.display = 'block';
                 
-                const mRes = document.getElementById('m-res');
-                mRes.style.color = isTestingPhase ? 'var(--gold)' : (finalRes === 'BIG' ? 'var(--gold)' : 'var(--accent)');
-                cipherReveal(mRes, finalRes);
-            }, 2000); 
+                const mRes = document.getElementById('m-res'); 
+                mRes.style.color = isTestingPhase ? 'var(--gold)' : (finalRes === 'BIG' ? '#fff' : 'var(--accent-cyan)');
+                
+                decryptReveal(mRes, finalRes);
+                if(tg) tg.HapticFeedback.impactOccurred('heavy');
+            }, 1800); 
         };
 
         window.processFeedback = function(actualResult) {
-            // Save state before modifying for UNDO logic
-            previousState = {
-                balance: currentBalance, pl: totalProfitLoss, level: currentLevel,
-                streak: lossStreak, history: [...historyArr]
-            };
+            playTone(600, 'sine', 0.05);
+            previousState = { balance: currentBalance, pl: totalProfitLoss, level: currentLevel };
 
             if (isTestingPhase) {
                 if(actualResult === lastPredictedResult) { testWins++; } else { testLosses++; }
                 testRoundsCompleted++;
                 if (testRoundsCompleted >= 3) {
-                    isTestingPhase = false;
-                    if (testLosses > testWins) { trendInverted = true; showToast("MARKET NEGATIVE. LOGIC INVERTED.", true); } else { trendInverted = false; showToast("MARKET POSITIVE. NORMAL LOGIC."); }
-                    document.getElementById('test-banner').style.display = 'none';
-                    lossStreak = 0; currentLevel = 1; 
-                } else { document.getElementById('test-left').innerText = (3 - testRoundsCompleted); showToast(`TEST ROUND ${testRoundsCompleted} COMPLETED`); }
+                    isTestingPhase = false; document.getElementById('test-banner').style.display = 'none'; currentLevel = 1;
+                    if (testLosses > testWins) { trendInverted = true; showToast("Algorithmic Logic Inverted", true);} else { trendInverted = false; showToast("Algorithmic Logic Stable");}
+                } else { document.getElementById('test-left').innerText = (3 - testRoundsCompleted); showToast(`Test ${testRoundsCompleted}/3 Recorded`); }
             } else {
                 if(actualResult === lastPredictedResult) { 
-                    lossStreak = 0; totalProfitLoss += activeBetAmount; currentBalance += activeBetAmount; currentLevel = 1; historyArr.push('W');
-                    showToast(`WON ₹${activeBetAmount}!`);
+                    totalProfitLoss += activeBetAmount; currentBalance += activeBetAmount; currentLevel = 1; 
+                    showToast(`Profit +₹${activeBetAmount}`); playTone(1200, 'sine', 0.1); setTimeout(()=>playTone(1600, 'sine', 0.2), 150);
                 } else { 
-                    lossStreak++; totalProfitLoss -= activeBetAmount; currentBalance -= activeBetAmount; historyArr.push('L');
-                    if (currentLevel < 7) { currentLevel++; showToast(`LOST. Level ${currentLevel} Activated.`, true); } 
-                    else { currentLevel = 1; showToast(`7 LEVELS FAILED. Resetting to L1.`, true); }
+                    totalProfitLoss -= activeBetAmount; currentBalance -= activeBetAmount; playTone(300, 'square', 0.2);
+                    if (currentLevel < 5) { currentLevel++; showToast(`Scaling to Level ${currentLevel}`, true); } 
+                    else { currentLevel = 1; showToast(`Safety Triggered. Level Reset.`, true); }
                 }
-                saveLocalData();
-                updateStatsUI();
+                saveLocalData(); updateStatsUI();
             }
 
-            document.getElementById('res-area').style.display = 'none';
-            document.getElementById('tech-ui').style.display = 'flex';
-            document.getElementById('u-btn').style.display = 'block'; // Show Undo button
+            document.getElementById('res-area').style.display = 'none'; 
+            document.getElementById('btn-container').style.display = 'block'; 
+            document.getElementById('u-btn').style.display = 'block'; 
+            document.getElementById('tech-ui').classList.remove('analyzing'); 
             
-            document.getElementById('spin-ring').classList.remove('fast-spin');
-            document.getElementById('sonar1').classList.remove('active'); document.getElementById('sonar2').classList.remove('active');
-            document.getElementById('s-laser').classList.remove('active');
-            
-            inputField.value = '';
-            const btn = document.getElementById('p-btn');
-            if(isAct && !isWarned) { btn.disabled = false; btn.innerText = "PREDICT"; } else if (isWarned) { btn.disabled = true; btn.innerText = "PAUSED"; }
+            inputField.value = ''; const btn = document.getElementById('p-btn');
+            btn.disabled = false; btn.innerText = "ANALYZE DATA"; 
         }
 
-        // UNDO LOGIC
         window.undoLastAction = function() {
-            if(!previousState) return;
-            currentBalance = previousState.balance; totalProfitLoss = previousState.pl; currentLevel = previousState.level;
-            lossStreak = previousState.streak; historyArr = [...previousState.history];
-            
-            previousState = null; // Can only undo once
-            saveLocalData(); updateStatsUI();
-            document.getElementById('u-btn').style.display = 'none';
-            showToast("LAST RESULT REVERTED", true);
+            if(!previousState) return; playTone(500, 'sine', 0.1);
+            currentBalance = previousState.balance; totalProfitLoss = previousState.pl; currentLevel = previousState.level; 
+            previousState = null; saveLocalData(); updateStatsUI(); document.getElementById('u-btn').style.display = 'none'; showToast("Action Reversed", true);
         }
 
         setInterval(() => {
             let n = new Date(); let t = new Date(n.getTime() + 1000); let r = 59 - n.getUTCSeconds();
             gPer = 10001 + (t.getUTCHours() * 60) + t.getUTCMinutes();
-            document.getElementById('p-disp').innerText = `${t.getUTCFullYear()}${String(t.getUTCMonth()+1).padStart(2,'0')}${String(t.getUTCDate()).padStart(2,'0')}-${gPer}`;
+            document.getElementById('p-disp').innerText = `Period: ${t.getUTCFullYear()}${String(t.getUTCMonth()+1).padStart(2,'0')}${String(t.getUTCDate()).padStart(2,'0')}-${gPer}`;
             document.getElementById('t-disp').innerText = `00:${String(r).padStart(2,'0')}`;
 
             if (gPer % 10 === 0 && testedForPeriodZero !== gPer) {
                 isTestingPhase = true; testRoundsCompleted = 0; testWins = 0; testLosses = 0; testedForPeriodZero = gPer; 
                 document.getElementById('test-banner').style.display = 'block'; document.getElementById('test-left').innerText = "3";
-                showToast("⚠️ CALIBRATION PHASE STARTED", true);
+                showToast("Calibration Phase Started", true); playTone(600, 'square', 0.2);
             }
         }, 1000);
     </script>
