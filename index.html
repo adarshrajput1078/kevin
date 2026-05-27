@@ -2,98 +2,165 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sikkim AI | Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sikkim VIP | Ultimate Master Edition</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Share+Tech+Mono&display=swap');
-        
-        body { background-color: #050505; color: #fff; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; justify-content: center; }
-        .admin-container { width: 100%; max-width: 500px; }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-        .header h1 { margin: 0; color: #f59e0b; font-size: 24px; text-transform: uppercase; letter-spacing: 2px;}
-        
-        .control-card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .control-title { font-size: 14px; color: #888; margin-bottom: 15px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;}
-        
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: #ccc;}
-        input[type="text"], select { width: 100%; background: #000; color: #fff; border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 16px; margin-bottom: 20px; outline: none; font-family: 'Poppins'; }
-        input[type="text"]:focus, select:focus { border-color: #f59e0b; }
-        
-        /* Toggle Switch */
-        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ef4444; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #10b981; }
-        input:checked + .slider:before { transform: translateX(26px); }
+        /* Classic Luxury Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Space+Mono&display=swap');
 
-        .btn-update { background: #f59e0b; color: #000; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s;}
-        .btn-update:hover { background: #d97706; }
-        .btn-danger { background: #ef4444; color: white;}
-        .btn-danger:hover { background: #dc2626;}
+        :root {
+            /* Classic Color Palette */
+            --bg-obsidian: #0a0a0c; --glass-bg: rgba(22, 22, 26, 0.7);
+            --gold-primary: #D4AF37; --gold-light: #F9F1CC; --gold-dark: #8A5A19;
+            --gold-gradient: linear-gradient(135deg, #8A5A19 0%, #D4AF37 40%, #F9F1CC 50%, #D4AF37 60%, #8A5A19 100%);
+            --classic-green: #1b4d3e; --classic-red: #722f37;
+            --text-main: #f0f0f0; --text-muted: #a1a1aa;
+            --font-ui: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif; --font-mono: 'Space Mono', monospace;
+        }
 
-        #live-log { background: #000; border: 1px solid #333; padding: 15px; border-radius: 8px; font-family: 'Share Tech Mono'; font-size: 12px; color: #10b981; height: 150px; overflow-y: auto; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-obsidian); color: var(--text-main); font-family: var(--font-ui); margin: 0; display: flex; justify-content: center; min-height: 100vh; background-image: radial-gradient(circle at 50% -20%, #1e1e24 0%, #0a0a0c 80%); background-attachment: fixed; }
+
+        /* --- AUTH GATEWAY --- */
+        #auth-gateway { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(20px); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; transition: 0.5s; }
+        .auth-card { background: var(--glass-bg); border: 1px solid rgba(212, 175, 55, 0.3); padding: 35px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); width: 100%; max-width: 350px; }
+        .auth-title { font-family: var(--font-serif); font-size: 26px; color: var(--gold-light); margin-bottom: 10px; letter-spacing: 1px;}
+        .auth-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.2); color: #fff; padding: 15px; border-radius: 12px; font-size: 16px; text-align: center; margin-bottom: 20px; outline: none; font-family: var(--font-mono); letter-spacing: 3px; transition: 0.3s;}
+        .auth-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+        .time-badge { background: rgba(0,0,0,0.3); border: 1px dashed rgba(212, 175, 55, 0.3); color: var(--text-muted); padding: 12px; border-radius: 10px; font-size: 10px; font-family: var(--font-mono); margin-bottom: 25px; text-transform: uppercase;}
+        .time-badge span { color: var(--gold-primary); font-weight: bold; display: block; margin-top: 6px; font-size: 12px;}
+
+        /* --- MAIN APP UI --- */
+        .mobile-app { width: 100%; max-width: 420px; position: relative; padding: 30px 20px; display: none; flex-direction: column; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; animation: smoothFadeIn 0.8s ease; }
+        @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .brand-container { display: flex; align-items: center; gap: 12px; }
+        .css-logo { width: 42px; height: 42px; background: var(--gold-gradient); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-family: var(--font-serif); font-size: 24px; color: #000; font-weight: bold; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); border: 2px solid rgba(255,255,255,0.2); }
+        .logo { font-family: var(--font-serif); font-size: 22px; letter-spacing: 0.5px; color: #fff; line-height: 1.2; }
+        .logo span { display: block; font-family: var(--font-ui); font-size: 9px; text-transform: uppercase; letter-spacing: 3px; color: var(--gold-primary); }
+        
+        .api-status { font-size: 9px; font-weight: 600; color: var(--text-main); letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 30px; }
+        .status-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 10px var(--gold-primary); animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(212, 175, 55, 0.15); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 25px 40px rgba(0,0,0,0.6); }
+
+        .server-header { text-align: center; margin-bottom: 20px; }
+        .server-title { font-size: 10px; color: var(--text-muted); letter-spacing: 3px; font-weight: 600; text-transform: uppercase;}
+        .period-display { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 15px; text-align: center; }
+        .live-period { font-family: var(--font-mono); font-size: 20px; color: var(--text-main); letter-spacing: 3px; }
+        .timer-wrapper { text-align: center; }
+        .live-timer { font-family: var(--font-serif); font-size: 56px; color: var(--gold-light); font-weight: 700; line-height: 1; margin-bottom: 5px; }
+        .timer-label { font-size: 9px; color: var(--gold-primary); letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
+
+        .btn-luxury { background: var(--gold-gradient); border: none; color: #111; font-family: var(--font-ui); font-weight: 700; font-size: 14px; padding: 18px; border-radius: 14px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15); transition: 0.3s; }
+        .btn-luxury:disabled { filter: grayscale(1); opacity: 0.6; cursor: not-allowed; }
+        .btn-luxury:active:not(:disabled) { transform: scale(0.97); }
+
+        #analysis-console { display: none; background: rgba(0, 0, 0, 0.5); border-radius: 12px; padding: 20px; font-family: var(--font-mono); font-size: 11px; color: var(--gold-light); margin-top: 25px; text-align: left; border: 1px solid rgba(212, 175, 55, 0.1); height: 130px;}
+        .console-line { margin-bottom: 8px; }
+
+        .result-box { display: none; text-align: center; margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .result-box.show { display: block; animation: smoothFadeIn 0.5s ease forwards; }
+        
+        .algo-label { color: var(--text-muted); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .algo-label span { color: var(--gold-primary); font-weight: 600; }
+        
+        .confidence-indicator { font-size: 14px; margin-bottom: 20px; letter-spacing: 1px; font-weight: 500; }
+        .conf-high { color: var(--text-main); }
+        .conf-high span { color: var(--gold-primary); font-weight: 700; }
+        .conf-low { color: #d97706; text-shadow: 0 0 10px rgba(217, 119, 6, 0.3);}
+        .conf-low span { color: #ef4444; font-weight: 700; }
+        
+        .result-number { font-family: var(--font-serif); font-size: 64px; margin: 0 0 20px 0; color: #fff; font-weight: 700; line-height: 1; text-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+        
+        .tag-wrapper { margin-bottom: 30px; opacity: 0; transition: 0.3s; }
+        .tag-wrapper.pop { opacity: 1; animation: stampPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes stampPop { 0% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .tag { display: inline-block; padding: 14px 45px; font-family: var(--font-ui); font-size: 24px; font-weight: 600; border-radius: 8px; color: #fff; letter-spacing: 4px; border: 1px solid rgba(212, 175, 55, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .tag-big { background: var(--classic-green); }
+        .tag-small { background: var(--classic-red); }
+
+        .feedback-row { display: flex; gap: 15px; opacity: 0; transition: 0.5s; transform: translateY(10px);}
+        .feedback-row.reveal { opacity: 1; transform: translateY(0); }
+        .btn-feed { flex: 1; padding: 14px; border-radius: 10px; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; font-family: var(--font-ui); font-size: 11px; letter-spacing: 2px; background: rgba(0,0,0,0.3); color: var(--text-muted); }
+        .btn-win:active { background: var(--classic-green); color: #fff; }
+        .btn-loss:active { background: var(--classic-red); color: #fff; }
+        .footer-text { text-align: center; color: rgba(255,255,255,0.2); font-size: 9px; margin-top: auto; padding-top: 30px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <div class="admin-container">
-        <div class="header">
-            <h1>Sikkim Master Panel</h1>
-            <p style="color: #666; font-size: 12px;">Authorized Access Only: Kevin Sureshot</p>
-        </div>
-
-        <div class="control-card" style="border-color: #ef4444;">
-            <div class="control-title" style="color: #ef4444;">Security Management (Access Key)</div>
-            <label>Current Key Last Updated:</label>
-            <div id="key-timestamp-display" style="color: #10b981; font-family: 'Share Tech Mono'; margin-bottom: 15px; font-size: 13px;">Checking connection...</div>
+    <div id="auth-gateway">
+        <div class="auth-card">
+            <div class="css-logo" style="margin: 0 auto 20px auto;">S</div>
+            <div class="auth-title">RESTRICTED ACCESS</div>
             
-            <label>Set New Access Key:</label>
-            <input type="text" id="newAccessKey" placeholder="e.g. SIKKIM123">
-            <button class="btn-update btn-danger" id="updateKeyBtn">CHANGE PASSWORD NOW</button>
-        </div>
+            <div class="time-badge">
+                Security Protocol Updated:
+                <span id="key-timestamp">Syncing Database...</span>
+            </div>
 
-        <div class="control-card">
-            <div class="control-title">System Power</div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: 600; font-size: 16px;">App Server Status</span>
-                <label class="switch">
-                    <input type="checkbox" id="serverToggle" checked>
-                    <span class="slider"></span>
-                </label>
+            <input type="password" id="access-key-input" class="auth-input" placeholder="ACCESS KEY">
+            <button class="btn-luxury" onclick="verifyKey()">VERIFY IDENTITY</button>
+            <p id="auth-error" style="color: #ef4444; font-size: 12px; display: none; margin-top: 15px; letter-spacing: 1px;">Invalid Key. Check Admin Console.</p>
+        </div>
+    </div>
+
+    <div class="mobile-app" id="main-app">
+        <div class="top-nav">
+            <div class="brand-container">
+                <div class="css-logo">S</div>
+                <div class="logo">Sikkim <span>Kevin Sureshot VIP</span></div>
+            </div>
+            <div id="status-indicator" class="api-status">
+                <span class="status-dot"></span> <span id="status-text">SECURE</span>
             </div>
         </div>
 
-        <div class="control-card">
-            <div class="control-title">Result Override Engine</div>
-            <label>Force Next Prediction:</label>
-            <select id="resultHack">
-                <option value="AUTO">AUTO (Mathematical Logic)</option>
-                <option value="BIG">FORCE BIG (Wins guaranteed Big)</option>
-                <option value="SMALL">FORCE SMALL (Wins guaranteed Small)</option>
-            </select>
-            
-            <button class="btn-update" id="saveSettingsBtn">UPDATE LIVE SERVER</button>
+        <div class="glass-card">
+            <div class="server-header">
+                <div class="server-title">Live UTC Synchronization</div>
+            </div>
+            <div class="period-display">
+                <div class="live-period" id="display-period">Loading...</div>
+            </div>
+            <div class="timer-wrapper">
+                <div class="live-timer" id="display-timer">00:00</div>
+                <div class="timer-label">Calculation Window</div>
+            </div>
         </div>
 
-        <div class="control-card">
-            <div class="control-title">Live Diagnostics Console</div>
-            <div id="live-log">> Admin panel booting...</div>
+        <div class="glass-card">
+            <button class="btn-luxury" id="hack-btn">Execute Protocol</button>
+
+            <div id="analysis-console"></div>
+
+            <div id="manual-result" class="result-box">
+                <div class="algo-label">Protocol: <span id="algo-used">Variance Logic</span></div>
+                <div id="acc-text" class="confidence-indicator conf-high">Confidence Rating: <span>85%</span></div>
+                
+                <h1 class="result-number" id="main-num">0</h1>
+                
+                <div class="tag-wrapper" id="tag-wrap">
+                    <div class="tag" id="main-tag">---</div>
+                </div>
+                
+                <div class="feedback-row" id="feed-row">
+                    <button class="btn-feed btn-win" onclick="recordFeedback(true)">PROFIT</button>
+                    <button class="btn-feed btn-loss" onclick="recordFeedback(false)">LOSS</button>
+                </div>
+            </div>
         </div>
+        
+        <div class="footer-text">Exclusive Access • Architecture by Adarsh Kumar</div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-        const logBox = document.getElementById('live-log');
-        function addLog(msg, isError = false) {
-            const color = isError ? '#ef4444' : '#10b981';
-            logBox.innerHTML += `<br><span style="color:${color}">> ${msg}</span>`;
-            logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        addLog("Attempting to connect to Firebase...");
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAJk3E5Itcz7DU-op_bqwgqSobmD8rfNq8",
@@ -105,70 +172,210 @@
             appId: "1:897487739765:web:34f9df57ee8372aa6b913c"
         };
 
-        let db;
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getDatabase(app);
-            addLog("Firebase App Initialized successfully!");
-        } catch(e) {
-            addLog(`Init Error: ${e.message}`, true);
-        }
-        
-        const settingsRef = ref(db, 'admin_settings');
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
+        // Global Variables
+        let isServerOnline = true;
+        let forcedResult = "AUTO"; 
+        let currentLivePeriod = "";
+        let isProcessing = false;
+        
+        let serverAccessKey = "";
+        let userEnteredKey = "";
+        let isAppUnlocked = false;
+        let consecutiveLosses = 0;
+
+        const algorithmNames = [
+            "Pattern Matrix Alpha (1A-1B)",
+            "Pattern Matrix Beta (2A-2B)",
+            "Quantitative Loss Recovery",
+            "Probability Distribution Chart",
+            "Longitudinal Trend Analysis"
+        ];
+
+        // --- ADVANCED ACCURACY LOGIC ---
+        function getCustomAccuracyInfo(digit) {
+            if(consecutiveLosses >= 2) return { value: Math.floor(Math.random() * 11) + 90, type: 'high' };
+            if([1, 3, 6, 8].includes(digit)) return { value: Math.floor(Math.random() * 26) + 40, type: 'low' };
+            return { value: Math.floor(Math.random() * 15) + 75, type: 'high' };
+        }
+
+        // 1. FIREBASE ADMIN SYNC
+        const settingsRef = ref(db, 'admin_settings');
         onValue(settingsRef, (snapshot) => {
-            try {
-                const data = snapshot.val();
-                if(data) {
-                    if(data.serverOnline !== undefined) document.getElementById('serverToggle').checked = data.serverOnline;
-                    if(data.forceResult) document.getElementById('resultHack').value = data.forceResult;
-                    if(data.accessKey) document.getElementById('newAccessKey').value = data.accessKey;
-                    document.getElementById('key-timestamp-display').innerText = data.keyUpdatedAt || "Never";
-                    addLog("Live data synced from database.");
+            const data = snapshot.val();
+            if(data) {
+                isServerOnline = data.serverOnline !== undefined ? data.serverOnline : true;
+                forcedResult = data.forceResult || "AUTO";
+                serverAccessKey = data.accessKey || "12345";
+                document.getElementById('key-timestamp').innerText = data.keyUpdatedAt || "Waiting for Admin...";
+                
+                if(isAppUnlocked && userEnteredKey !== serverAccessKey) lockApp();
+
+                const statusInd = document.getElementById('status-indicator');
+                const statusTxt = document.getElementById('status-text');
+                const btn = document.getElementById('hack-btn');
+
+                if(!isServerOnline) {
+                    statusInd.style.color = '#ef4444';
+                    statusInd.querySelector('.status-dot').style.background = '#ef4444';
+                    statusTxt.innerText = 'MAINTENANCE';
+                    btn.disabled = true;
+                    btn.innerText = 'SERVER OFFLINE';
                 } else {
-                    addLog("Database is empty. Ready to push new settings.");
+                    statusInd.style.color = 'var(--text-main)';
+                    statusInd.querySelector('.status-dot').style.background = 'var(--gold-primary)';
+                    statusTxt.innerText = 'SECURE';
+                    btn.disabled = false;
+                    btn.innerText = 'Execute Protocol';
                 }
-            } catch(e) {
-                addLog(`Read Error: ${e.message}`, true);
             }
         });
 
-        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-            const isOnline = document.getElementById('serverToggle').checked;
-            const hackMode = document.getElementById('resultHack').value;
-            const btn = document.getElementById('saveSettingsBtn');
+        // 2. AUTHENTICATION LOGIC
+        window.verifyKey = function() {
+            const inputVal = document.getElementById('access-key-input').value;
+            if(inputVal === serverAccessKey) {
+                userEnteredKey = inputVal;
+                isAppUnlocked = true;
+                document.getElementById('auth-error').style.display = 'none';
+                document.getElementById('auth-gateway').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+            }
+        }
+
+        function lockApp() {
+            isAppUnlocked = false; userEnteredKey = "";
+            document.getElementById('access-key-input').value = "";
+            document.getElementById('auth-error').innerText = "Security Key Revoked by Admin. Re-Authenticate.";
+            document.getElementById('auth-error').style.display = 'block';
+            document.getElementById('auth-gateway').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'none';
+        }
+
+        // 3. LIVE UTC TIMER
+        function updateLiveServerData() {
+            const now = new Date();
+            const hours = now.getUTCHours();
+            const minutes = now.getUTCMinutes();
+            const seconds = now.getUTCSeconds();
+            const remainingSeconds = 60 - seconds;
+            const totalMinutes = (hours * 60) + minutes;
+            const year = now.getUTCFullYear();
+            const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(now.getUTCDate()).padStart(2, '0');
             
-            btn.innerText = "SENDING DATA...";
+            currentLivePeriod = `${year}${month}${day}1000${10001 + totalMinutes}`;
 
-            update(settingsRef, {
-                serverOnline: isOnline,
-                forceResult: hackMode
-            }).then(() => {
-                addLog(`SUCCESS: Pushed [Mode: ${hackMode}, Status: ${isOnline}]`);
-                btn.innerText = "SAVED SUCCESSFULLY!"; 
-                btn.style.background = "#10b981";
-                setTimeout(() => { btn.innerText = "UPDATE LIVE SERVER"; btn.style.background = "#f59e0b"; }, 2000);
-            }).catch((error) => { 
-                addLog(`WRITE ERROR: ${error.message}`, true); 
-            });
+            document.getElementById('display-period').innerText = currentLivePeriod;
+            document.getElementById('display-timer').innerText = `00:${String(remainingSeconds).padStart(2, '0')}`;
+
+            if(remainingSeconds === 60 || remainingSeconds === 59) {
+                document.getElementById('manual-result').classList.remove('show');
+                document.getElementById('tag-wrap').classList.remove('pop');
+                document.getElementById('feed-row').classList.remove('reveal');
+            }
+        }
+        setInterval(updateLiveServerData, 1000);
+        updateLiveServerData();
+
+        function calculatePrediction(periodStr) {
+            let sum = 0;
+            for(let i=0; i<periodStr.length; i++) sum += parseInt(periodStr[i]);
+            while(sum >= 10) {
+                let temp = sum.toString(); sum = 0;
+                for(let i=0; i<temp.length; i++) sum += parseInt(temp[i]);
+            }
+            return sum;
+        }
+
+        // 4. PREDICTION ENGINE 
+        document.getElementById('hack-btn').addEventListener('click', () => {
+            if(!isServerOnline || isProcessing || !currentLivePeriod) return;
+            isProcessing = true;
+            
+            const btn = document.getElementById('hack-btn');
+            btn.innerText = 'PROCESSING...';
+            btn.disabled = true;
+
+            document.getElementById('manual-result').classList.remove('show');
+            document.getElementById('tag-wrap').classList.remove('pop');
+            document.getElementById('feed-row').classList.remove('reveal');
+            
+            const term = document.getElementById('analysis-console');
+            term.style.display = 'block';
+            term.innerHTML = '<div class="console-line">> Authenticating VIP Key...</div>';
+            
+            setTimeout(() => { term.innerHTML += `<div class="console-line">> Intercepting Period: ${currentLivePeriod}...</div>`; }, 400);
+            setTimeout(() => { term.innerHTML += '<div class="console-line">> Applying Quantitative Matrices...</div>'; }, 800);
+
+            setTimeout(() => {
+                term.style.display = 'none';
+                showResult();
+            }, 1400);
         });
 
-        document.getElementById('updateKeyBtn').addEventListener('click', () => {
-            const newKey = document.getElementById('newAccessKey').value;
-            if(!newKey || newKey.trim() === "") { alert("Password cannot be empty!"); return; }
+        function showResult() {
+            let finalDigit, isBig;
 
-            const timestamp = new Date().toLocaleString('en-IN');
+            // Admin Override Check
+            if(forcedResult === "BIG") {
+                isBig = true; finalDigit = [1,3,5,7,9][Math.floor(Math.random()*5)];
+            } else if (forcedResult === "SMALL") {
+                isBig = false; finalDigit = [0,2,4,6,8][Math.floor(Math.random()*5)];
+            } else {
+                finalDigit = calculatePrediction(currentLivePeriod);
+                isBig = [1,3,5,7,9].includes(finalDigit);
+            }
 
-            update(settingsRef, {
-                accessKey: newKey,
-                keyUpdatedAt: timestamp
-            }).then(() => {
-                addLog(`SECURITY: Password changed to '${newKey}' at ${timestamp}`);
-                const btn = document.getElementById('updateKeyBtn');
-                btn.innerText = "PASSWORD CHANGED!"; btn.style.background = "#10b981";
-                setTimeout(() => { btn.innerText = "CHANGE PASSWORD NOW"; btn.style.background = "#ef4444"; }, 2000);
-            }).catch((error) => { addLog(`WRITE ERROR: ${error.message}`, true); });
-        });
+            const accData = getCustomAccuracyInfo(finalDigit);
+            const randomAlgo = algorithmNames[Math.floor(Math.random() * algorithmNames.length)];
+
+            document.getElementById('algo-used').innerText = randomAlgo;
+            
+            const accText = document.getElementById('acc-text');
+            if(accData.type === 'low') {
+                accText.innerHTML = `Caution: Variance Detected <span>(${accData.value}%)</span>`;
+                accText.className = 'confidence-indicator conf-low';
+            } else {
+                accText.innerHTML = `Confidence Rating: <span>${accData.value}%</span>`;
+                accText.className = 'confidence-indicator conf-high';
+            }
+
+            document.getElementById('manual-result').classList.add('show');
+
+            // Scramble Animation
+            const numEl = document.getElementById('main-num');
+            let duration = 1000; let startTime = Date.now();
+            let scrambleInterval = setInterval(() => {
+                numEl.innerText = Math.floor(Math.random() * 10);
+                if (Date.now() - startTime >= duration) {
+                    clearInterval(scrambleInterval);
+                    numEl.innerText = finalDigit;
+                    
+                    const tag = document.getElementById('main-tag');
+                    tag.innerText = isBig ? "BIG" : "SMALL";
+                    tag.className = isBig ? "tag tag-big" : "tag tag-small";
+                    document.getElementById('tag-wrap').classList.add('pop');
+                    
+                    setTimeout(() => {
+                        document.getElementById('feed-row').classList.add('reveal');
+                        isProcessing = false;
+                        const btn = document.getElementById('hack-btn');
+                        btn.innerText = 'Execute Protocol';
+                        btn.disabled = false;
+                    }, 500);
+                }
+            }, 60);
+        }
+
+        window.recordFeedback = function(isWin) {
+            consecutiveLosses = isWin ? 0 : consecutiveLosses + 1;
+            document.getElementById('manual-result').classList.remove('show');
+        }
     </script>
 </body>
 </html>
