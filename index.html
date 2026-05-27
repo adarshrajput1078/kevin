@@ -3,161 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sikkim VIP | Ultimate Master Edition</title>
+    <title>Sikkim X Kevin | Cyberpunk Master</title>
     <style>
-        /* Classic Luxury Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Space+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap');
 
         :root {
-            /* Classic Color Palette */
-            --bg-obsidian: #0a0a0c; --glass-bg: rgba(22, 22, 26, 0.7);
-            --gold-primary: #D4AF37; --gold-light: #F9F1CC; --gold-dark: #8A5A19;
-            --gold-gradient: linear-gradient(135deg, #8A5A19 0%, #D4AF37 40%, #F9F1CC 50%, #D4AF37 60%, #8A5A19 100%);
-            --classic-green: #1b4d3e; --classic-red: #722f37;
-            --text-main: #f0f0f0; --text-muted: #a1a1aa;
-            --font-ui: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif; --font-mono: 'Space Mono', monospace;
+            --bg-dark: #03050a;
+            --neon-orange: #ff5e00;
+            --neon-cyan: #00f3ff;
+            --neon-green: #00ff66;
+            --neon-red: #ff003c;
+            --font-display: 'Orbitron', sans-serif;
+            --font-ui: 'Rajdhani', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-obsidian); color: var(--text-main); font-family: var(--font-ui); margin: 0; display: flex; justify-content: center; min-height: 100vh; background-image: radial-gradient(circle at 50% -20%, #1e1e24 0%, #0a0a0c 80%); background-attachment: fixed; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: var(--bg-dark); color: #fff; font-family: var(--font-ui); 
+            display: flex; justify-content: center; min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at center, #0a1122 0%, var(--bg-dark) 80%),
+                linear-gradient(45deg, rgba(0, 243, 255, 0.02) 25%, transparent 25%, transparent 75%, rgba(0, 243, 255, 0.02) 75%, rgba(0, 243, 255, 0.02));
+            background-size: 100% 100%, 30px 30px;
+            position: relative;
+        }
+
+        /* CRT SCANLINE EFFECT (CYBERPUNK VIBE) */
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 999; opacity: 0.4;
+        }
+
+        .mobile-app { width: 100%; max-width: 420px; padding: 20px; display: none; flex-direction: column; position: relative; overflow-x: hidden; z-index: 10; animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         /* --- AUTH GATEWAY --- */
-        #auth-gateway { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(20px); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; transition: 0.5s; }
-        .auth-card { background: var(--glass-bg); border: 1px solid rgba(212, 175, 55, 0.3); padding: 35px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); width: 100%; max-width: 350px; }
-        .auth-title { font-family: var(--font-serif); font-size: 26px; color: var(--gold-light); margin-bottom: 10px; letter-spacing: 1px;}
-        .auth-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.2); color: #fff; padding: 15px; border-radius: 12px; font-size: 16px; text-align: center; margin-bottom: 20px; outline: none; font-family: var(--font-mono); letter-spacing: 3px; transition: 0.3s;}
-        .auth-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-        .time-badge { background: rgba(0,0,0,0.3); border: 1px dashed rgba(212, 175, 55, 0.3); color: var(--text-muted); padding: 12px; border-radius: 10px; font-size: 10px; font-family: var(--font-mono); margin-bottom: 25px; text-transform: uppercase;}
-        .time-badge span { color: var(--gold-primary); font-weight: bold; display: block; margin-top: 6px; font-size: 12px;}
-
-        /* --- MAIN APP UI --- */
-        .mobile-app { width: 100%; max-width: 420px; position: relative; padding: 30px 20px; display: none; flex-direction: column; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; animation: smoothFadeIn 0.8s ease; }
-        @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #auth-gateway {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 5, 10, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
+        }
+        .auth-card { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); padding: 35px 30px; border-radius: 16px; box-shadow: 0 0 30px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.1); width: 100%; max-width: 350px; position: relative; overflow: hidden; }
+        .auth-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 2px; background: var(--neon-cyan); animation: scanLine 3s linear infinite; }
+        @keyframes scanLine { 100% { left: 200%; } }
         
-        .brand-container { display: flex; align-items: center; gap: 12px; }
-        .css-logo { width: 42px; height: 42px; background: var(--gold-gradient); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-family: var(--font-serif); font-size: 24px; color: #000; font-weight: bold; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); border: 2px solid rgba(255,255,255,0.2); }
-        .logo { font-family: var(--font-serif); font-size: 22px; letter-spacing: 0.5px; color: #fff; line-height: 1.2; }
-        .logo span { display: block; font-family: var(--font-ui); font-size: 9px; text-transform: uppercase; letter-spacing: 3px; color: var(--gold-primary); }
+        .auth-title { font-family: var(--font-display); font-size: 22px; color: var(--neon-cyan); margin-bottom: 25px; letter-spacing: 2px; text-shadow: 0 0 15px rgba(0,243,255,0.6);}
+        .auth-input { width: 100%; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(255, 94, 0, 0.5); color: var(--neon-cyan); padding: 16px; border-radius: 8px; font-size: 20px; text-align: center; margin-bottom: 25px; outline: none; font-family: var(--font-mono); letter-spacing: 5px; transition: 0.3s;}
+        .auth-input:focus { border-color: var(--neon-orange); box-shadow: 0 0 20px rgba(255, 94, 0, 0.4); background: #000; }
+        .auth-btn { background: linear-gradient(90deg, #ff5e00, #d90000); border: none; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 16px; padding: 16px; border-radius: 8px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(255, 94, 0, 0.4); transition: 0.3s; }
+        .auth-btn:active { transform: scale(0.95); }
         
-        .api-status { font-size: 9px; font-weight: 600; color: var(--text-main); letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 30px; }
-        .status-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 10px var(--gold-primary); animation: blink 1.5s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        /* --- HEADER --- */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(0, 243, 255, 0.15); padding-bottom: 15px; }
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-family: var(--font-display); font-size: 30px; font-weight: 900; background: linear-gradient(135deg, var(--neon-orange), var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(255,94,0,0.4));}
+        .logo-text { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 1px; line-height: 1.1;}
+        .logo-text span { color: var(--neon-cyan); display: block; font-size: 11px; letter-spacing: 4px; font-family: var(--font-ui);}
+        .status-btn { display: flex; align-items: center; gap: 6px; border: 1px solid var(--neon-orange); padding: 6px 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; font-weight: bold; color: var(--neon-orange); background: rgba(255, 94, 0, 0.1); letter-spacing: 1px; }
+        .status-dot { width: 8px; height: 8px; background: var(--neon-orange); border-radius: 50%; box-shadow: 0 0 10px var(--neon-orange); animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-        .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(212, 175, 55, 0.15); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 25px 40px rgba(0,0,0,0.6); }
+        /* --- CIRCULAR TIMER (BREATHING EFFECT) --- */
+        .timer-container { display: flex; justify-content: center; margin-bottom: 25px; }
+        .timer-circle { 
+            width: 175px; height: 175px; border-radius: 50%;
+            border: 3px solid rgba(255, 94, 0, 0.8);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(255, 94, 0, 0.2), inset 0 0 20px rgba(255, 94, 0, 0.1);
+            position: relative; animation: breathePulse 3s infinite ease-in-out;
+        }
+        @keyframes breathePulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 94, 0, 0.2), inset 0 0 15px rgba(255, 94, 0, 0.1); } 50% { box-shadow: 0 0 40px rgba(255, 94, 0, 0.4), inset 0 0 25px rgba(255, 94, 0, 0.2); } }
 
-        .server-header { text-align: center; margin-bottom: 20px; }
-        .server-title { font-size: 10px; color: var(--text-muted); letter-spacing: 3px; font-weight: 600; text-transform: uppercase;}
-        .period-display { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 15px; text-align: center; }
-        .live-period { font-family: var(--font-mono); font-size: 20px; color: var(--text-main); letter-spacing: 3px; }
-        .timer-wrapper { text-align: center; }
-        .live-timer { font-family: var(--font-serif); font-size: 56px; color: var(--gold-light); font-weight: 700; line-height: 1; margin-bottom: 5px; }
-        .timer-label { font-size: 9px; color: var(--gold-primary); letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
-
-        .btn-luxury { background: var(--gold-gradient); border: none; color: #111; font-family: var(--font-ui); font-weight: 700; font-size: 14px; padding: 18px; border-radius: 14px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15); transition: 0.3s; }
-        .btn-luxury:disabled { filter: grayscale(1); opacity: 0.6; cursor: not-allowed; }
-        .btn-luxury:active:not(:disabled) { transform: scale(0.97); }
-
-        #analysis-console { display: none; background: rgba(0, 0, 0, 0.5); border-radius: 12px; padding: 20px; font-family: var(--font-mono); font-size: 11px; color: var(--gold-light); margin-top: 25px; text-align: left; border: 1px solid rgba(212, 175, 55, 0.1); height: 130px;}
-        .console-line { margin-bottom: 8px; }
-
-        .result-box { display: none; text-align: center; margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
-        .result-box.show { display: block; animation: smoothFadeIn 0.5s ease forwards; }
+        .timer-circle::before {
+            content: ''; position: absolute; top: -14px; left: -14px; right: -14px; bottom: -14px;
+            border-radius: 50%; border: 2px dashed rgba(255, 94, 0, 0.4);
+            animation: rotateSpin 20s linear infinite;
+        }
+        @keyframes rotateSpin { 100% { transform: rotate(360deg); } }
         
-        .algo-label { color: var(--text-muted); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
-        .algo-label span { color: var(--gold-primary); font-weight: 600; }
-        
-        .confidence-indicator { font-size: 14px; margin-bottom: 20px; letter-spacing: 1px; font-weight: 500; }
-        .conf-high { color: var(--text-main); }
-        .conf-high span { color: var(--gold-primary); font-weight: 700; }
-        .conf-low { color: #d97706; text-shadow: 0 0 10px rgba(217, 119, 6, 0.3);}
-        .conf-low span { color: #ef4444; font-weight: 700; }
-        
-        .result-number { font-family: var(--font-serif); font-size: 64px; margin: 0 0 20px 0; color: #fff; font-weight: 700; line-height: 1; text-shadow: 0 10px 20px rgba(0,0,0,0.5);}
-        
-        .tag-wrapper { margin-bottom: 30px; opacity: 0; transition: 0.3s; }
-        .tag-wrapper.pop { opacity: 1; animation: stampPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes stampPop { 0% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .timer-val { font-family: var(--font-mono); font-size: 50px; font-weight: bold; color: var(--neon-orange); text-shadow: 0 0 20px rgba(255, 94, 0, 0.8); line-height: 1; margin-top: 5px;}
+        .timer-label { font-family: var(--font-display); font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 8px; letter-spacing: 2px; text-transform: uppercase;}
 
-        .tag { display: inline-block; padding: 14px 45px; font-family: var(--font-ui); font-size: 24px; font-weight: 600; border-radius: 8px; color: #fff; letter-spacing: 4px; border: 1px solid rgba(212, 175, 55, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-        .tag-big { background: var(--classic-green); }
-        .tag-small { background: var(--classic-red); }
+        /* --- ROUND ID BOX --- */
+        .round-id-box { 
+            border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; padding: 14px; text-align: center;
+            background: rgba(0, 243, 255, 0.03); box-shadow: 0 5px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(0, 243, 255, 0.05);
+            margin-bottom: 30px; backdrop-filter: blur(5px);
+        }
+        .round-id-text { font-family: var(--font-mono); font-size: 20px; color: var(--neon-cyan); letter-spacing: 3px; font-weight: bold; text-shadow: 0 0 10px rgba(0,243,255,0.4);}
+        .round-id-label { font-family: var(--font-ui); font-size: 12px; color: #777; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;}
 
-        .feedback-row { display: flex; gap: 15px; opacity: 0; transition: 0.5s; transform: translateY(10px);}
-        .feedback-row.reveal { opacity: 1; transform: translateY(0); }
-        .btn-feed { flex: 1; padding: 14px; border-radius: 10px; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; font-family: var(--font-ui); font-size: 11px; letter-spacing: 2px; background: rgba(0,0,0,0.3); color: var(--text-muted); }
-        .btn-win:active { background: var(--classic-green); color: #fff; }
-        .btn-loss:active { background: var(--classic-red); color: #fff; }
-        .footer-text { text-align: center; color: rgba(255,255,255,0.2); font-size: 9px; margin-top: auto; padding-top: 30px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; }
+        /* --- TECH CARD --- */
+        .tech-card {
+            border: 1px solid rgba(255, 94, 0, 0.2); border-radius: 16px; padding: 30px 20px;
+            background: linear-gradient(180deg, rgba(15,15,20,0.95), rgba(5,5,10,0.95));
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9); position: relative; text-align: center;
+        }
+        .tech-card::before {
+            content: ''; position: absolute; top: 0; left: 10%; width: 80%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-orange), transparent);
+        }
+
+        .tech-card-title { font-family: var(--font-display); font-size: 20px; color: var(--neon-orange); letter-spacing: 3px; margin-bottom: 30px; text-shadow: 0 0 15px rgba(255, 94, 0, 0.5); }
+        
+        .result-layout { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .side-text { font-family: var(--font-display); font-size: 16px; color: var(--neon-green); font-weight: bold; text-shadow: 0 0 15px rgba(0, 255, 102, 0.6); display: flex; align-items: center; gap: 8px; opacity: 0.8;}
+        .arrows { font-family: var(--font-mono); font-size: 20px; letter-spacing: -2px; }
+
+        .result-circle {
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 3px solid #222; display: flex; align-items: center; justify-content: center;
+            background: #000; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .result-circle.active { border-color: var(--neon-green); box-shadow: 0 0 40px rgba(0, 255, 102, 0.4), inset 0 0 30px rgba(0, 255, 102, 0.2); transform: scale(1.05); }
+        .result-circle.active-red { border-color: var(--neon-red); box-shadow: 0 0 40px rgba(255, 0, 60, 0.4), inset 0 0 30px rgba(255, 0, 60, 0.2); transform: scale(1.05); color: var(--neon-red) !important; }
+
+        .main-number { font-family: var(--font-mono); font-size: 65px; font-weight: bold; color: #333; line-height: 1; transition: 0.3s;}
+        .result-circle.active .main-number { color: #fff; text-shadow: 0 0 20px var(--neon-green); }
+        .result-circle.active-red .main-number { color: #fff; text-shadow: 0 0 20px var(--neon-red); }
+        
+        .algo-display { font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); margin-bottom: 25px; background: rgba(0, 243, 255, 0.03); padding: 12px; border-radius: 8px; border-left: 3px solid var(--neon-cyan); display: none; text-align: left; letter-spacing: 1px;}
+        .algo-display.show { display: block; animation: fadeIn 0.4s ease; }
+        
+        /* ACTION BUTTON WITH CYBER-SCAN */
+        .action-btn {
+            background: linear-gradient(90deg, #ff5e00, #d90000); border: none; color: #fff;
+            font-family: var(--font-display); font-weight: 700; font-size: 18px; padding: 18px; border-radius: 10px;
+            width: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 10px 25px rgba(255, 94, 0, 0.4); transition: 0.2s; letter-spacing: 2px; position: relative; overflow: hidden;
+        }
+        .action-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 30%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-30deg); animation: buttonScan 3s infinite;
+        }
+        @keyframes buttonScan { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .action-btn:disabled { filter: grayscale(1); cursor: not-allowed; opacity: 0.7; }
+        .action-btn:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 5px 15px rgba(255, 94, 0, 0.4); }
+        
+        /* FEEDBACK BUTTONS */
+        .feedback-row { display: flex; gap: 15px; margin-top: 25px; display: none; }
+        .feedback-row.show { display: flex; animation: fadeIn 0.5s ease forwards; }
+        .btn-feed { flex: 1; padding: 14px; border-radius: 8px; font-weight: bold; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-family: var(--font-ui); font-size: 14px; background: rgba(0,0,0,0.6); color: #999; letter-spacing: 2px;}
+        .btn-feed:hover { border-color: rgba(255,255,255,0.3); color: #fff;}
+        
+        .footer { text-align: center; margin-top: 30px; font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 2px;}
     </style>
 </head>
 <body>
 
+    <!-- AUTHENTICATION GATEWAY -->
     <div id="auth-gateway">
         <div class="auth-card">
-            <div class="css-logo" style="margin: 0 auto 20px auto;">S</div>
-            <div class="auth-title">RESTRICTED ACCESS</div>
-            
-            <div class="time-badge">
-                Security Protocol Updated:
-                <span id="key-timestamp">Syncing Database...</span>
-            </div>
-
-            <input type="password" id="access-key-input" class="auth-input" placeholder="ACCESS KEY">
-            <button class="btn-luxury" onclick="verifyKey()">VERIFY IDENTITY</button>
-            <p id="auth-error" style="color: #ef4444; font-size: 12px; display: none; margin-top: 15px; letter-spacing: 1px;">Invalid Key. Check Admin Console.</p>
+            <div class="logo-icon" style="font-size: 45px; margin-bottom: 10px;">SK</div>
+            <div class="auth-title">SYSTEM LOCKED</div>
+            <input type="password" id="access-key-input" class="auth-input" placeholder="ENTER KEY">
+            <button class="auth-btn" onclick="verifyKey()">INITIALIZE ⚡</button>
+            <p id="auth-error" style="color: var(--neon-red); font-size: 13px; display: none; margin-top: 15px; font-family: var(--font-mono); text-shadow: 0 0 5px rgba(255,0,60,0.5);">[ ERROR: INVALID ACCESS KEY ]</p>
         </div>
     </div>
 
+    <!-- MAIN APP -->
     <div class="mobile-app" id="main-app">
-        <div class="top-nav">
-            <div class="brand-container">
-                <div class="css-logo">S</div>
-                <div class="logo">Sikkim <span>Kevin Sureshot VIP</span></div>
-            </div>
-            <div id="status-indicator" class="api-status">
-                <span class="status-dot"></span> <span id="status-text">SECURE</span>
-            </div>
-        </div>
-
-        <div class="glass-card">
-            <div class="server-header">
-                <div class="server-title">Live UTC Synchronization</div>
-            </div>
-            <div class="period-display">
-                <div class="live-period" id="display-period">Loading...</div>
-            </div>
-            <div class="timer-wrapper">
-                <div class="live-timer" id="display-timer">00:00</div>
-                <div class="timer-label">Calculation Window</div>
-            </div>
-        </div>
-
-        <div class="glass-card">
-            <button class="btn-luxury" id="hack-btn">Execute Protocol</button>
-
-            <div id="analysis-console"></div>
-
-            <div id="manual-result" class="result-box">
-                <div class="algo-label">Protocol: <span id="algo-used">Variance Logic</span></div>
-                <div id="acc-text" class="confidence-indicator conf-high">Confidence Rating: <span>85%</span></div>
-                
-                <h1 class="result-number" id="main-num">0</h1>
-                
-                <div class="tag-wrapper" id="tag-wrap">
-                    <div class="tag" id="main-tag">---</div>
-                </div>
-                
-                <div class="feedback-row" id="feed-row">
-                    <button class="btn-feed btn-win" onclick="recordFeedback(true)">PROFIT</button>
-                    <button class="btn-feed btn-loss" onclick="recordFeedback(false)">LOSS</button>
-                </div>
-            </div>
-        </div>
         
-        <div class="footer-text">Exclusive Access • Architecture by Adarsh Kumar</div>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-box">
+                <div class="logo-icon">SK</div>
+                <div class="logo-text">SIKKIM <span>X KEVIN</span></div>
+            </div>
+            <div class="status-btn" id="status-indicator">
+                <span class="status-dot"></span> <span id="status-text">ONLINE</span>
+            </div>
+        </div>
+
+        <!-- Timer Section -->
+        <div class="timer-container">
+            <div class="timer-circle">
+                <div class="timer-val" id="display-timer">00:00</div>
+                <div class="timer-label">TIME REMAINING</div>
+            </div>
+        </div>
+
+        <!-- Round ID -->
+        <div class="round-id-box">
+            <div class="round-id-text" id="display-period">Loading...</div>
+            <div class="round-id-label">Active Round ID</div>
+        </div>
+
+        <!-- VIP NAVIGATOR CARD -->
+        <div class="tech-card">
+            <div class="tech-card-title">VIP NAVIGATOR</div>
+            
+            <div class="result-layout">
+                <div class="side-text">FUN <span class="arrows">&gt;&gt;</span></div>
+                
+                <div class="result-circle" id="result-circle">
+                    <span class="main-number" id="main-num">?</span>
+                </div>
+                
+                <div class="side-text"><span class="arrows">&lt;&lt;</span> RES</div>
+            </div>
+
+            <div class="algo-display" id="algo-info">
+                > PROTOCOL: <span id="algo-used" style="color:#fff; font-weight:bold;">Loading...</span><br>
+                > CONFIDENCE: <span id="acc-text" style="color:#fff; font-weight:bold;">--</span>
+            </div>
+
+            <button class="action-btn" id="hack-btn">
+                ▶ START NAVIGATOR
+            </button>
+
+            <div class="feedback-row" id="feed-row">
+                <button class="btn-feed" onclick="resetUI()">PROFIT ✓</button>
+                <button class="btn-feed" onclick="resetUI()">LOSS ✕</button>
+            </div>
+        </div>
+
+        <div class="footer">ENCRYPTED CONNECTION • KEVIN SURESHOT</div>
     </div>
 
+    <!-- FIREBASE & LOGIC SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -175,33 +246,17 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Global Variables
         let isServerOnline = true;
         let forcedResult = "AUTO"; 
         let currentLivePeriod = "";
         let isProcessing = false;
-        
         let serverAccessKey = "";
         let userEnteredKey = "";
         let isAppUnlocked = false;
-        let consecutiveLosses = 0;
 
-        const algorithmNames = [
-            "Pattern Matrix Alpha (1A-1B)",
-            "Pattern Matrix Beta (2A-2B)",
-            "Quantitative Loss Recovery",
-            "Probability Distribution Chart",
-            "Longitudinal Trend Analysis"
-        ];
+        const algorithmNames = ["DECODE: 1A-1B", "DECODE: 2A-2B", "LOSS RECOVERY PROTOCOL", "BIG/SMALL MATRIX", "TREND ANALYSIS"];
 
-        // --- ADVANCED ACCURACY LOGIC ---
-        function getCustomAccuracyInfo(digit) {
-            if(consecutiveLosses >= 2) return { value: Math.floor(Math.random() * 11) + 90, type: 'high' };
-            if([1, 3, 6, 8].includes(digit)) return { value: Math.floor(Math.random() * 26) + 40, type: 'low' };
-            return { value: Math.floor(Math.random() * 15) + 75, type: 'high' };
-        }
-
-        // 1. FIREBASE ADMIN SYNC
+        // Firebase Sync
         const settingsRef = ref(db, 'admin_settings');
         onValue(settingsRef, (snapshot) => {
             const data = snapshot.val();
@@ -209,7 +264,6 @@
                 isServerOnline = data.serverOnline !== undefined ? data.serverOnline : true;
                 forcedResult = data.forceResult || "AUTO";
                 serverAccessKey = data.accessKey || "12345";
-                document.getElementById('key-timestamp').innerText = data.keyUpdatedAt || "Waiting for Admin...";
                 
                 if(isAppUnlocked && userEnteredKey !== serverAccessKey) lockApp();
 
@@ -218,22 +272,26 @@
                 const btn = document.getElementById('hack-btn');
 
                 if(!isServerOnline) {
-                    statusInd.style.color = '#ef4444';
-                    statusInd.querySelector('.status-dot').style.background = '#ef4444';
-                    statusTxt.innerText = 'MAINTENANCE';
+                    statusInd.style.borderColor = 'var(--neon-red)';
+                    statusInd.style.color = 'var(--neon-red)';
+                    statusInd.querySelector('.status-dot').style.background = 'var(--neon-red)';
+                    statusInd.querySelector('.status-dot').style.boxShadow = '0 0 10px var(--neon-red)';
+                    statusTxt.innerText = 'OFFLINE';
                     btn.disabled = true;
-                    btn.innerText = 'SERVER OFFLINE';
+                    btn.innerHTML = '[ SERVER OFFLINE ]';
                 } else {
-                    statusInd.style.color = 'var(--text-main)';
-                    statusInd.querySelector('.status-dot').style.background = 'var(--gold-primary)';
-                    statusTxt.innerText = 'SECURE';
+                    statusInd.style.borderColor = 'var(--neon-orange)';
+                    statusInd.style.color = 'var(--neon-orange)';
+                    statusInd.querySelector('.status-dot').style.background = 'var(--neon-orange)';
+                    statusInd.querySelector('.status-dot').style.boxShadow = '0 0 10px var(--neon-orange)';
+                    statusTxt.innerText = 'ONLINE';
                     btn.disabled = false;
-                    btn.innerText = 'Execute Protocol';
+                    btn.innerHTML = '▶ START NAVIGATOR';
                 }
             }
         });
 
-        // 2. AUTHENTICATION LOGIC
+        // Authentication
         window.verifyKey = function() {
             const inputVal = document.getElementById('access-key-input').value;
             if(inputVal === serverAccessKey) {
@@ -250,13 +308,13 @@
         function lockApp() {
             isAppUnlocked = false; userEnteredKey = "";
             document.getElementById('access-key-input').value = "";
-            document.getElementById('auth-error').innerText = "Security Key Revoked by Admin. Re-Authenticate.";
+            document.getElementById('auth-error').innerText = "[ ERROR: KEY REVOKED BY ADMIN ]";
             document.getElementById('auth-error').style.display = 'block';
             document.getElementById('auth-gateway').style.display = 'flex';
             document.getElementById('main-app').style.display = 'none';
         }
 
-        // 3. LIVE UTC TIMER
+        // Live Timer & Period Math
         function updateLiveServerData() {
             const now = new Date();
             const hours = now.getUTCHours();
@@ -268,15 +326,13 @@
             const month = String(now.getUTCMonth() + 1).padStart(2, '0');
             const day = String(now.getUTCDate()).padStart(2, '0');
             
-            currentLivePeriod = `${year}${month}${day}1000${10001 + totalMinutes}`;
-
-            document.getElementById('display-period').innerText = currentLivePeriod;
+            const rawPeriod = `${year}${month}${day}1000${10001 + totalMinutes}`;
+            currentLivePeriod = rawPeriod;
+            document.getElementById('display-period').innerText = `********${rawPeriod.slice(-5)}`;
             document.getElementById('display-timer').innerText = `00:${String(remainingSeconds).padStart(2, '0')}`;
 
             if(remainingSeconds === 60 || remainingSeconds === 59) {
-                document.getElementById('manual-result').classList.remove('show');
-                document.getElementById('tag-wrap').classList.remove('pop');
-                document.getElementById('feed-row').classList.remove('reveal');
+                window.resetUI();
             }
         }
         setInterval(updateLiveServerData, 1000);
@@ -292,36 +348,35 @@
             return sum;
         }
 
-        // 4. PREDICTION ENGINE 
+        // Action Engine (Scramble & Reveal)
         document.getElementById('hack-btn').addEventListener('click', () => {
             if(!isServerOnline || isProcessing || !currentLivePeriod) return;
             isProcessing = true;
             
             const btn = document.getElementById('hack-btn');
-            btn.innerText = 'PROCESSING...';
+            btn.innerHTML = '[ DECRYPTING SERVER... ]';
             btn.disabled = true;
 
-            document.getElementById('manual-result').classList.remove('show');
-            document.getElementById('tag-wrap').classList.remove('pop');
-            document.getElementById('feed-row').classList.remove('reveal');
+            document.getElementById('algo-info').classList.remove('show');
+            document.getElementById('feed-row').classList.remove('show');
+            document.getElementById('result-circle').className = "result-circle";
             
-            const term = document.getElementById('analysis-console');
-            term.style.display = 'block';
-            term.innerHTML = '<div class="console-line">> Authenticating VIP Key...</div>';
+            const numEl = document.getElementById('main-num');
+            let duration = 1800; // Scramble for 1.8 seconds (Cinematic Feel)
+            let startTime = Date.now();
             
-            setTimeout(() => { term.innerHTML += `<div class="console-line">> Intercepting Period: ${currentLivePeriod}...</div>`; }, 400);
-            setTimeout(() => { term.innerHTML += '<div class="console-line">> Applying Quantitative Matrices...</div>'; }, 800);
-
-            setTimeout(() => {
-                term.style.display = 'none';
-                showResult();
-            }, 1400);
+            let scrambleInterval = setInterval(() => {
+                numEl.innerText = Math.floor(Math.random() * 10);
+                if (Date.now() - startTime >= duration) {
+                    clearInterval(scrambleInterval);
+                    showResult();
+                }
+            }, 50);
         });
 
         function showResult() {
             let finalDigit, isBig;
 
-            // Admin Override Check
             if(forcedResult === "BIG") {
                 isBig = true; finalDigit = [1,3,5,7,9][Math.floor(Math.random()*5)];
             } else if (forcedResult === "SMALL") {
@@ -331,50 +386,35 @@
                 isBig = [1,3,5,7,9].includes(finalDigit);
             }
 
-            const accData = getCustomAccuracyInfo(finalDigit);
+            let accVal = Math.floor(Math.random() * 15) + 75;
+            let isLowAcc = [1, 3, 6, 8].includes(finalDigit);
+            if(isLowAcc) accVal = Math.floor(Math.random() * 26) + 40;
+
             const randomAlgo = algorithmNames[Math.floor(Math.random() * algorithmNames.length)];
 
             document.getElementById('algo-used').innerText = randomAlgo;
+            document.getElementById('acc-text').innerText = isLowAcc ? `WARNING (${accVal}%)` : `${accVal}%`;
+            document.getElementById('acc-text').style.color = isLowAcc ? 'var(--neon-red)' : 'var(--neon-green)';
+
+            document.getElementById('main-num').innerText = finalDigit;
             
-            const accText = document.getElementById('acc-text');
-            if(accData.type === 'low') {
-                accText.innerHTML = `Caution: Variance Detected <span>(${accData.value}%)</span>`;
-                accText.className = 'confidence-indicator conf-low';
-            } else {
-                accText.innerHTML = `Confidence Rating: <span>${accData.value}%</span>`;
-                accText.className = 'confidence-indicator conf-high';
-            }
-
-            document.getElementById('manual-result').classList.add('show');
-
-            // Scramble Animation
-            const numEl = document.getElementById('main-num');
-            let duration = 1000; let startTime = Date.now();
-            let scrambleInterval = setInterval(() => {
-                numEl.innerText = Math.floor(Math.random() * 10);
-                if (Date.now() - startTime >= duration) {
-                    clearInterval(scrambleInterval);
-                    numEl.innerText = finalDigit;
-                    
-                    const tag = document.getElementById('main-tag');
-                    tag.innerText = isBig ? "BIG" : "SMALL";
-                    tag.className = isBig ? "tag tag-big" : "tag tag-small";
-                    document.getElementById('tag-wrap').classList.add('pop');
-                    
-                    setTimeout(() => {
-                        document.getElementById('feed-row').classList.add('reveal');
-                        isProcessing = false;
-                        const btn = document.getElementById('hack-btn');
-                        btn.innerText = 'Execute Protocol';
-                        btn.disabled = false;
-                    }, 500);
-                }
-            }, 60);
+            const circle = document.getElementById('result-circle');
+            circle.className = isBig ? "result-circle active" : "result-circle active-red";
+            
+            document.getElementById('algo-info').classList.add('show');
+            document.getElementById('feed-row').classList.add('show');
+            
+            isProcessing = false;
+            const btn = document.getElementById('hack-btn');
+            btn.innerHTML = '▶ START NAVIGATOR';
+            btn.disabled = false;
         }
 
-        window.recordFeedback = function(isWin) {
-            consecutiveLosses = isWin ? 0 : consecutiveLosses + 1;
-            document.getElementById('manual-result').classList.remove('show');
+        window.resetUI = function() {
+            document.getElementById('algo-info').classList.remove('show');
+            document.getElementById('feed-row').classList.remove('show');
+            document.getElementById('result-circle').className = "result-circle";
+            document.getElementById('main-num').innerText = "?";
         }
     </script>
 </body>
