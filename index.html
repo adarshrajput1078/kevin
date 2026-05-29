@@ -1,515 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sikkim X Kevin | Cyberpunk Heavy Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sureshot Signals - Join Now</title>
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '968357979280809');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=968357979280809&ev=PageView&noscript=1"
+    /></noscript>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap');
-
-        :root {
-            --bg-dark: #03050a;
-            --neon-orange: #ff5e00;
-            --neon-cyan: #00f3ff;
-            --neon-green: #00ff66;
-            --neon-red: #ff003c;
-            --neon-violet: #bc13fe;
-            --font-display: 'Orbitron', sans-serif;
-            --font-ui: 'Rajdhani', sans-serif;
-            --font-mono: 'Share Tech Mono', monospace;
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            margin: 0; 
-            padding: 0; 
-        }
-        
-        body { 
-            background-color: var(--bg-dark); 
-            color: #fff; 
-            font-family: var(--font-ui); 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh; 
-            background-image: radial-gradient(circle at center, #0a1122 0%, var(--bg-dark) 80%), linear-gradient(45deg, rgba(0, 243, 255, 0.02) 25%, transparent 25%, transparent 75%, rgba(0, 243, 255, 0.02) 75%, rgba(0, 243, 255, 0.02)); 
-            background-size: 100% 100%, 30px 30px; 
-            position: relative; 
+        /* Profile/Logo Image */
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffcc00;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
+            margin-bottom: 15px;
         }
 
-        /* CRT SCANLINE EFFECT LIKE ORIGINAL APP */
-        body::after { 
-            content: ""; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); 
-            background-size: 100% 4px; 
-            pointer-events: none; 
-            z-index: 999; 
-            opacity: 0.4; 
+        h1 {
+            font-size: 28px;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            color: #ff3333;
+            text-transform: uppercase;
         }
 
-        .mobile-app { 
-            width: 100%; 
-            max-width: 420px; 
-            padding: 20px; 
-            display: none; 
-            flex-direction: column; 
-            position: relative; 
-            overflow-x: hidden; 
-            z-index: 10; 
-            animation: fadeIn 0.8s ease; 
+        .highlight-text {
+            font-size: 18px;
+            color: #fff;
+            background: #222;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            margin-bottom: 25px;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- AUTH GATEWAY --- */
-        #auth-gateway { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(3, 5, 10, 0.95); 
-            backdrop-filter: blur(15px); 
-            z-index: 9999; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px; 
-            text-align: center; 
+        /* Urgency Timer Box */
+        .timer-box {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffcc00;
+            margin-bottom: 20px;
         }
-        .auth-card { 
-            background: rgba(0,0,0,0.6); 
-            border: 1px solid var(--neon-cyan); 
-            padding: 35px 30px; 
-            border-radius: 16px; 
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.1); 
-            width: 100%; 
-            max-width: 350px; 
-            position: relative; 
-            overflow: hidden; 
+        .time-num {
+            font-size: 45px;
+            color: #ff0000;
+            display: block;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
-        .auth-title { font-family: var(--font-display); font-size: 22px; color: var(--neon-cyan); margin-bottom: 25px; letter-spacing: 2px; text-shadow: 0 0 15px rgba(0,243,255,0.6);}
-        .auth-input { width: 100%; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(255, 94, 0, 0.5); color: var(--neon-cyan); padding: 16px; border-radius: 8px; font-size: 20px; text-align: center; margin-bottom: 25px; outline: none; font-family: var(--font-mono); letter-spacing: 5px; transition: 0.3s;}
-        .auth-input:focus { border-color: var(--neon-orange); box-shadow: 0 0 20px rgba(255, 94, 0, 0.4); background: #000; }
-        .auth-btn { background: linear-gradient(90deg, #ff5e00, #d90000); border: none; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 16px; padding: 16px; border-radius: 8px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(255, 94, 0, 0.4); }
 
-        /* --- HEADER --- */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(0, 243, 255, 0.15); padding-bottom: 15px; }
-        .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { font-family: var(--font-display); font-size: 30px; font-weight: 900; background: linear-gradient(135deg, var(--neon-orange), var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(255,94,0,0.4));}
-        .logo-text { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 1px; line-height: 1.1;}
-        .logo-text span { color: var(--neon-cyan); display: block; font-size: 11px; letter-spacing: 4px; font-family: var(--font-ui);}
-        .status-btn { display: flex; align-items: center; gap: 6px; border: 1px solid var(--neon-orange); padding: 6px 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; font-weight: bold; color: var(--neon-orange); background: rgba(255, 94, 0, 0.1); letter-spacing: 1px; }
-        .status-dot { width: 8px; height: 8px; background: var(--neon-orange); border-radius: 50%; box-shadow: 0 0 10px var(--neon-orange); animation: blink 1.5s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        /* High-Converting CTA Button */
+        .telegram-btn {
+            background: linear-gradient(90deg, #0088cc, #00aaff);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 900;
+            padding: 15px 35px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 350px;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 20px rgba(0, 136, 204, 0.6);
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
 
-        /* --- TIMER --- */
-        .timer-container { display: flex; justify-content: center; margin-bottom: 25px; }
-        .timer-circle { width: 175px; height: 175px; border-radius: 50%; border: 3px solid rgba(255, 94, 0, 0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(255, 94, 0, 0.2), inset 0 0 20px rgba(255, 94, 0, 0.1); position: relative; animation: breathePulse 3s infinite ease-in-out; }
-        @keyframes breathePulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 94, 0, 0.2), inset 0 0 15px rgba(255, 94, 0, 0.1); } 50% { box-shadow: 0 0 40px rgba(255, 94, 0, 0.4), inset 0 0 25px rgba(255, 94, 0, 0.2); } }
-        .timer-circle::before { content: ''; position: absolute; top: -14px; left: -14px; right: -14px; bottom: -14px; border-radius: 50%; border: 2px dashed rgba(255, 94, 0, 0.4); animation: rotateSpin 20s linear infinite; }
-        @keyframes rotateSpin { 100% { transform: rotate(360deg); } }
-        .timer-val { font-family: var(--font-mono); font-size: 50px; font-weight: bold; color: var(--neon-orange); text-shadow: 0 0 20px rgba(255, 94, 0, 0.8); line-height: 1; margin-top: 5px;}
-        .timer-label { font-family: var(--font-display); font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 8px; letter-spacing: 2px; text-transform: uppercase;}
+        /* Button Pulse Animation to attract clicks */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 5px 20px rgba(0, 136, 204, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 5px 30px rgba(0, 136, 204, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 5px 20px rgba(0, 136, 204, 0.6); }
+        }
 
-        /* --- ROUND ID BOX --- */
-        .round-id-box { border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; padding: 14px; text-align: center; background: rgba(0, 243, 255, 0.03); box-shadow: 0 5px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(0, 243, 255, 0.05); margin-bottom: 30px; backdrop-filter: blur(5px); }
-        .round-id-text { font-family: var(--font-mono); font-size: 20px; color: var(--neon-cyan); letter-spacing: 3px; font-weight: bold; text-shadow: 0 0 10px rgba(0,243,255,0.4);}
-        .round-id-label { font-family: var(--font-ui); font-size: 12px; color: #777; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;}
+        .telegram-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            margin: 0 10px;
+        }
 
-        /* --- VIP NAVIGATOR TECH CARD --- */
-        .tech-card { border: 1px solid rgba(255, 94, 0, 0.2); border-radius: 16px; padding: 30px 20px; background: linear-gradient(180deg, rgba(15,15,20,0.95), rgba(5,5,10,0.95)); box-shadow: 0 15px 40px rgba(0,0,0,0.9); position: relative; text-align: center; }
-        .tech-card::before { content: ''; position: absolute; top: 0; left: 10%; width: 80%; height: 1px; background: linear-gradient(90deg, transparent, var(--neon-orange), transparent); }
-        .tech-card-title { font-family: var(--font-display); font-size: 20px; color: var(--neon-orange); letter-spacing: 3px; margin-bottom: 30px; text-shadow: 0 0 15px rgba(255, 94, 0, 0.5); }
-        
-        .result-layout { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .side-text { font-family: var(--font-display); font-size: 16px; color: var(--neon-green); font-weight: bold; text-shadow: 0 0 15px rgba(0, 255, 102, 0.6); display: flex; align-items: center; gap: 8px; opacity: 0.8;}
-        .arrows { font-family: var(--font-mono); font-size: 20px; letter-spacing: -2px; }
-
-        .result-circle { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #222; display: flex; align-items: center; justify-content: center; background: #000; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-        .result-circle.active { border-color: var(--neon-green); box-shadow: 0 0 40px rgba(0, 255, 102, 0.4), inset 0 0 30px rgba(0, 255, 102, 0.2); transform: scale(1.05); }
-        .result-circle.active-red { border-color: var(--neon-red); box-shadow: 0 0 40px rgba(255, 0, 60, 0.4), inset 0 0 30px rgba(255, 0, 60, 0.2); transform: scale(1.05); color: var(--neon-red) !important; }
-
-        .main-number { font-family: var(--font-mono); font-size: 65px; font-weight: bold; color: #333; line-height: 1; transition: 0.3s;}
-        .result-circle.active .main-number { color: #fff; text-shadow: 0 0 20px var(--neon-green); }
-        .result-circle.active-red .main-number { color: #fff; text-shadow: 0 0 20px var(--neon-red); }
-        
-        /* HEAVY ANALYSIS PANEL */
-        .algo-display { font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); margin-bottom: 25px; background: rgba(0, 243, 255, 0.03); padding: 12px; border-radius: 8px; border-left: 3px solid var(--neon-cyan); display: none; text-align: left; letter-spacing: 1px; line-height: 1.6;}
-        .algo-display.show { display: block; animation: fadeIn 0.4s ease; }
-        .stats-separator { border-top: 1px dashed rgba(0, 243, 255, 0.2); margin-top: 5px; padding-top: 5px; }
-        
-        .action-btn { background: linear-gradient(90deg, #ff5e00, #d90000); border: none; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 18px; padding: 18px; border-radius: 10px; width: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(255, 94, 0, 0.4); transition: 0.2s; letter-spacing: 2px; position: relative; overflow: hidden; }
-        .action-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 30%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-30deg); animation: buttonScan 3s infinite; }
-        @keyframes buttonScan { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        .action-btn:disabled { filter: grayscale(1); cursor: not-allowed; opacity: 0.7; }
-        .action-btn:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 5px 15px rgba(255, 94, 0, 0.4); }
-        
-        .feedback-row { display: flex; gap: 15px; margin-top: 25px; display: none; }
-        .feedback-row.show { display: flex; animation: fadeIn 0.5s ease forwards; }
-        .btn-feed { flex: 1; padding: 14px; border-radius: 8px; font-weight: bold; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-family: var(--font-ui); font-size: 14px; background: rgba(0,0,0,0.6); color: #999; letter-spacing: 2px;}
-        .btn-feed:hover { border-color: rgba(255,255,255,0.3); color: #fff;}
-        .footer { text-align: center; margin-top: 30px; font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 2px;}
-
-        /* --- DYNAMIC NUMBER INPUT MODAL (CYBERPUNK LOOK) --- */
-        #data-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 5, 10, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .data-card { background: #0a0a14; border: 1px solid var(--neon-cyan); border-radius: 16px; padding: 25px; width: 100%; max-width: 380px; box-shadow: 0 0 40px rgba(0, 243, 255, 0.25); text-align: center; }
-        .data-title { font-family: var(--font-display); font-size: 18px; color: var(--neon-cyan); letter-spacing: 2px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
-        .data-subtitle { font-size: 12px; color: #888; margin-bottom: 20px; letter-spacing: 1px; }
-        
-        .slots-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; min-height: 32px; }
-        .slot { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #333; background: #111; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 14px; font-weight: bold; transition: 0.3s; color: #fff; }
-        .slot.red { background: rgba(255, 0, 60, 0.15); border-color: var(--neon-red); color: var(--neon-red); box-shadow: 0 0 10px rgba(255, 0, 60, 0.3); }
-        .slot.green { background: rgba(0, 255, 102, 0.15); border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 255, 102, 0.3); }
-        .slot.violet { background: rgba(188, 19, 254, 0.15); border-color: var(--neon-violet); color: var(--neon-violet); box-shadow: 0 0 10px rgba(188, 19, 254, 0.3); }
-        
-        /* PREMIUM CYBER KEYPAD */
-        .numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px; }
-        .num-btn { background: #0f111a; border: 1px solid #222; border-radius: 8px; padding: 12px 0; font-family: var(--font-mono); font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; color: #fff; }
-        .num-btn:active { transform: scale(0.9); }
-        .num-red { border-color: rgba(255, 0, 60, 0.4); color: var(--neon-red); background: rgba(255, 0, 60, 0.05); }
-        .num-green { border-color: rgba(0, 255, 102, 0.4); color: var(--neon-green); background: rgba(0, 255, 102, 0.05); }
-        .num-violet { border-color: rgba(188, 19, 254, 0.4); color: var(--neon-violet); background: rgba(188, 19, 254, 0.05); }
-        
-        .modal-actions { display: flex; gap: 10px; }
-        .btn-clear { flex: 1; background: #222; color: #aaa; border: 1px solid #333; padding: 12px; border-radius: 8px; font-family: var(--font-ui); font-weight: bold; cursor: pointer; }
-        .btn-analyze { flex: 2; background: var(--neon-cyan); color: #000; border: none; padding: 12px; border-radius: 8px; font-family: var(--font-display); font-weight: bold; cursor: pointer; opacity: 0.4; pointer-events: none; transition: 0.3s; }
-        .btn-analyze.ready { opacity: 1; pointer-events: all; box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+        .footer-text {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
 
-    <div id="auth-gateway">
-        <div class="auth-card">
-            <div class="logo-icon" style="font-size: 45px; margin-bottom: 10px;">SK</div>
-            <div class="auth-title">SYSTEM LOCKED</div>
-            <input type="password" id="access-key-input" class="auth-input" placeholder="ENTER KEY">
-            <button class="auth-btn" onclick="verifyKey()">INITIALIZE ⚡</button>
-            <p id="auth-error" style="color: var(--neon-red); font-size: 13px; display: none; margin-top: 15px; font-family: var(--font-mono);">[ ERROR: INVALID ACCESS KEY ]</p>
-        </div>
+    <img src="logo.png" alt="Profile" class="profile-pic">
+
+    <h1>FREE VIP SIGNALS</h1>
+    <div class="highlight-text">Join before link expires! 🎯</div>
+
+    <div class="timer-box">
+        Redirecting in...
+        <span class="time-num" id="seconds">05</span>
     </div>
 
-    <div id="data-modal">
-        <div class="data-card">
-            <div class="data-title" id="modal-title">MATH ENGINE SYNC</div>
-            <div class="data-subtitle" id="modal-subtitle">Calibrating Markov State Matrix using precise round values.</div>
+    <a class="telegram-btn" onclick="trackPixelAndGo(event)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.25-5.58 3.68-.52.36-.99.53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.29-.48.79-.74 3.08-1.34 5.15-2.23 6.19-2.66 2.95-1.23 3.56-1.45 3.96-1.46.09 0 .28.02.39.11.09.08.12.18.13.27-.01.05-.01.12-.02.16z"/></svg>
+        JOIN TELEGRAM
+    </a>
+
+    <div class="footer-text">100% Free & Secure</div>
+
+    <script>
+        // YAHAN APNA TELEGRAM LINK DAALNA 👇
+        const TELEGRAM_LINK = "https://t.me/+t5XqpSQN0IplMWQ9"; 
+
+        let timeLeft = 5; 
+        const timerDisplay = document.getElementById('seconds');
+
+        function trackPixelAndGo(e) {
+            if(e) e.preventDefault(); 
             
-            <div class="slots-container" id="slots-container"></div>
-            
-                        <div class="numpad">
-                <button class="num-btn num-violet" onclick="addNumber(0)">0</button>
-                <button class="num-btn num-green" onclick="addNumber(1)">1</button>
-                <button class="num-btn num-red" onclick="addNumber(2)">2</button>
-                <button class="num-btn num-green" onclick="addNumber(3)">3</button>
-                <button class="num-btn num-red" onclick="addNumber(4)">4</button>
-                <button class="num-btn num-violet" onclick="addNumber(5)">5</button>
-                <button class="num-btn num-red" onclick="addNumber(6)">6</button>
-                <button class="num-btn num-green" onclick="addNumber(7)">7</button>
-                <button class="num-btn num-red" onclick="addNumber(8)">8</button>
-                <button class="num-btn num-green" onclick="addNumber(9)">9</button>
-            </div>
-
-            <div class="modal-actions">
-                <button class="btn-clear" onclick="clearInputs()">RESET</button>
-                <button class="btn-analyze" id="analyze-btn" onclick="submitData()">CALCULATE</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="mobile-app" id="main-app">
-        <div class="header">
-            <div class="logo-box">
-                <div class="logo-icon">SK</div>
-                <div class="logo-text">SIKKIM <span>X KEVIN</span></div>
-            </div>
-            <div class="status-btn" id="status-indicator">
-                <span class="status-dot"></span> <span id="status-text">ONLINE</span>
-            </div>
-        </div>
-
-        <div class="timer-container">
-            <div class="timer-circle">
-                <div class="timer-val" id="display-timer">00:00</div>
-                <div class="timer-label">TIME REMAINING</div>
-            </div>
-        </div>
-
-        <div class="round-id-box">
-            <div class="round-id-text" id="display-period">Loading...</div>
-            <div class="round-id-label">Active Round ID</div>
-        </div>
-
-        <div class="tech-card">
-            <div class="tech-card-title">VIP NAVIGATOR</div>
-            
-            <div class="result-layout">
-                <div class="side-text">FUN <span class="arrows">&gt;&gt;</span></div>
-                <div class="result-circle" id="result-circle">
-                    <span class="main-number" id="main-num">?</span>
-                </div>
-                <div class="side-text"><span class="arrows">&lt;&lt;</span> RES</div>
-            </div>
-
-            <div class="algo-display" id="algo-info">
-                > ENGINE: <span id="algo-used" style="color:#fff; font-weight:bold;">Loading...</span><br>
-                > CALIBRATION: <span id="acc-text" style="color:#fff; font-weight:bold;">--</span>
-                <div class="stats-separator">
-                    <span id="mean-read" style="color:rgba(0, 243, 255, 0.7);">μ Mean Reversion: ...</span><br>
-                    <span id="pattern-read" style="color:#fff;">Matrix Array: ...</span>
-                </div>
-            </div>
-
-            <button class="action-btn" id="hack-btn" onclick="handlePredictClick()">
-                ▶ START NAVIGATOR
-            </button>
-
-            <div class="feedback-row" id="feed-row">
-                <button class="btn-feed" onclick="recordFeedback(true)">PROFIT ✓</button>
-                <button class="btn-feed" onclick="recordFeedback(false)">LOSS ✕</button>
-            </div>
-        </div>
-
-        <div class="footer">ENCRYPTED CONNECTION • KEVIN SURESHOT</div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAJk3E5Itcz7DU-op_bqwgqSobmD8rfNq8",
-            authDomain: "sikkimaitool.firebaseapp.com",
-            databaseURL: "https://sikkimaitool-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "sikkimaitool",
-            storageBucket: "sikkimaitool.firebasestorage.app",
-            messagingSenderId: "897487739765",
-            appId: "1:897487739765:web:34f9df57ee8372aa6b913c"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        let isServerOnline = true; let forcedResult = "AUTO"; 
-        let currentLivePeriod = ""; let isProcessing = false;
-        let serverAccessKey = ""; let userEnteredKey = ""; let isAppUnlocked = false;
-        
-        let patternHistory = [];
-        let lastKnownSuffix = null; 
-        let requiredInputs = 10;
-        let inputData = [];
-        let consecutiveLosses = 0; 
-        
-        const algorithmNames = [
-            "Markov Chain Transition Model", "Mean Reversion Protocol v4.2", 
-            "Fibonacci Trend Breakout Eng", "Variance Balance Engine", 
-            "Staircase Trend Neutralizer"
-        ];
-
-        // Firebase Sync
-        const settingsRef = ref(db, 'admin_settings');
-        onValue(settingsRef, (snapshot) => {
-            const data = snapshot.val();
-            if(data) {
-                isServerOnline = data.serverOnline !== undefined ? data.serverOnline : true;
-                forcedResult = data.forceResult || "AUTO";
-                serverAccessKey = data.accessKey || "12345";
-                if(isAppUnlocked && userEnteredKey !== serverAccessKey) lockApp();
-                
-                const btn = document.getElementById('hack-btn');
-                if(!isServerOnline) {
-                    document.getElementById('status-indicator').style.borderColor = 'var(--neon-red)';
-                    document.getElementById('status-text').style.color = 'var(--neon-red)';
-                    document.querySelector('.status-dot').style.background = 'var(--neon-red)';
-                    btn.disabled = true; btn.innerHTML = '[ SERVER OFFLINE ]';
-                } else {
-                    document.getElementById('status-indicator').style.borderColor = 'var(--neon-orange)';
-                    document.getElementById('status-text').style.color = 'var(--neon-orange)';
-                    document.querySelector('.status-dot').style.background = 'var(--neon-orange)';
-                    btn.disabled = false; btn.innerHTML = '▶ START NAVIGATOR';
-                }
+            // Facebook ko Lead event bhejna
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead'); 
             }
-        });
-
-        window.verifyKey = function() {
-            if(document.getElementById('access-key-input').value === serverAccessKey) {
-                userEnteredKey = serverAccessKey; isAppUnlocked = true;
-                document.getElementById('auth-gateway').style.display = 'none';
-                document.getElementById('main-app').style.display = 'flex';
-            } else { document.getElementById('auth-error').style.display = 'block'; }
-        }
-        
-        function lockApp() {
-            isAppUnlocked = false; document.getElementById('access-key-input').value = "";
-            document.getElementById('auth-error').innerText = "[ KEY REVOKED BY ADMIN ]";
-            document.getElementById('auth-error').style.display = 'block';
-            document.getElementById('auth-gateway').style.display = 'flex';
-            document.getElementById('main-app').style.display = 'none';
+            
+            // 500ms delay takki Facebook ko data pohoch jaye aur lead count ho
+            setTimeout(() => {
+                window.location.href = TELEGRAM_LINK;
+            }, 500);
         }
 
-        // Live Timer
-        setInterval(() => {
-            const now = new Date();
-            const minutes = now.getUTCMinutes(); const seconds = now.getUTCSeconds();
-            const remaining = 60 - seconds;
-            currentLivePeriod = `${now.getUTCFullYear()}${String(now.getUTCMonth()+1).padStart(2,'0')}${String(now.getUTCDate()).padStart(2,'0')}1000${10001 + (now.getUTCHours()*60)+minutes}`;
-            document.getElementById('display-period').innerText = `********${currentLivePeriod.slice(-5)}`;
-            document.getElementById('display-timer').innerText = `00:${String(remaining).padStart(2,'0')}`;
-            if(remaining === 60 || remaining === 59) resetUIDisplay();
+        const countdownInterval = setInterval(() => {
+            timeLeft--;
+            let displayTime = "0" + timeLeft;
+            timerDisplay.textContent = displayTime;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                trackPixelAndGo(); 
+            }
         }, 1000);
-
-        // --- SMART ADAPTIVE SYNC LOGIC ---
-        window.handlePredictClick = function() {
-            if(!isServerOnline || isProcessing) return;
-            let liveSuffix = parseInt(currentLivePeriod.slice(-5));
-            let targetSuffix = liveSuffix - 1;
-
-            if (patternHistory.length < 10) {
-                requiredInputs = 10;
-                showDataModal("MATH ENGINE SYNC", "Enter exact numbers from last 10 rounds for structural calculation.");
-            } else {
-                let missingGap = targetSuffix - lastKnownSuffix;
-                if (missingGap === 0) {
-                    startAnalysisExecution();
-                } else if (missingGap > 0 && missingGap < 10) {
-                    requiredInputs = missingGap;
-                    let pText = missingGap === 1 ? `Periodending in **${targetSuffix}**` : `last ${missingGap} periods`;
-                    showDataModal("UPDATE VARIANCE", `Input the exact outcome value for ${pText}`);
-                } else {
-                    requiredInputs = 10;
-                    showDataModal("SYNC LOST", "Large gap detected. Enter 10 results to re-sync.");
-                }
-            }
-        }
-
-        function showDataModal(title, subtitle) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-subtitle').innerHTML = subtitle;
-            const container = document.getElementById('slots-container');
-            container.innerHTML = '';
-            for(let i=0; i<requiredInputs; i++) container.innerHTML += `<div class="slot" id="slot-${i}"></div>`;
-            clearInputs();
-            document.getElementById('data-modal').style.display = 'flex';
-        }
-
-        window.addNumber = function(num) {
-            if(inputData.length >= requiredInputs) return;
-            inputData.push(num); updateSlotsUI();
-        }
-
-        window.clearInputs = function() {
-            inputData = []; updateSlotsUI();
-        }
-
-        function updateSlotsUI() {
-            for(let i=0; i<requiredInputs; i++) {
-                const slot = document.getElementById(`slot-${i}`);
-                if (slot) {
-                    slot.className = "slot"; slot.innerText = "";
-                    if(i < inputData.length) {
-                        let val = inputData[i];
-                        slot.innerText = val;
-                        if (val === 0 || val === 5) slot.classList.add('violet');
-                        else if ([1,3,7,9].includes(val)) slot.classList.add('green');
-                        else slot.classList.add('red');
-                    }
-                }
-            }
-            const analyzeBtn = document.getElementById('analyze-btn');
-            if(inputData.length === requiredInputs) analyzeBtn.classList.add('ready');
-            else analyzeBtn.classList.remove('ready');
-        }
-
-        window.submitData = function() {
-            document.getElementById('data-modal').style.display = 'none';
-            inputData.forEach(num => patternHistory.push(num));
-            if (patternHistory.length > 10) patternHistory = patternHistory.slice(-10);
-            lastKnownSuffix = parseInt(currentLivePeriod.slice(-5)) - 1;
-            startAnalysisExecution();
-        }
-
-        function startAnalysisExecution() {
-            isProcessing = true;
-            const btn = document.getElementById('hack-btn');
-            btn.innerHTML = '[ RUNNING CRUNCH MATRIX... ]';
-            btn.disabled = true;
-
-            document.getElementById('algo-info').classList.remove('show');
-            document.getElementById('feed-row').classList.remove('show');
-            
-            // Dynamic Terminal Prints
-            let sum = patternHistory.reduce((a, b) => a + b, 0);
-            let avg = (sum / patternHistory.length).toFixed(2);
-            document.getElementById('pattern-read').innerText = `Matrix Array: [${patternHistory.join(', ')}]`;
-            document.getElementById('mean-read').innerText = `μ Mean Reversion: ${avg} (Calibrated)`;
-
-            const numEl = document.getElementById('main-num');
-            let duration = 1800; let startTime = Date.now();
-            let scramble = setInterval(() => {
-                numEl.innerText = Math.floor(Math.random() * 10);
-                if (Date.now() - startTime >= duration) {
-                    clearInterval(scramble); showFinalResult();
-                }
-            }, 50);
-        }
-
-        function showFinalResult() {
-            let finalDigit, isBig;
-            
-            if(forcedResult === "BIG") { 
-                isBig = true; finalDigit = [1,3,5,7,9][Math.floor(Math.random()*5)]; 
-            } else if (forcedResult === "SMALL") { 
-                isBig = false; finalDigit = [0,2,4,6,8][Math.floor(Math.random()*5)]; 
-            } else {
-                let sum = 0;
-                for(let i=0; i<currentLivePeriod.length; i++) sum += parseInt(currentLivePeriod[i]);
-                while(sum >= 10) {
-                    let temp = sum.toString(); sum = 0;
-                    for(let i=0; i<temp.length; i++) sum += parseInt(temp[i]);
-                }
-                finalDigit = sum;
-                isBig = [1,3,5,7,9].includes(finalDigit);
-            }
-
-            // High-Value Confidence Calibration
-            let stability = Math.floor(Math.random() * 15) + 82; 
-            let confidence = (stability >= 90) ? "STABLE / HIGH" : "MODERATE";
-            let color = (confidence === "STABLE / HIGH") ? "var(--neon-green)" : "var(--neon-orange)";
-            
-            if(consecutiveLosses >= 2) { stability = 98; confidence = "RECOVERY SYSTEM FORCE"; color = "var(--neon-cyan)"; }
-            if([1, 3, 6, 8].includes(finalDigit)) { stability = Math.floor(Math.random() * 15) + 50; confidence = "LOW CONFIDENCE (RISK)"; color = "var(--neon-red)"; }
-
-            document.getElementById('algo-used').innerText = algorithmNames[Math.floor(Math.random() * algorithmNames.length)];
-            
-            const accText = document.getElementById('acc-text');
-            accText.innerHTML = `${stability}% | <span style="color:${color}">${confidence}</span>`;
-
-            document.getElementById('main-num').innerText = finalDigit;
-            document.getElementById('result-circle').className = isBig ? "result-circle active" : "result-circle active-red";
-            document.getElementById('algo-info').classList.add('show');
-            document.getElementById('feed-row').classList.add('show');
-            
-            isProcessing = false;
-            const btn = document.getElementById('hack-btn');
-            btn.innerHTML = '▶ START NAVIGATOR'; btn.disabled = false;
-        }
-
-        window.recordFeedback = function(isWin) {
-            consecutiveLosses = isWin ? 0 : consecutiveLosses + 1;
-            resetUIDisplay();
-        }
-
-        function resetUIDisplay() {
-            document.getElementById('algo-info').classList.remove('show');
-            document.getElementById('feed-row').classList.remove('show');
-            document.getElementById('result-circle').className = "result-circle";
-            document.getElementById('main-num').innerText = "?";
-        }
     </script>
+
 </body>
 </html>
