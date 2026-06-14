@@ -2,402 +2,350 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kevin Root | Mobile Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Command | VIP Engine</title>
     <style>
-        :root { --bg-main: #050505; --card-bg: #111111; --text-main: #ffffff; --border-line: #333333; --accent: #00ffcc; --gold: #FFD700; --red: #ff3366; }
-        body { margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; flex-direction: row; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
         
-        /* ADMIN LOGIN OVERLAY */
-        #admin-login { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;}
-        .login-box { background: var(--card-bg); padding: 40px 20px; border: 1px solid var(--accent); border-radius: 15px; text-align: center; box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); width: 100%; max-width: 350px; box-sizing: border-box;}
-        .login-box input { font-size: 20px; text-align: center; letter-spacing: 5px; text-transform: uppercase; width: 100%; box-sizing: border-box; margin-bottom: 20px;}
+        :root { --bg-main: #020305; --bg-panel: #0a0c10; --border-color: #1a1f2e; --text-main: #e2e8f0; --text-muted: #64748b; --neon-cyan: #00f3ff; --neon-red: #ff003c; --neon-green: #00ff66; --neon-orange: #ff5e00; --neon-purple: #bc13fe; --font-display: 'Orbitron', sans-serif; --font-ui: 'Rajdhani', sans-serif; --font-mono: 'Share Tech Mono', monospace; }
         
-        /* DESKTOP LAYOUT (Default) */
-        .sidebar { width: 250px; background: #0a0a0a; border-right: 1px solid var(--border-line); padding: 20px; display: flex; flex-direction: column; box-sizing: border-box;}
-        .sidebar h2 { margin: 0 0 30px 0; font-size: 22px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 15px;}
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; background-image: radial-gradient(circle at 50% 0%, rgba(0,255,204,0.05) 0%, transparent 70%); display: none; box-sizing: border-box;}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-main); color: var(--text-main); font-family: var(--font-ui); min-height: 100vh; overflow-x: hidden; }
         
-        /* STATS */
-        .top-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: rgba(17,17,17,0.8); border: 1px solid var(--border-line); padding: 20px; border-radius: 10px; border-left: 3px solid var(--accent); }
-        .stat-card.risk { border-left-color: var(--red); }
-        .stat-card h4 { margin: 0 0 10px 0; color: #888; font-size: 12px; text-transform: uppercase; }
-        .stat-card .val { font-size: 32px; font-weight: bold; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
 
-        .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        .card { background: rgba(17,17,17,0.8); border: 1px solid var(--border-line); padding: 25px; margin-bottom: 20px; border-radius: 10px;}
-        .card h3 { margin: 0 0 20px 0; border-bottom: 1px dashed #444; padding-bottom: 10px; color: var(--accent); text-transform: uppercase; font-size: 16px;}
-        
-        input, select { width: 100%; padding: 15px; border: 1px solid var(--border-line); margin-bottom: 15px; background: #000; color: #fff; font-family: 'Share Tech Mono'; box-sizing: border-box; outline: none; border-radius: 8px;}
-        input:focus, select:focus { border-color: var(--accent); }
-        .flex-row { display: flex; gap: 15px; }
-        
-        .btn { padding: 15px; background: var(--accent); color: #000; border: none; cursor: pointer; font-family: 'Share Tech Mono'; font-weight: bold; text-transform: uppercase; transition: 0.2s; width: 100%; border-radius: 8px;}
-        .btn:hover { background: #fff; }
-        .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-        .btn-outline:hover { background: var(--accent); color: #000; }
-        .btn-danger { background: var(--red); color: #fff; border: none; }
-        .btn-grp { display: flex; gap: 10px; margin-bottom: 15px;}
-        
-        textarea { width: 100%; height: 80px; background: #000; color: #fff; border: 1px solid #333; padding: 15px; font-family: monospace; resize: none; box-sizing: border-box; border-radius: 8px;}
+        #admin-auth { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #0a0c10 0%, #000 100%); z-index: 100000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .auth-box { background: rgba(10, 12, 16, 0.8); backdrop-filter: blur(10px); border: 1px solid var(--neon-red); padding: 40px; border-radius: 8px; box-shadow: 0 0 40px rgba(255, 0, 60, 0.1); text-align: center; width: 90%; max-width: 400px; }
+        .auth-title { font-family: var(--font-display); font-size: 24px; color: var(--neon-red); margin-bottom: 5px; letter-spacing: 2px; }
+        .auth-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 25px; }
 
-        /* USER TABLE */
-        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; min-width: 600px;}
-        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #222; }
-        th { color: #888; text-transform: uppercase; background: #0a0a0a;}
-        tr:hover { background: rgba(0, 255, 204, 0.05); }
+        #dashboard-wrapper { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
         
-        .status-active { color: var(--accent); font-weight: bold;}
-        .status-banned { color: var(--red); font-weight: bold;}
-        .status-expired { color: #888; font-weight: bold;}
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+        .header h1 { font-family: var(--font-display); font-size: 20px; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;}
+        .header h1 span { color: var(--neon-cyan); }
+        .live-indicator { font-family: var(--font-mono); font-size: 12px; color: var(--neon-green); display: flex; align-items: center; gap: 5px; border: 1px solid var(--neon-green); padding: 4px 10px; border-radius: 4px;}
+        .live-dot { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--neon-green); } 50% { opacity: 0.3; box-shadow: none; } }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
         
-        .action-btn { padding: 8px 10px; background: transparent; border: 1px solid #555; color: #ccc; cursor: pointer; border-radius: 5px; font-family: 'Share Tech Mono'; font-size: 10px; margin-right: 5px; transition: 0.2s;}
-        .action-btn:hover { background: #333; color: #fff;}
-        .btn-ban { border-color: var(--red); color: var(--red); }
-        .btn-ban:hover { background: var(--red); color: #fff;}
-        .btn-del { border-color: #ff4444; color: #ff4444; font-weight: bold; }
-        .btn-del:hover { background: #ff4444; color: #fff; }
-        .btn-msg { border-color: var(--accent); color: var(--accent); }
-        .btn-msg:hover { background: var(--accent); color: #000;}
+        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s;}
+        .panel-top-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+        .panel-title { font-family: var(--font-display); font-size: 14px; color: #fff; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;}
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .stat-box { background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); padding: 15px 10px; text-align: center; border-radius: 6px; }
+        .stat-val { font-family: var(--font-display); font-size: 28px; font-weight: 900; margin-bottom: 5px; line-height: 1; }
+        .stat-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
 
-        /* MODAL */
-        #msg-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px;}
-        .modal-box { background: #111; padding: 25px; border-radius: 15px; border: 1px solid var(--accent); width: 100%; max-width: 400px; box-shadow: 0 0 30px rgba(0,255,204,0.1); box-sizing: border-box;}
+        .input-group { margin-bottom: 12px; }
+        .input-label { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase;}
+        .input-box { width: 100%; background: #050608; border: 1px solid #222; color: var(--neon-cyan); padding: 12px; font-family: var(--font-mono); font-size: 14px; border-radius: 4px; outline: none; transition: 0.3s; }
+        
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 4px; font-family: var(--font-display); font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;}
+        .btn:active { transform: scale(0.98); }
+        .btn-row { display: flex; gap: 10px; }
+        
+        .btn-outline { background: transparent; border: 1px solid #444; color: #fff; }
+        .btn-cyan { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-cyan); color: var(--neon-cyan); }
+        .btn-red { background: rgba(255, 0, 60, 0.1); border: 1px solid var(--neon-red); color: var(--neon-red); }
+        .btn-green { background: rgba(0, 255, 102, 0.1); border: 1px solid var(--neon-green); color: var(--neon-green); }
+        .btn-purple { background: rgba(188, 19, 254, 0.1); border: 1px solid var(--neon-purple); color: var(--neon-purple); }
+        .btn-orange { background: rgba(255, 94, 0, 0.1); border: 1px solid var(--neon-orange); color: var(--neon-orange); }
 
-        .toast { position: fixed; top: 20px; right: 20px; background: var(--accent); color: #000; padding: 15px 20px; font-weight: bold; z-index: 2000; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-transform: uppercase; border-radius: 8px;}
+        .active-state { background: currentColor !important; color: #000 !important; box-shadow: 0 0 15px currentColor; }
+        .active-state.btn-red, .active-state.btn-purple, .active-state.btn-orange { color: #fff !important; }
 
-        /* ==========================================
-           📱 MOBILE RESPONSIVE UI UPDATE 
-           ========================================== */
-        @media(max-width: 768px) {
-            body { flex-direction: column; }
-            
-            /* Sidebar becomes Top Header */
-            .sidebar { width: 100%; height: auto; padding: 15px 20px; flex-direction: row; justify-content: space-between; align-items: center; border-right: none; border-bottom: 1px solid #333; z-index: 100;}
-            .sidebar h2 { margin: 0; padding: 0; border: none; font-size: 18px; }
-            .sidebar-status { display: none; }
-            .sidebar .btn { width: auto; padding: 8px 15px; font-size: 11px; margin: 0;}
-            
-            .main-content { padding: 15px; }
-            .panel-grid { grid-template-columns: 1fr; gap: 15px;}
-            
-            /* Stack Inputs nicely */
-            .flex-row { flex-direction: column; gap: 0px; }
-            
-            /* Button Groups vertically on very small screens */
-            .btn-grp { flex-direction: column; gap: 10px;}
-            
-            .card { padding: 15px; margin-bottom: 15px;}
-            .stat-card { padding: 15px; }
-            .stat-card .val { font-size: 26px; }
-            
-            .toast { left: 50%; right: auto; transform: translateX(-50%); width: 90%; text-align: center;}
-        }
+        select.input-box { cursor: pointer; appearance: none; }
+
+        .user-list-wrapper { width: 100%; overflow-x: auto; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; max-height: 500px; overflow-y: auto;}
+        table { width: 100%; border-collapse: collapse; min-width: 800px; font-family: var(--font-ui); }
+        th { position: sticky; top: 0; background: #0f131a; color: var(--text-muted); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); z-index: 10;}
+        td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; vertical-align: middle; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        
+        .t-uid { font-family: var(--font-mono); font-weight: bold; font-size: 16px; color: #fff; }
+        .t-device { font-family: var(--font-mono); font-size: 11px; color: #888; background: #111; padding: 3px 6px; border-radius: 4px; border: 1px solid #222;}
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: bold; }
+        .b-active { background: rgba(0, 255, 102, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); }
+
+        .table-actions { display: flex; gap: 5px; }
+        .t-btn { padding: 6px 10px; border: none; border-radius: 4px; font-family: var(--font-display); font-size: 10px; cursor: pointer; font-weight: bold;}
+
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;}
+        .toast { background: rgba(10, 12, 16, 0.95); border-left: 3px solid; padding: 15px 20px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: slideInRight 0.3s ease forwards; opacity: 0; min-width: 250px;}
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
-    <div class="toast" id="toastMsg">Action Successful</div>
 
-    <div id="admin-login">
-        <div class="login-box">
-            <h2 style="color: var(--accent); margin-top: 0; font-size: 24px;">ROOT ACCESS</h2>
-            <input type="password" id="admin-pin" placeholder="ENTER PIN" autocomplete="off">
-            <button class="btn" onclick="verifyAdmin()">AUTHORIZE</button>
+    <div id="toast-container"></div>
+
+    <div id="admin-auth">
+        <div class="auth-box">
+            <div class="auth-title">SYSTEM LOCKED</div>
+            <div class="auth-sub">AUTHORIZATION REQUIRED FOR CORE ACCESS</div>
+            <input type="password" id="master-pass" class="input-box" style="text-align: center; letter-spacing: 5px; margin-bottom: 20px;" placeholder="•••••••">
+            <button class="btn btn-red" onclick="checkAuth()">INITIATE HANDSHAKE</button>
         </div>
     </div>
 
-    <aside class="sidebar" id="sidebar" style="display:none;">
-        <h2>ROOT_ADMIN</h2>
-        <div class="sidebar-status" style="color: #888; font-size: 12px; margin-bottom: 20px;">SYSTEM: <span style="color:var(--accent)">ONLINE</span></div>
-        <button class="btn btn-outline" style="margin-top: auto;" onclick="location.reload()">LOGOUT</button>
-    </aside>
-    
-    <main class="main-content" id="main-content">
-        <div class="top-stats">
-            <div class="stat-card"><h4>ACTIVE USERS</h4><div class="val" id="usr-cnt">0</div></div>
-            <div class="stat-card"><h4>TOTAL KEYS ISSUED</h4><div class="val" id="key-cnt">0</div></div>
-            <div class="stat-card risk"><h4>MARKET RISK REPORTS</h4><div class="val" id="bad-market-count" style="color:var(--red)">0</div></div>
+    <div id="dashboard-wrapper">
+        <div class="header">
+            <h1>TEAM <span>DEVELOPER</span> COMMAND</h1>
+            <div class="live-indicator"><div class="live-dot"></div> DATABASE SYNCED</div>
         </div>
 
-        <div class="panel-grid">
-            <div class="card">
-                <h3 style="color: var(--gold);">GOD MODE & MARKET CONTROL</h3>
-                
-                <div style="font-size: 11px; margin-bottom: 8px; color: #888;">FORCE PREDICTION RESULT: <span id="gm" style="color:#fff; font-weight:bold;">AUTO</span></div>
-                <div class="btn-grp">
-                    <button class="btn btn-outline" onclick="setGodMode('BIG')">FORCE BIG</button>
-                    <button class="btn btn-outline" onclick="setGodMode('SMALL')">FORCE SMALL</button>
-                    <button class="btn" onclick="setGodMode('AUTO')">AUTO AI</button>
+        <div class="grid-container">
+            
+            <div class="panel">
+                <div class="panel-top-bar" style="background: var(--neon-cyan);"></div>
+                <div class="panel-title">SYSTEM OVERVIEW</div>
+                <div class="stat-grid">
+                    <div class="stat-box"><div class="stat-val" id="stat-total" style="color: var(--neon-cyan);">0</div><div class="stat-label">TOTAL USERS</div></div>
+                    <div class="stat-box"><div class="stat-val" id="stat-active" style="color: var(--neon-green);">0</div><div class="stat-label">ACTIVE VIPS</div></div>
+                    <div class="stat-box"><div class="stat-val" id="stat-pending" style="color: #ffcc00;">0</div><div class="stat-label">PENDING REQ</div></div>
                 </div>
-                
-                <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
-                
-                <div style="font-size: 11px; margin-bottom: 8px; color: #888;">MARKET EMERGENCY STATUS:</div>
-                <div class="btn-grp">
-                    <button class="btn btn-danger" onclick="setMarketPause('ON')">PAUSE TRADING</button>
-                    <button class="btn btn-outline" onclick="setMarketPause('OFF')">RESUME TRADING</button>
-                </div>
-
-                <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
-                
-                <div style="font-size: 11px; margin-bottom: 8px; color: #888;">MASTER KILL SWITCH:</div>
-                <div class="btn-grp">
-                    <button class="btn" style="background:#fff;" onclick="setServerStatus('ON')">SERVER ONLINE</button>
-                    <button class="btn btn-danger" onclick="setServerStatus('OFF')">SERVER OFFLINE</button>
+                <div class="btn-row" style="margin-top: 15px;">
+                    <button class="btn btn-outline" style="border-color:#ffcc00; color:#ffcc00;" onclick="toggleMaintenance()">🛠️ TOGGLE MAINTENANCE</button>
                 </div>
             </div>
 
-            <div class="card">
-                <h3>LICENSE GENERATOR</h3>
-                <div class="flex-row">
-                    <div style="flex: 2;"><span style="font-size: 10px; color: #888;">Prefix/Password</span><input type="text" id="k-custom" placeholder="e.g. VIP"></div>
-                    <div style="flex: 1;"><span style="font-size: 10px; color: #888;">Quantity</span><input type="number" id="k-qty" value="1" min="1" max="100"></div>
+            <!-- HYBRID CONTROL PANEL: SESSION & REVERSE PREDICTION -->
+            <div class="panel">
+                <div class="panel-top-bar" style="background: var(--neon-purple);"></div>
+                <div class="panel-title">MASTER OVERRIDES</div>
+                
+                <div class="btn-row" style="margin-bottom: 15px;">
+                    <button id="btn-session-on" class="btn btn-purple" onclick="setSessionActive(true)">LIVE 🟢</button>
+                    <button id="btn-session-off" class="btn btn-outline" onclick="setSessionActive(false)">LOCK 🔒</button>
                 </div>
-                <div class="flex-row">
-                    <div style="flex: 1;"><span style="font-size: 10px; color: #888;">Duration Value</span><input type="number" id="k-dur-val" value="1" min="1"></div>
-                    <div style="flex: 1;"><span style="font-size: 10px; color: #888;">Format</span>
-                        <select id="k-dur-type">
-                            <option value="hours">Hours</option>
-                            <option value="days">Days</option>
-                            <option value="permanent">Lifetime</option>
-                        </select>
+                
+                <!-- NEW: REVERSE PREDICTION LOGIC -->
+                <div style="background: rgba(188, 19, 254, 0.05); border: 1px solid rgba(188, 19, 254, 0.3); padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+                    <span class="input-label" style="color: var(--neon-purple); font-weight: bold;">🔄 MIRROR MODE (INVERT RESULTS)</span>
+                    <input type="text" id="reverse-period" class="input-box" style="margin-bottom: 8px; border-color: var(--neon-purple);" placeholder="Enter End Period ID (e.g. 20260615100010045)">
+                    <div class="btn-row">
+                        <button id="btn-rev-on" class="btn btn-outline" style="border-color:var(--neon-purple); color:var(--neon-purple);" onclick="setMirrorMode(true)">START MIRROR</button>
+                        <button id="btn-rev-off" class="btn active-state btn-purple" onclick="setMirrorMode(false)">STOP</button>
                     </div>
                 </div>
-                <button class="btn" id="g-key" style="margin-bottom: 10px;">GENERATE KEYS</button>
-                <textarea id="r-key" readonly placeholder="[ NEW KEYS WILL APPEAR HERE ]"></textarea>
             </div>
+
+            <div class="panel">
+                <div class="panel-top-bar" style="background: var(--neon-green);"></div>
+                <div class="panel-title">ALGORITHM MATRIX INJECTOR</div>
+                <div class="input-group">
+                    <span class="input-label">Manual Pattern Selection</span>
+                    <select id="pattern-injector" class="input-box" onchange="injectActivePattern()">
+                        <option value="Dragon-Breaker">1. Dragon Breaker Matrix</option>
+                        <option value="Ping-Pong-Reverse">2. Ping-Pong Alternate Shift</option>
+                        <option value="Staircase-Follower">3. Staircase 2-2 Block Matrix</option>
+                        <option value="Modulo-9-Alpha">4. Modulo-9 Regression</option>
+                        <option value="Fibonacci-Offset">5. Golden Ratio Retracement</option>
+                        <option value="Neighbor-Synergy">6. Neighboring Hash Proximity</option>
+                        <option value="Markov-Chain-V2">7. Markov State-Transition</option>
+                        <option value="Mean-Reversion">8. Mean Reversion Pressure</option>
+                        <option value="Gaussian-Variance">9. Gaussian Density Balance</option>
+                        <option value="Triple-Congruence">10. Triple-Period Congruence</option>
+                        <option value="Poisson-Predictor">11. Poisson Frequency</option>
+                        <option value="Linear-Regression">12. Linear Multi-Round Trend</option>
+                    </select>
+                </div>
+                
+                <div class="input-group" style="margin-bottom:0;">
+                    <span class="input-label">Force Result Override (Fixed)</span>
+                    <div class="btn-row">
+                        <button id="btn-f-big" class="btn btn-outline" style="border-color:var(--neon-green); color:var(--neon-green);" onclick="setForce('BIG')">BIG</button>
+                        <button id="btn-f-auto" class="btn btn-cyan active-state" onclick="setForce('AUTO')">AUTO</button>
+                        <button id="btn-f-small" class="btn btn-outline" style="border-color:var(--neon-red); color:var(--neon-red);" onclick="setForce('SMALL')">SMALL</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-top-bar" style="background: var(--neon-orange);"></div>
+                <div class="panel-title">BROADCAST & SYNC</div>
+                
+                <div class="input-group" style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+                    <span class="input-label">Live Game URL Sync</span>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="game-url" class="input-box" placeholder="https://91club.com">
+                        <button class="btn btn-outline" style="width:100px;" onclick="updateGameUrl()">SYNC</button>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+                    <span class="input-label" style="color:var(--neon-green);">💥 Flash Win Blast</span>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="mass-win-text" class="input-box" placeholder="Target fixed message...">
+                        <button class="btn btn-green" style="width:100px;" onclick="triggerMassWinBlast()">FIRE</button>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 0;">
+                    <span class="input-label" style="color:var(--neon-orange);">📢 Global Alert / Lock Notice</span>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="global-notice" class="input-box" placeholder="General notice...">
+                        <button class="btn btn-orange" style="width:100px;" onclick="sendBroadcast()">SEND</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                <h3 style="margin: 0; border: none; padding: 0;">LIVE USER DIRECTORY</h3>
-                <button class="btn btn-outline" style="width: auto; padding: 8px 15px; font-size: 11px;" onclick="openMsgModal('ALL')">BROADCAST ALL 📢</button>
+        <div class="panel" style="padding: 0;">
+            <div class="panel-top-bar" style="background: #ffcc00;"></div>
+            <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color);">
+                <div class="panel-title" style="margin: 0;">ACCESS CONTROL REGISTRY</div>
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <input type="text" id="search-bar" class="input-box" style="width: 250px; margin:0;" placeholder="Search UID..." onkeyup="filterUsers()">
+                    <button class="btn btn-outline" style="width:auto; white-space:nowrap;" onclick="clearExpired()">🧹 PURGE EXPIRED</button>
+                </div>
             </div>
             
-            <div class="table-container">
+            <div class="user-list-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>License Key</th>
-                            <th>Telegram User</th>
-                            <th>Device ID</th>
-                            <th>Expiry</th>
-                            <th>Status</th>
-                            <th>Master Controls</th>
+                            <th>User ID (UID)</th>
+                            <th>Hardware Profile</th>
+                            <th>Access Status</th>
+                            <th>Expiry Data</th>
+                            <th style="text-align: right;">Action Directives</th>
                         </tr>
                     </thead>
-                    <tbody id="user-table-body">
-                        </tbody>
+                    <tbody id="user-list-container"></tbody>
                 </table>
-            </div>
-        </div>
-    </main>
-
-    <div id="msg-modal">
-        <div class="modal-box">
-            <h3 id="modal-title" style="margin-top: 0; color: var(--accent);">SEND DIRECT MESSAGE</h3>
-            <div style="font-size: 10px; color: #888; margin-bottom: 15px;">TARGET: <span id="target-key" style="color:#fff; font-weight:bold;"></span></div>
-            
-            <textarea id="msg-text" placeholder="Type notification text here..." rows="4"></textarea>
-            
-            <div style="font-size: 10px; color: #888; margin-bottom: 5px;">Attach Image URL (Optional)</div>
-            <input type="text" id="msg-img" placeholder="https://...">
-            
-            <div class="btn-grp" style="margin-top: 10px;">
-                <button class="btn" onclick="sendNotification()">SEND PUSH</button>
-                <button class="btn btn-outline" onclick="closeModal()">CANCEL</button>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-        // APP CONFIG (Using your Firebase config)
         const firebaseConfig = {
-            apiKey: "AIzaSyDazknErTl2PtJAe2JGlRQMJSOR5n2elBc",
-            authDomain: "kevin-24998.firebaseapp.com",
-            databaseURL: "https://kevin-24998-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "kevin-24998"
+            apiKey: "AIzaSyAJk3E5Itcz7DU-op_bqwgqSobmD8rfNq8", authDomain: "sikkimaitool.firebaseapp.com",
+            databaseURL: "https://sikkimaitool-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "sikkimaitool",
+            storageBucket: "sikkimaitool.firebasestorage.app", messagingSenderId: "897487739765", appId: "1:897487739765:web:34f9df57ee8372aa6b913c"
         };
-        const db = getDatabase(initializeApp(firebaseConfig));
-        
-        // ADMIN LOGIN SECURITY
-        const ADMIN_PIN = "KEVINROOT"; 
-        
-        window.verifyAdmin = function() {
-            const pin = document.getElementById('admin-pin').value;
-            if(pin === ADMIN_PIN) {
-                document.getElementById('admin-login').style.display = 'none';
-                document.getElementById('sidebar').style.display = 'flex';
-                document.getElementById('main-content').style.display = 'block';
-                showToast("ROOT ACCESS GRANTED");
-            } else {
-                alert("ACCESS DENIED");
-            }
-        }
+        const app = initializeApp(firebaseConfig); const db = getDatabase(app);
+        const settingsRef = ref(db, 'admin_settings'); const usersRef = ref(db, 'users');
 
-        function showToast(msg) { 
-            const t = document.getElementById('toastMsg'); 
-            t.innerText = msg; t.style.display = 'block'; 
-            setTimeout(() => t.style.display = 'none', 3000); 
-        }
+        let globalUsersData = {};
 
-        // GLOBAL CONTROLS
-        window.setGodMode = (mode) => { set(ref(db, 'admin/godMode'), mode); showToast(`GOD MODE: ${mode}`); }
-        window.setMarketPause = (state) => { 
-            set(ref(db, 'admin/marketWarning'), state); 
-            if(state==='OFF') set(ref(db, 'metrics/badMarketReports'), 0); 
-            showToast(`MARKET PAUSE: ${state}`); 
-        }
-        window.setServerStatus = (state) => { set(ref(db, 'admin/toolStatus'), state); showToast(`SERVER: ${state}`); }
+        window.checkAuth = () => {
+            if(document.getElementById('master-pass').value === "BOSS888") {
+                document.getElementById('admin-auth').style.display = 'none';
+                document.getElementById('dashboard-wrapper').style.display = 'block';
+                showToast("System Access Granted", "var(--neon-green)");
+                initDatabaseListeners(); 
+            } else { showToast("Security Alert: Invalid Key", "var(--neon-red)"); }
+        };
 
-        // LIVE STATS LISTENERS
-        onValue(ref(db, 'admin/godMode'), (s) => { document.getElementById('gm').innerText = s.val() || 'AUTO'; });
-        onValue(ref(db, 'metrics/badMarketReports'), (s) => { document.getElementById('bad-market-count').innerText = s.val() || 0; });
-        onValue(ref(db, 'metrics/activeUsers'), (s) => { let d = s.val(); document.getElementById('usr-cnt').innerText = d ? Object.keys(d).length : 0; });
-        
-        let allKeysData = {};
+        window.showToast = (msg, color) => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div'); toast.className = 'toast'; 
+            toast.style.borderColor = color; toast.innerHTML = `<span style="color:${color};">➜</span> ${msg}`; 
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+        };
 
-        // USER DIRECTORY & KEY COUNT
-        onValue(ref(db, 'keys'), (snapshot) => {
-            allKeysData = snapshot.val() || {};
-            document.getElementById('key-cnt').innerText = Object.keys(allKeysData).length;
-            
-            const tbody = document.getElementById('user-table-body');
-            tbody.innerHTML = ''; 
+        function initDatabaseListeners() {
+            onValue(settingsRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    if(data.gameUrl) document.getElementById('game-url').value = data.gameUrl;
+                    if(data.notice) document.getElementById('global-notice').value = data.notice;
+                    if(data.activePattern) document.getElementById('pattern-injector').value = data.activePattern;
+                    
+                    document.getElementById('btn-f-big').className = 'btn btn-outline'; document.getElementById('btn-f-big').style.color = 'var(--neon-green)';
+                    document.getElementById('btn-f-auto').className = 'btn btn-cyan';
+                    document.getElementById('btn-f-small').className = 'btn btn-outline'; document.getElementById('btn-f-small').style.color = 'var(--neon-red)';
+                    if(data.forceResult === 'BIG') { document.getElementById('btn-f-big').className = 'btn btn-green active-state'; document.getElementById('btn-f-auto').className = 'btn btn-outline'; } 
+                    else if(data.forceResult === 'SMALL') { document.getElementById('btn-f-small').className = 'btn btn-red active-state'; document.getElementById('btn-f-auto').className = 'btn btn-outline'; } 
+                    else { document.getElementById('btn-f-auto').classList.add('active-state'); }
 
-            const now = Date.now();
+                    if(data.hackActive) { document.getElementById('btn-session-on').className = 'btn btn-purple active-state'; document.getElementById('btn-session-off').className = 'btn btn-outline'; } 
+                    else { document.getElementById('btn-session-off').className = 'btn btn-red active-state'; document.getElementById('btn-session-on').className = 'btn btn-outline'; }
 
-            Object.keys(allKeysData).reverse().forEach(key => {
-                const data = allKeysData[key];
-                const username = data.tgUser || "N/A";
-                const device = data.deviceId ? data.deviceId.substring(0,8)+"..." : "Not Bound";
-                
-                let status = "ACTIVE"; let statusClass = "status-active";
-                let isExpired = data.expiresAt < now;
-                
-                if (data.status === "banned") { status = "BANNED"; statusClass = "status-banned"; }
-                else if (isExpired) { status = "EXPIRED"; statusClass = "status-expired"; }
-
-                const expDate = data.expiresAt > 9999999999000 ? "Lifetime" : new Date(data.expiresAt).toLocaleString();
-
-                const banBtn = data.status === "banned" ? 
-                    `<button class="action-btn" onclick="toggleBan('${key}', 'active')">UNBAN</button>` : 
-                    `<button class="action-btn btn-ban" onclick="toggleBan('${key}', 'banned')">BAN</button>`;
-                
-                const unbindBtn = data.deviceId ? 
-                    `<button class="action-btn" onclick="unbindDevice('${key}')">UNBIND</button>` : '';
-
-                const deleteBtn = `<button class="action-btn btn-del" onclick="deleteKey('${key}')">DEL</button>`;
-
-                const row = `<tr>
-                    <td style="font-weight:bold; color:#fff;">${key}</td>
-                    <td>${username}</td>
-                    <td>${device}</td>
-                    <td style="font-size:10px;">${expDate}</td>
-                    <td class="${statusClass}">${status}</td>
-                    <td style="min-width: 220px;">
-                        ${unbindBtn}
-                        ${banBtn}
-                        <button class="action-btn btn-msg" onclick="openMsgModal('${key}')">PUSH</button>
-                        ${deleteBtn}
-                    </td>
-                </tr>`;
-                tbody.innerHTML += row;
+                    // Mirror Mode State UI Update
+                    if(data.mirrorMode && data.mirrorMode.active) {
+                        document.getElementById('btn-rev-on').className = 'btn btn-purple active-state';
+                        document.getElementById('btn-rev-off').className = 'btn btn-outline';
+                        document.getElementById('reverse-period').value = data.mirrorMode.untilPeriod;
+                    } else {
+                        document.getElementById('btn-rev-off').className = 'btn btn-purple active-state';
+                        document.getElementById('btn-rev-on').className = 'btn btn-outline';
+                    }
+                }
             });
-        });
-
-        // USER MASTER ACTIONS
-        window.toggleBan = function(key, newStatus) {
-            if(confirm(`Confirm: Set ${key} to ${newStatus.toUpperCase()}?`)) { update(ref(db, `keys/${key}`), { status: newStatus }); showToast("STATUS UPDATED"); }
+            onValue(usersRef, (snapshot) => { globalUsersData = snapshot.val() || {}; renderUsers(); });
         }
 
-        window.unbindDevice = function(key) {
-            if(confirm(`Reset device for ${key}?`)) { update(ref(db, `keys/${key}`), { deviceId: null, tgUser: null }); showToast("DEVICE UNBOUND"); }
-        }
+        function formatDate(ms) { if(!ms) return "---"; let d = new Date(ms); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${(d.getMinutes()<10?'0':'')+d.getMinutes()}`; }
 
-        window.deleteKey = function(key) {
-            if(confirm(`⚠️ PERMANENTLY DELETE key: ${key}?`)) {
-                set(ref(db, `keys/${key}`), null).then(() => { showToast("KEY DELETED"); }); 
-            }
-        }
+        function renderUsers() {
+            const container = document.getElementById('user-list-container'); container.innerHTML = '';
+            const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+            let pCount = 0, aCount = 0, tCount = 0;
 
-        // PUSH NOTIFICATION SYSTEM
-        let msgTarget = null;
-        window.openMsgModal = function(target) {
-            msgTarget = target;
-            document.getElementById('target-key').innerText = target === 'ALL' ? "GLOBAL BROADCAST" : target;
-            document.getElementById('modal-title').innerText = target === 'ALL' ? "GLOBAL BROADCAST" : "DIRECT MESSAGE";
-            document.getElementById('msg-modal').style.display = 'flex';
-        }
+            for(let uid in globalUsersData) {
+                tCount++; let user = globalUsersData[uid]; let devID = user.deviceID || "UNBOUND";
+                if(user.status === 'pending') pCount++;
+                if(user.status === 'approved' && Date.now() < user.expiry) aCount++;
 
-        window.closeModal = function() {
-            document.getElementById('msg-modal').style.display = 'none';
-            document.getElementById('msg-text').value = '';
-            document.getElementById('msg-img').value = '';
-        }
-
-        window.sendNotification = function() {
-            const text = document.getElementById('msg-text').value.trim();
-            const img = document.getElementById('msg-img').value.trim(); 
-            if(!text) return alert("Message cannot be empty.");
-
-            const payload = { id: Date.now(), text: text, img: img };
-
-            if(msgTarget === 'ALL') {
-                let updates = {};
-                Object.keys(allKeysData).forEach(k => { updates[`keys/${k}/notification`] = payload; });
-                update(ref(db), updates).then(() => { showToast("BROADCAST SENT"); closeModal(); });
-            } else {
-                update(ref(db, `keys/${msgTarget}`), { notification: payload }).then(() => { showToast("MESSAGE SENT"); closeModal(); });
-            }
-        }
-
-        // LICENSE GENERATOR
-        document.getElementById('k-dur-type').addEventListener('change', (e) => {
-            const durVal = document.getElementById('k-dur-val');
-            if(e.target.value === 'permanent') { durVal.disabled = true; durVal.value = '999'; } 
-            else { durVal.disabled = false; durVal.value = '1'; }
-        });
-
-        document.getElementById('g-key').onclick = () => {
-            let customPass = document.getElementById('k-custom').value.trim().toUpperCase();
-            let qty = parseInt(document.getElementById('k-qty').value) || 1;
-            let durType = document.getElementById('k-dur-type').value;
-            let durVal = parseInt(document.getElementById('k-dur-val').value) || 1;
-            if(qty > 100) qty = 100; 
-
-            let expiresAt;
-            if (durType === 'permanent') expiresAt = 9999999999999; 
-            else if (durType === 'hours') expiresAt = Date.now() + (durVal * 60 * 60 * 1000);
-            else expiresAt = Date.now() + (durVal * 24 * 60 * 60 * 1000); 
-
-            let generatedKeys = []; let dbUpdates = {};
-
-            if(customPass && qty === 1) {
-                generatedKeys.push(customPass);
-                dbUpdates[`keys/${customPass}`] = { expiresAt: expiresAt, deviceId: null, createdAt: Date.now() };
-            } else {
-                let prefix = customPass ? customPass + "-" : "VIP-";
-                for(let i=0; i < qty; i++) {
-                    let k = prefix + Math.random().toString(36).substr(2, 6).toUpperCase();
-                    generatedKeys.push(k);
-                    dbUpdates[`keys/${k}`] = { expiresAt: expiresAt, deviceId: null, createdAt: Date.now() };
+                if(uid.toLowerCase().includes(searchQuery)) {
+                    let html = '';
+                    if(user.status === 'pending') {
+                        html = `<tr><td class="t-uid">${uid}</td><td><span class="t-device">${devID}</span></td><td><span class="badge b-pending" style="background:rgba(255,204,0,0.1);color:#ffcc00;border:1px solid #ffcc00;">PENDING</span></td><td style="color:#666; font-size:12px;">Waiting...</td><td><div class="table-actions" style="justify-content:flex-end;"><button class="t-btn" style="background:#00ff66; color:#000;" onclick="approveUID('${uid}', 1)">1D</button><button class="t-btn" style="background:#00f3ff; color:#000;" onclick="approveUID('${uid}', 7)">7D</button><button class="t-btn" style="background:var(--neon-purple); color:#fff;" onclick="approveCustom('${uid}')">CSTM</button><button class="t-btn" style="background:#ff003c; color:#fff;" onclick="rejectUID('${uid}')">REJECT</button></div></td></tr>`;
+                    } else if (user.status === 'approved') {
+                        let isExpired = Date.now() > user.expiry; 
+                        let bClass = isExpired ? 'b-expired' : 'b-active'; let bText = isExpired ? 'EXPIRED' : 'ACTIVE';
+                        html = `<tr><td class="t-uid">${uid}</td><td><span class="t-device">${devID}</span></td><td><span class="badge ${bClass}" style="${isExpired ? 'background:rgba(255,0,60,0.1);color:#ff003c;border:1px solid #ff003c;' : ''}">${bText}</span></td><td style="font-family:var(--font-mono); font-size:11px; color:#aaa;">${formatDate(user.expiry)}</td><td><div class="table-actions" style="justify-content:flex-end;"><button class="t-btn" style="background:transparent; border:1px solid var(--neon-orange); color:var(--neon-orange);" onclick="sendPersonalMsg('${uid}')">MSG</button><button class="t-btn" style="background:transparent; border:1px solid #ffcc00; color:#ffcc00;" onclick="unbindDevice('${uid}')">UNBIND</button><button class="t-btn" style="background:transparent; border:1px solid #00f3ff; color:#00f3ff;" onclick="approveCustom('${uid}')">+ DAYS</button><button class="t-btn" style="background:transparent; border:1px solid #ff003c; color:#ff003c;" onclick="deleteUID('${uid}')">DEL</button></div></td></tr>`;
+                    }
+                    container.innerHTML += html;
                 }
             }
+            document.getElementById('stat-total').innerText = tCount; document.getElementById('stat-active').innerText = aCount; document.getElementById('stat-pending').innerText = pCount;
+            if(container.innerHTML === '') container.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#555;">No records match your query.</td></tr>';
+        }
 
-            update(ref(db), dbUpdates).then(() => {
-                document.getElementById('r-key').value = generatedKeys.join('\n');
-                showToast(`${qty} KEYS GENERATED`);
-                document.getElementById('k-custom').value = '';
+        // NEW: MIRROR MODE LOGIC
+        window.setMirrorMode = (state) => {
+            let period = document.getElementById('reverse-period').value;
+            if(state && period.length < 5) { showToast("Enter a valid Target Period ID first!", "var(--neon-red)"); return; }
+            
+            update(settingsRef, {
+                mirrorMode: {
+                    active: state,
+                    untilPeriod: period
+                }
             });
+            showToast(state ? "MIRROR MODE INJECTED! Algorithm will invert." : "MIRROR MODE DEACTIVATED.", state ? "var(--neon-purple)" : "var(--neon-cyan)");
         };
+
+        window.sendPersonalMsg = (uid) => { let msg = prompt(`Send personal DM to UID ${uid}:`, "Check your bet now!"); if(msg) { update(ref(db, 'users/' + uid), { personalAlert: { msg: msg, ts: Date.now() } }); showToast(`Direct message sent to UID ${uid}`, "var(--neon-orange)"); } };
+        window.filterUsers = () => { renderUsers(); };
+        window.updateGameUrl = () => { update(settingsRef, { gameUrl: document.getElementById('game-url').value }); showToast("Game frame re-directed!", "var(--neon-cyan)"); };
+        window.setSessionActive = (state) => { update(settingsRef, { hackActive: state }); showToast(state ? "Session Live Initiated." : "Session Locked.", "var(--neon-purple)"); };
+        window.injectActivePattern = () => { update(settingsRef, { activePattern: document.getElementById('pattern-injector').value }); showToast("Algorithm Matrix Injected.", "var(--neon-green)"); };
+        window.toggleMaintenance = () => { update(settingsRef, { maintenance: !isMaintenance }); showToast("Maintenance state toggled.", "#ffcc00"); };
+        window.setForce = (res) => { update(settingsRef, { forceResult: res }); showToast(`Result forced to: ${res}`, "var(--neon-orange)"); };
+        window.sendBroadcast = () => { update(settingsRef, { notice: document.getElementById('global-notice').value, nextRunTime: document.getElementById('global-notice').value }); showToast("Broadcast transmitted.", "var(--neon-orange)"); };
+        
+        window.triggerMassWinBlast = () => { update(settingsRef, { massWinBlast: { msg: document.getElementById('mass-win-text').value || "🎯 ADMIN TARGET ACQUIRED! PLAY NOW!", timestamp: Date.now() } }); showToast("Mass Win Shockwave Deployed!", "var(--neon-green)"); };
+
+        window.approveUID = (uid, days) => { update(ref(db, 'users/' + uid), { status: 'approved', expiry: Date.now() + (days*24*60*60*1000), reason: "" }); showToast(`UID ${uid} approved.`, "var(--neon-green)"); };
+        window.approveCustom = (uid) => { let days = prompt("Enter access duration (days):", "30"); if(days && !isNaN(days)) approveUID(uid, parseInt(days)); };
+        window.rejectUID = (uid) => { let reason = prompt("Enter rejection reason:"); if(reason) { update(ref(db, 'users/' + uid), { status: 'rejected', reason: reason }); showToast("Request denied.", "var(--neon-red)"); } };
+        window.unbindDevice = (uid) => { update(ref(db, 'users/' + uid), { deviceID: "UNBOUND" }); showToast("Device binding cleared.", "#ffcc00"); };
+        window.deleteUID = (uid) => { remove(ref(db, 'users/' + uid)); showToast("User record purged.", "var(--neon-red)"); };
+        window.clearExpired = () => { let c = 0; for(let uid in globalUsersData) { if(globalUsersData[uid].status==='approved' && Date.now() > globalUsersData[uid].expiry) { remove(ref(db,'users/'+uid)); c++; } } showToast(`Purged ${c} expired records.`, "var(--neon-cyan)"); };
     </script>
 </body>
 </html>
