@@ -1,179 +1,411 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sureshot Signals - Join Now</title>
-
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '968357979280809');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=968357979280809&ev=PageView&noscript=1"
-    /></noscript>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Team Developer | Premium VIP</title>
     <style>
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* Profile/Logo Image */
-        .profile-pic {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #ffcc00;
-            box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 900;
-            margin: 0 0 10px 0;
-            color: #ff3333;
-            text-transform: uppercase;
-        }
-
-        .highlight-text {
-            font-size: 18px;
-            color: #fff;
-            background: #222;
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            margin-bottom: 25px;
-        }
-
-        /* Urgency Timer Box */
-        .timer-box {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffcc00;
-            margin-bottom: 20px;
-        }
-        .time-num {
-            font-size: 45px;
-            color: #ff0000;
-            display: block;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        /* High-Converting CTA Button */
-        .telegram-btn {
-            background: linear-gradient(90deg, #0088cc, #00aaff);
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 22px;
-            font-weight: 900;
-            padding: 15px 35px;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 350px;
-            border: 3px solid #fff;
-            box-shadow: 0 5px 20px rgba(0, 136, 204, 0.6);
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Button Pulse Animation to attract clicks */
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 5px 20px rgba(0, 136, 204, 0.6); }
-            50% { transform: scale(1.05); box-shadow: 0 5px 30px rgba(0, 136, 204, 0.9); }
-            100% { transform: scale(1); box-shadow: 0 5px 20px rgba(0, 136, 204, 0.6); }
-        }
-
-        .telegram-btn:active {
-            transform: scale(0.95);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Share+Tech+Mono&display=swap');
         
-        .icon {
-            width: 24px;
-            height: 24px;
-            fill: white;
-            margin: 0 10px;
-        }
+        :root { --neon-orange: #ff5e00; --neon-cyan: #00d2ff; --neon-green: #00e676; --neon-red: #ff1744; --neon-purple: #d500f9; --tc-green: #17b15e; --tc-red: #ff2742; --tc-violet: #9c27b0; --font-display: 'Poppins', sans-serif; --font-mono: 'Share Tech Mono', monospace; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body { overflow: hidden; background-color: #000; font-family: var(--font-display); color: #fff; touch-action: none; }
 
-        .footer-text {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #888;
+        #game-frame { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 1; background: #0a0a0a;}
+        
+        #floating-icon { 
+            position: fixed; top: 50%; left: 15px; width: 45px; height: 45px; 
+            background: rgba(15, 20, 25, 0.9); border: 2px solid var(--neon-cyan); 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; 
+            z-index: 9999; box-shadow: 0 8px 20px rgba(0, 210, 255, 0.3); cursor: pointer; 
+            backdrop-filter: blur(10px); will-change: left, top, transform; transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        #floating-icon:active { transform: scale(0.9); box-shadow: 0 4px 10px rgba(0, 210, 255, 0.2); }
+        .custom-logo { width: 100%; height: 100%; border-radius: 10px; object-fit: cover; pointer-events: none;}
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; opacity: 0; pointer-events: none; transition: 0.3s ease; }
+        .overlay.active { opacity: 1; pointer-events: auto; }
+
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;}
+        .toast { background: rgba(20, 25, 30, 0.95); border-left: 4px solid; padding: 10px 14px; border-radius: 8px; font-family: var(--font-display); font-size: 11px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; text-align: center; min-width: 180px; max-width: 90vw;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        #uid-gateway { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); background: rgba(15, 20, 25, 0.95); border: 1px solid rgba(255,255,255,0.1); padding: 25px 20px; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); width: 85vw; max-width: 300px; z-index: 10001; opacity: 0; pointer-events: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; backdrop-filter: blur(15px);}
+        #uid-gateway.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .close-gateway { position: absolute; top: 10px; right: 15px; color: #666; font-size: 18px; cursor: pointer; transition: 0.2s; line-height: 1;}
+        
+        .auth-input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; text-align: center; margin-bottom: 12px; outline: none; font-family: var(--font-mono); font-weight: bold; letter-spacing: 1px; transition: 0.3s;}
+        .auth-input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 210, 255, 0.1); }
+        .auth-btn { background: var(--neon-cyan); border: none; color: #000; font-family: var(--font-display); font-weight: 800; font-size: 13px; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 210, 255, 0.3); transition: 0.2s;}
+        
+        #pending-box { display: none; padding: 12px; background: rgba(255, 204, 0, 0.05); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 8px; color: #ffcc00; font-size: 11px; font-weight: 600; animation: pulseSoft 2s infinite;}
+        @keyframes pulseSoft { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        /* ULTRA-COMPACT PREMIUM MOD PANEL */
+        .mod-panel {
+            position: fixed; top: 15%; left: 5vw; 
+            width: 240px; 
+            background: rgba(18, 22, 28, 0.85); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+            display: flex; flex-direction: column; align-items: center; padding: 15px; 
+            z-index: 100000; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            opacity: 0; pointer-events: none; transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform, opacity, left, top; 
+        }
+        .mod-panel.active-menu { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+
+        .panel-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; position: relative; z-index: 10;}
+        .drag-zone { position: absolute; top: -10px; left: 0; width: 75%; height: 150%; z-index: 10; cursor: grab;}
+        
+        .panel-title { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 4px;}
+        .panel-title span { color: var(--neon-cyan); }
+        
+        .btn-hide { background: rgba(255,255,255,0.05); border: none; color: #aaa; font-family: var(--font-display); font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; z-index: 15; transition: 0.2s;}
+
+        .info-row { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; position: relative; z-index: 5;}
+        .uid-badge { font-family: var(--font-mono); font-size: 9px; color: var(--neon-cyan); background: rgba(0, 210, 255, 0.1); padding: 3px 8px; border-radius: 5px; font-weight: bold;}
+        .timer-val { font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #fff; }
+        
+        .full-period-box { width: 100%; background: rgba(0,0,0,0.4); border-radius: 6px; padding: 6px; text-align: center; margin-bottom: 12px; position: relative; z-index: 5;}
+        .period-text { font-family: var(--font-mono); font-size: 10px; color: #aaa; letter-spacing: 1px;}
+        
+        /* COLOR TRADING RESULT UI */
+        .result-box { position: relative; width: 100%; height: 85px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 12px; transition: all 0.3s ease; z-index: 5;}
+        
+        .loader-ring { position: absolute; width: 30px; height: 30px; border: 2px solid rgba(0, 210, 255, 0.1); border-top: 2px solid var(--neon-cyan); border-radius: 50%; animation: spinLight 1s linear infinite; opacity: 0; transition: 0.3s;}
+        @keyframes spinLight { 100% { transform: rotate(360deg); } }
+        
+        .result-box.injecting .loader-ring { opacity: 1; }
+        .result-box.injecting .trading-result { opacity: 0; }
+        
+        .trading-result { display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 1; transition: 0.3s;}
+        .ball-container { display: flex; gap: 5px; margin-bottom: 5px; }
+        .color-ball { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: bold; font-size: 18px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); box-shadow: inset -2px -2px 6px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);}
+        
+        .bg-green { background: var(--tc-green); }
+        .bg-red { background: var(--tc-red); }
+        .bg-violet { background: var(--tc-violet); }
+        .bg-half-red-violet { background: linear-gradient(135deg, var(--tc-red) 50%, var(--tc-violet) 50%); }
+        .bg-half-green-violet { background: linear-gradient(135deg, var(--tc-green) 50%, var(--tc-violet) 50%); }
+        .bg-gray { background: #555; }
+
+        .result-text-block { display: flex; flex-direction: column; align-items: center; }
+        .size-text { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
+        .color-text { font-size: 9px; font-weight: 600; color: #888; letter-spacing: 1px; font-family: var(--font-mono);}
+
+        /* INVERT ALERT TEXT */
+        #mirror-alert { display: none; font-size: 8px; color: var(--neon-purple); position: absolute; bottom: 5px; right: 5px; font-family: var(--font-mono); font-weight: bold;}
+
+        .terminal-input-wrap { display: flex; align-items: center; width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 0 10px; margin-bottom: 12px; position: relative; z-index: 5; transition: 0.3s;}
+        .terminal-label { color: #888; font-family: var(--font-display); font-size: 10px; font-weight: 600; margin-right: 5px;}
+        .algo-input { background: transparent; border: none; color: #fff; width: 100%; text-align: right; font-family: var(--font-mono); font-size: 12px; outline: none; padding: 10px 0; font-weight: bold;}
+
+        .circ-btn { width: 100%; background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); border: none; color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 12px; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; position: relative; z-index: 5; letter-spacing: 1px; box-shadow: 0 6px 15px rgba(0, 210, 255, 0.3);}
+        .circ-btn:active { transform: scale(0.97); box-shadow: 0 3px 8px rgba(0, 210, 255, 0.2); }
+        
+        .lock-container { display: none; flex-direction: column; align-items: center; text-align: center; width: 100%; padding: 15px 0;}
+        .lock-msg { font-size: 10px; color: var(--neon-red); font-weight: 600; background: rgba(255, 23, 68, 0.1); padding: 8px 12px; border-radius: 6px; margin-top: 10px; width: 100%; animation: pulseSoft 2s infinite;}
     </style>
 </head>
 <body>
 
-    <img src="logo.png" alt="Profile" class="profile-pic">
+    <div id="toast-container"></div>
+    <audio id="sfx-click" preload="auto" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+    <audio id="sfx-success" preload="auto" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
 
-    <h1>FREE VIP SIGNALS</h1>
-    <div class="highlight-text">Join before link expires! 🎯</div>
-
-    <div class="timer-box">
-        Redirecting in...
-        <span class="time-num" id="seconds">05</span>
+    <iframe id="game-frame" src="https://91club.com" title="Live Game"></iframe>
+    
+    <div id="floating-icon">
+        <img src="logo.png" alt="VIP" class="custom-logo">
     </div>
 
-    <a class="telegram-btn" onclick="trackPixelAndGo(event)">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.25-5.58 3.68-.52.36-.99.53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.29-.48.79-.74 3.08-1.34 5.15-2.23 6.19-2.66 2.95-1.23 3.56-1.45 3.96-1.46.09 0 .28.02.39.11.09.08.12.18.13.27-.01.05-.01.12-.02.16z"/></svg>
-        JOIN TELEGRAM
-    </a>
+    <div class="overlay" id="overlay" onclick="closeGateway()"></div>
 
-    <div class="footer-text">100% Free & Secure</div>
+    <div id="uid-gateway">
+        <div class="close-gateway" onclick="closeGateway()">✖</div>
+        <div style="font-family: var(--font-display); font-size: 18px; font-weight: 800; color:#fff; margin-bottom: 20px;">VIP <span style="color:var(--neon-cyan);">ACCESS</span></div>
+        <div id="input-section">
+            <input type="number" id="uid-input" class="auth-input" placeholder="ENTER GAME UID">
+            <button class="auth-btn" id="submit-btn" onclick="submitUID()">CONNECT</button>
+        </div>
+        <div id="pending-box">
+            <div id="pending-status-text">CONNECTING TO SERVER...</div>
+            <div id="reject-reason" style="color:var(--neon-red); font-size:10px; margin-top:6px; display:none;"></div>
+        </div>
+    </div>
 
-    <script>
-        // YAHAN APNA TELEGRAM LINK DAALNA 👇
-        const TELEGRAM_LINK = "https://t.me/+t5XqpSQN0IplMWQ9"; 
+    <!-- VIP ENGINE PANEL -->
+    <div class="mod-panel" id="main-app">
+        
+        <div class="panel-header">
+            <div class="drag-zone" id="drag-handle"></div>
+            <div class="panel-title">VIP <span>ENGINE</span></div>
+            <button class="btn-hide" onclick="hideHack()">HIDE</button>
+        </div>
 
-        let timeLeft = 5; 
-        const timerDisplay = document.getElementById('seconds');
-
-        function trackPixelAndGo(e) {
-            if(e) e.preventDefault(); 
+        <div id="active-session-ui" style="display: flex; flex-direction: column; width:100%;">
+            <div class="info-row">
+                <div class="uid-badge" id="user-uid-display">ID: -----</div>
+                <div class="timer-val" id="display-timer">00:00</div>
+            </div>
             
-            // Facebook ko Lead event bhejna
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead'); 
+            <div class="full-period-box"><div class="period-text" id="display-period">ID: CONNECTING...</div></div>
+            
+            <div class="result-box" id="result-box">
+                <div class="loader-ring"></div>
+                <div class="trading-result" id="trading-result">
+                    <div class="ball-container">
+                        <div class="color-ball bg-gray" id="res-ball">?</div>
+                    </div>
+                    <div class="result-text-block">
+                        <div class="size-text" id="res-size" style="color:#666;">STANDBY</div>
+                        <div class="color-text" id="res-color-name">WAITING</div>
+                    </div>
+                </div>
+                <div id="mirror-alert">M-MODE</div>
+            </div>
+            
+            <div class="terminal-input-wrap">
+                <span class="terminal-label">OFFSET [-]</span>
+                <input type="number" id="user-minus" class="algo-input" placeholder="0">
+            </div>
+            
+            <button class="circ-btn" id="hack-btn" onclick="startAnalysisExecution()">START ANALYSIS</button>
+        </div>
+
+        <div id="locked-session-ui" class="lock-container">
+            <div style="font-size:28px; margin-bottom:8px;">🔒</div>
+            <div style="font-family:var(--font-display); font-size:13px; font-weight:800; color:var(--neon-red);">SESSION LOCKED</div>
+            <div id="next-session-notice" class="lock-msg">Awaiting Server Orders...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJk3E5Itcz7DU-op_bqwgqSobmD8rfNq8", authDomain: "sikkimaitool.firebaseapp.com",
+            databaseURL: "https://sikkimaitool-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "sikkimaitool",
+            storageBucket: "sikkimaitool.firebasestorage.app", messagingSenderId: "897487739765", appId: "1:897487739765:web:34f9df57ee8372aa6b913c"
+        };
+        const app = initializeApp(firebaseConfig); const db = getDatabase(app);
+
+        let isProcessing = false; let currentLivePeriod = ""; let isServerOnline = true;
+        let savedUID = localStorage.getItem('kevin_tool_uid');
+        let currentStatus = null; let forcedResult = "AUTO"; let activePattern = "Dragon-Breaker";
+        let lastBlastTimestamp = 0; window.lastPersonalAlertTs = 0; window.isFirstLoadDone = false;
+        
+        // NEW GLOBAL VARIABLE FOR MIRROR MODE
+        let mirrorModeState = { active: false, untilPeriod: "" };
+
+        let audioUnlocked = false;
+        document.body.addEventListener('touchstart', () => { if(!audioUnlocked) { document.getElementById('sfx-click').load(); document.getElementById('sfx-success').load(); audioUnlocked = true; } }, {once:true});
+
+        function getMyDeviceID() { let id = localStorage.getItem('kevin_device_id'); if (!id) { id = 'DEV-' + Math.random().toString(36).substr(2, 9).toUpperCase(); localStorage.setItem('kevin_device_id', id); } return id; }
+        const myDeviceID = getMyDeviceID();
+
+        window.playClick = () => { if(audioUnlocked) document.getElementById('sfx-click').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate(30); }
+        window.playSuccess = () => { if(audioUnlocked) document.getElementById('sfx-success').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([80, 40, 80]); }
+
+        window.showToast = (msg, color) => {
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+            toast.className = 'toast'; toast.style.borderColor = color; toast.style.color = color; toast.innerText = msg; container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3500); 
+        };
+
+        onValue(ref(db, 'admin_settings'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                if(data.gameUrl) document.getElementById('game-frame').src = data.gameUrl;
+                isServerOnline = data.serverOnline; forcedResult = data.forceResult || "AUTO";
+                activePattern = data.activePattern || "Dragon-Breaker";
+                
+                // Fetch Mirror Mode
+                if(data.mirrorMode) { mirrorModeState = data.mirrorMode; }
+
+                if(data.massWinBlast && data.massWinBlast.timestamp > lastBlastTimestamp) {
+                    let isFirstRun = (lastBlastTimestamp === 0);
+                    lastBlastTimestamp = data.massWinBlast.timestamp;
+                    if(!isFirstRun && currentStatus === 'approved' && data.hackActive && document.getElementById('main-app').classList.contains('active-menu')) {
+                        document.getElementById('res-ball').className = "color-ball bg-green";
+                        document.getElementById('res-ball').innerText = "★";
+                        document.getElementById('res-size').innerText = "WIN";
+                        document.getElementById('res-size').style.color = "var(--tc-green)";
+                        document.getElementById('res-color-name').innerText = "TARGET FIXED";
+                        showToast("🔔 " + data.massWinBlast.msg, "var(--neon-green)");
+                        playSuccess();
+                    }
+                }
+
+                if(data.hackActive) {
+                    document.getElementById('active-session-ui').style.display = 'flex';
+                    document.getElementById('locked-session-ui').style.display = 'none';
+                } else {
+                    document.getElementById('active-session-ui').style.display = 'none';
+                    document.getElementById('locked-session-ui').style.display = 'flex';
+                    if(data.nextRunTime) document.getElementById('next-session-notice').innerText = data.nextRunTime;
+                }
             }
-            
-            // 500ms delay takki Facebook ko data pohoch jaye aur lead count ho
-            setTimeout(() => {
-                window.location.href = TELEGRAM_LINK;
-            }, 500);
+        });
+
+        function listenUIDStatus() {
+            if(!savedUID) return;
+            onValue(ref(db, 'users/' + savedUID), (snapshot) => {
+                const userData = snapshot.val();
+                if (!userData) { currentStatus = null; localStorage.removeItem('kevin_tool_uid'); savedUID = null; document.getElementById('floating-icon').style.display = 'none'; return; }
+                
+                if(userData.personalAlert && userData.personalAlert.ts > window.lastPersonalAlertTs) {
+                    window.lastPersonalAlertTs = userData.personalAlert.ts;
+                    if(window.isFirstLoadDone) { showToast("📩 MESSAGE:\n" + userData.personalAlert.msg, "var(--neon-cyan)"); if(audioUnlocked) document.getElementById('sfx-success').play().catch(e=>{}); }
+                }
+                
+                if(userData.status === 'approved') {
+                    if(userData.deviceID === "UNBOUND") { update(ref(db, 'users/' + savedUID), { deviceID: myDeviceID }); } 
+                    else if(userData.deviceID && userData.deviceID !== myDeviceID) {
+                        currentStatus = 'mismatch'; showToast("Device Authorization Failed", "var(--neon-red)");
+                        document.getElementById('floating-icon').style.display = 'none'; closeHack(); return;
+                    }
+                }
+                
+                currentStatus = userData.status;
+                if(currentStatus === 'rejected') document.getElementById('reject-reason').innerText = userData.reason || "Access Denied.";
+                if(currentStatus === 'approved' && userData.expiry && Date.now() > userData.expiry) currentStatus = 'expired';
+                
+                if(currentStatus === 'approved') {
+                    if(!document.getElementById('main-app').classList.contains('active-menu')) document.getElementById('floating-icon').style.display = 'flex';
+                    document.getElementById('user-uid-display').innerText = `ID: ${savedUID}`;
+                    if(document.getElementById('uid-gateway').classList.contains('active')) {
+                        showStatusBox("ACCESS GRANTED", "var(--neon-green)");
+                        setTimeout(() => { closeGateway(); document.getElementById('floating-icon').style.display = 'none'; document.getElementById('main-app').classList.add('active-menu'); }, 1000);
+                    }
+                } else { document.getElementById('floating-icon').style.display = 'none'; closeHack(); }
+                window.isFirstLoadDone = true;
+            });
+        }
+        if (savedUID) listenUIDStatus();
+
+        window.handleIconClick = function() {
+            if(isDragIcon) return; playClick();
+            if(!savedUID || currentStatus === null) { openGateway(); showInputBox(); } 
+            else if (currentStatus === 'mismatch') { openGateway(); showStatusBox("DEVICE BLOCKED", "var(--neon-red)"); } 
+            else if (currentStatus === 'expired') { openGateway(); showStatusBox("PLAN EXPIRED", "var(--neon-red)"); } 
+            else if (currentStatus === 'rejected') { openGateway(); showStatusBox("ACCESS DENIED", "var(--neon-red)"); document.getElementById('reject-reason').style.display = "block"; } 
+            else if (currentStatus === 'pending') { openGateway(); showStatusBox("AWAITING APPROVAL...", "#ffcc00"); } 
+            else if (currentStatus === 'approved') { document.getElementById('floating-icon').style.display = 'none'; document.getElementById('main-app').classList.add('active-menu'); }
         }
 
-        const countdownInterval = setInterval(() => {
-            timeLeft--;
-            let displayTime = "0" + timeLeft;
-            timerDisplay.textContent = displayTime;
+        window.hideHack = function() { playClick(); document.getElementById('main-app').classList.remove('active-menu'); document.getElementById('floating-icon').style.display = 'flex'; }
+        function openGateway() { document.getElementById('uid-gateway').classList.add('active'); document.getElementById('overlay').classList.add('active'); }
+        function closeGateway() { document.getElementById('uid-gateway').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+        function closeHack() { document.getElementById('main-app').classList.remove('active-menu'); document.getElementById('floating-icon').style.display = 'flex'; }
+        function showInputBox() { document.getElementById('input-section').style.display = 'block'; document.getElementById('pending-box').style.display = 'none'; const btn = document.getElementById('submit-btn'); btn.innerText = "CONNECT"; btn.disabled = false; }
+        function showStatusBox(title, color) { document.getElementById('input-section').style.display = 'none'; let pBox = document.getElementById('pending-box'); pBox.style.display = 'block'; pBox.style.borderColor = color; pBox.style.color = color; document.getElementById('pending-status-text').innerText = title; document.getElementById('reject-reason').style.display = "none"; }
 
-            if (timeLeft <= 0) {
-                clearInterval(countdownInterval);
-                trackPixelAndGo(); 
+        window.submitUID = function() {
+            playClick(); const uidInput = document.getElementById('uid-input').value; const btn = document.getElementById('submit-btn');
+            if(uidInput.length < 4) { showToast("Invalid UID Format!", "var(--neon-red)"); return; }
+            btn.innerText = "VERIFYING..."; btn.disabled = true;
+            get(ref(db, 'users/' + uidInput)).then((snapshot) => {
+                if(snapshot.exists()) {
+                    if(snapshot.val().deviceID && snapshot.val().deviceID !== myDeviceID && snapshot.val().deviceID !== "UNBOUND") { showToast("UID bound to another device!", "var(--neon-red)"); btn.innerText = "CONNECT"; btn.disabled = false; return; }
+                    localStorage.setItem('kevin_tool_uid', uidInput); savedUID = uidInput; showStatusBox("DATA FOUND, VERIFYING...", "#ffcc00"); setTimeout(() => { listenUIDStatus(); }, 600);
+                } else { set(ref(db, 'users/' + uidInput), { status: 'pending', timestamp: Date.now(), deviceID: myDeviceID }).then(() => { localStorage.setItem('kevin_tool_uid', uidInput); savedUID = uidInput; showStatusBox("REQUEST SENT...", "#ffcc00"); setTimeout(() => { listenUIDStatus(); showStatusBox("AWAITING APPROVAL...", "#ffcc00"); }, 800); }); }
+            }).catch(err => { btn.innerText = "CONNECT"; btn.disabled = false; showToast("Network Error!", "var(--neon-red)"); });
+        }
+
+        function resetToStandby() {
+            document.getElementById('res-ball').className = "color-ball bg-gray"; document.getElementById('res-ball').innerText = "?";
+            document.getElementById('res-size').innerText = "STANDBY"; document.getElementById('res-size').style.color = "#666";
+            document.getElementById('res-color-name').innerText = "WAITING"; document.getElementById('mirror-alert').style.display = "none";
+            document.getElementById('result-box').style.borderColor = "rgba(255,255,255,0.05)"; document.getElementById('result-box').style.boxShadow = "none";
+        }
+
+        function updateLiveTimer() {
+            const now = new Date(); let remainingSeconds = 60 - now.getUTCSeconds(); const totalMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+            currentLivePeriod = `${now.getUTCFullYear()}${String(now.getUTCMonth() + 1).padStart(2, '0')}${String(now.getUTCDate()).padStart(2, '0')}1000${10001 + totalMinutes}`;
+            document.getElementById('display-timer').innerText = `00:${remainingSeconds < 10 ? '0'+remainingSeconds : remainingSeconds}`;
+            document.getElementById('display-period').innerText = `ID: ${currentLivePeriod}`; 
+
+            if (remainingSeconds === 60 || remainingSeconds === 1) {
+                let resBox = document.getElementById('result-box'); resBox.className = "result-box"; resetToStandby();
             }
-        }, 1000);
-    </script>
+        }
+        setInterval(updateLiveTimer, 1000); 
+        function sumDigits(num) { let sum = 0; let str = Math.abs(num).toString(); for(let i=0; i<str.length; i++) sum += parseInt(str[i]); return sum; }
 
+        window.startAnalysisExecution = function() {
+            if(isProcessing || !isServerOnline) return; playClick(); isProcessing = true;
+            let resBox = document.getElementById('result-box'); resBox.className = "result-box injecting";
+            setTimeout(() => { calculateComplexAlgorithm(); }, 1800);
+        }
+
+        function calculateComplexAlgorithm() {
+            playSuccess(); let resBox = document.getElementById('result-box'); resBox.className = "result-box"; 
+            let finalDigit = 0; let isBig = false;
+            let P = parseInt(currentLivePeriod.slice(-4)) || 1000;
+            let offset = parseInt(document.getElementById('user-minus').value) || 0;
+
+            if(forcedResult !== "AUTO") {
+                isBig = (forcedResult === "BIG");
+                finalDigit = isBig ? [5,6,7,8,9][Math.floor(Math.random()*5)] : [0,1,2,3,4][Math.floor(Math.random()*5)];
+            } else {
+                switch(activePattern) {
+                    case "Dragon-Breaker": finalDigit = Math.abs(sumDigits(P) - offset) % 10; break;
+                    case "Ping-Pong-Reverse": finalDigit = Math.abs(sumDigits(P - 1) + 5 - offset) % 10; break;
+                    case "Staircase-Follower": finalDigit = (P % 2 === 0) ? (4 - (offset%4)) : (7 + (offset%3)); break;
+                    case "Modulo-9-Alpha": let m9 = (sumDigits(P) + sumDigits(P-1)) % 9; finalDigit = m9 + (offset%2); break;
+                    case "Fibonacci-Offset": finalDigit = Math.abs(Math.floor((sumDigits(P) * 1.618)) - offset) % 10; break;
+                    case "Neighbor-Synergy": finalDigit = Math.abs(sumDigits(P + 1) + sumDigits(P - 1) - offset) % 10; break;
+                    case "Markov-Chain-V2": finalDigit = (sumDigits(P) * 3 + 7 - offset) % 10; break;
+                    case "Mean-Reversion": let avg = Math.floor((sumDigits(P) + sumDigits(P-1) + sumDigits(P-10)) / 3); finalDigit = Math.abs(avg - offset) % 10; break;
+                    case "Gaussian-Variance": finalDigit = Math.abs(sumDigits(P * P) - offset) % 10; break;
+                    case "Triple-Congruence": let tripleSum = sumDigits(P) + sumDigits(P - 1) + sumDigits(P - 10); let subRes = tripleSum - offset; if(subRes < 0) subRes = Math.abs(subRes); while(subRes > 9) { subRes = sumDigits(subRes); } finalDigit = subRes; break;
+                    case "Poisson-Predictor": finalDigit = Math.abs(sumDigits(P) + 2 - (offset % 5)) % 10; break;
+                    case "Linear-Regression": finalDigit = Math.abs(sumDigits(P) - sumDigits(P-5) - offset) % 10; break;
+                    default: finalDigit = sumDigits(P) % 10;
+                }
+                
+                // 🔄 MIRROR MODE LOGIC CHECK
+                if(mirrorModeState.active && currentLivePeriod <= mirrorModeState.untilPeriod) {
+                    finalDigit = (finalDigit + 5) % 10;
+                    document.getElementById('mirror-alert').style.display = "block";
+                } else {
+                    document.getElementById('mirror-alert').style.display = "none";
+                }
+                
+                isBig = finalDigit >= 5;
+            }
+
+            let colorClass = ""; let colorName = ""; let mainColor = ""; 
+            
+            if (finalDigit === 0) { colorClass = "bg-half-red-violet"; colorName = "RED + VIOLET"; mainColor = "var(--tc-violet)"; } 
+            else if (finalDigit === 5) { colorClass = "bg-half-green-violet"; colorName = "GREEN + VIOLET"; mainColor = "var(--tc-green)"; } 
+            else if ([1, 3, 7, 9].includes(finalDigit)) { colorClass = "bg-green"; colorName = "GREEN"; mainColor = "var(--tc-green)"; } 
+            else if ([2, 4, 6, 8].includes(finalDigit)) { colorClass = "bg-red"; colorName = "RED"; mainColor = "var(--tc-red)"; }
+
+            document.getElementById('res-ball').className = `color-ball ${colorClass}`;
+            document.getElementById('res-ball').innerText = finalDigit;
+            document.getElementById('res-size').innerText = isBig ? "BIG" : "SMALL";
+            document.getElementById('res-size').style.color = mainColor;
+            document.getElementById('res-color-name').innerText = colorName;
+
+            resBox.style.borderColor = mainColor;
+            resBox.style.boxShadow = `0 8px 20px ${mainColor}33, inset 0 0 10px ${mainColor}22`;
+            isProcessing = false;
+        }
+
+        const mainApp = document.getElementById('main-app'); const dragHandle = document.getElementById('drag-handle');
+        let isDraggingMenu = false, offsetX, offsetY;
+        dragHandle.addEventListener('touchstart', (e) => { isDraggingMenu = true; offsetX = e.touches[0].clientX - mainApp.getBoundingClientRect().left; offsetY = e.touches[0].clientY - mainApp.getBoundingClientRect().top; }, {passive: true});
+        document.addEventListener('touchmove', (e) => { if (!isDraggingMenu) return; e.preventDefault(); let newX = e.touches[0].clientX - offsetX; let newY = e.touches[0].clientY - offsetY; let maxX = window.innerWidth - mainApp.offsetWidth; let maxY = window.innerHeight - mainApp.offsetHeight; mainApp.style.left = `${Math.max(0, Math.min(newX, maxX))}px`; mainApp.style.top = `${Math.max(0, Math.min(newY, maxY))}px`; }, {passive: false});
+        document.addEventListener('touchend', () => { isDraggingMenu = false; });
+
+        const floatingIcon = document.getElementById('floating-icon'); let isDraggingIcon = false, isDragIcon = false, startX, startY;
+        floatingIcon.addEventListener('touchstart', (e) => { isDraggingIcon = true; isDragIcon = false; startX = e.touches[0].clientX; startY = e.touches[0].clientY; offsetX = startX - floatingIcon.getBoundingClientRect().left; offsetY = startY - floatingIcon.getBoundingClientRect().top; }, {passive: true});
+        document.addEventListener('touchmove', (e) => { if (!isDraggingIcon) return; let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY; if(Math.abs(moveX - startX) > 15 || Math.abs(moveY - startY) > 15) { isDragIcon = true; e.preventDefault(); let newX = moveX - offsetX; let newY = moveY - offsetY; let maxX = window.innerWidth - floatingIcon.offsetWidth; let maxY = window.innerHeight - floatingIcon.offsetHeight; floatingIcon.style.left = `${Math.max(0, Math.min(newX, maxX))}px`; floatingIcon.style.top = `${Math.max(0, Math.min(newY, maxY))}px`; } }, {passive: false});
+        floatingIcon.addEventListener('touchend', (e) => { isDraggingIcon = false; if(!isDragIcon) { handleIconClick(); }});
+    </script>
 </body>
 </html>
